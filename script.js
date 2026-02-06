@@ -16,7 +16,7 @@ function updateLayout() {
   // === TUNING POSTER (INI YANG KITA UBAH) ===
   const LOGO_TOP_ORIGINAL = isMobile ? 170 : 180;   // LOGO LEBIH NAIK
   const LOGO_WIDTH_ORIGINAL = isMobile ? 600 : 800; // LOGO DIPERBESAR
-  const GAP_ORIGINAL = isMobile ? 0 : 0;          // JARAK LOGO ↔ INFO DIPERKECIL
+  const GAP_ORIGINAL = isMobile ? -50 : -60;          // JARAK LOGO ↔ INFO DIPERKECIL
 
   // skala poster
   const displayedWidth = bg.clientWidth;
