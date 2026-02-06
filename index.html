@@ -8,24 +8,20 @@
 </head>
 <body>
 
-<section class="poster">
-  <!-- background desktop -->
-  <img src="bg.png" class="bg-desktop">
+<section class="poster" id="poster">
+  <!-- BG DESKTOP -->
+  <img src="bg.png" class="bg-desktop" id="bgDesktop">
 
-  <!-- background mobile -->
-  <img src="mobile.png" class="bg-mobile">
+  <!-- BG MOBILE -->
+  <img src="mobile.png" class="bg-mobile" id="bgMobile">
 
-  <!-- LOGO & BUTTON -->
-  <div class="poster-layer">
-    <img src="logo.png" class="logo">
+  <!-- LOGO -->
+  <img src="logo.png" class="logo" id="logo">
 
-    <button class="btn-scroll" onclick="scrollToInfo()">Lihat Info</button>
-  </div>
-
-  <!-- INFO DI AREA POSTER -->
-  <div class="info-area" id="info">
-    <div class="card">
-      <h2>📅 Waktu & Tempat</h2>
+  <!-- INFO -->
+  <div class="info-area" id="infoArea">
+    <div class="info-box">
+      <h2>Waktu & Tempat</h2>
       <p>
         Sabtu, 15 Maret 2026<br>
         16.30 WIB - Selesai<br>
@@ -33,22 +29,21 @@
       </p>
     </div>
 
-    <div class="card">
-      <h2>✨ Tema</h2>
+    <div class="info-box">
+      <h2>Tema</h2>
       <p>Glow Together in Ramadhan</p>
     </div>
 
-    <div class="card">
-      <h2>📜 Rundown</h2>
-      <ul>
-        <li>16.30 - Opening</li>
-        <li>16.45 - Games</li>
-        <li>17.30 - Tausiyah</li>
-        <li>17.50 - Buka Bersama</li>
-      </ul>
+    <div class="info-box">
+      <h2>Rundown</h2>
+      <p>
+        16.30 - Opening<br>
+        16.45 - Games<br>
+        17.30 - Tausiyah<br>
+        17.50 - Buka Bersama
+      </p>
     </div>
   </div>
-
 </section>
 
 <footer>
