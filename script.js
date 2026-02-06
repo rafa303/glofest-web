@@ -10,16 +10,15 @@ function updateLayout() {
 
   if (!bg.complete) return;
 
-  // ukuran poster asli (DESKTOP)
+  // ukuran poster asli
   const ORIGINAL_WIDTH = isMobile ? 1080 : 1920;
-  const ORIGINAL_HEIGHT = 3000;
 
-  // posisi di poster asli (EDIT SESUAI POSTERMU)
-  const LOGO_TOP_ORIGINAL = isMobile ? 360 : 420;   // posisi logo dari atas (px)
-  const LOGO_WIDTH_ORIGINAL = isMobile ? 420 : 520; // ukuran logo (px)
-  const GAP_ORIGINAL = isMobile ? 120 : 140;        // jarak logo ke info (px)
+  // === TUNING POSTER (INI YANG KITA UBAH) ===
+  const LOGO_TOP_ORIGINAL = isMobile ? 300 : 360;   // LOGO LEBIH NAIK
+  const LOGO_WIDTH_ORIGINAL = isMobile ? 520 : 700; // LOGO DIPERBESAR
+  const GAP_ORIGINAL = isMobile ? 80 : 90;          // JARAK LOGO ↔ INFO DIPERKECIL
 
-  // skala poster di layar
+  // skala poster
   const displayedWidth = bg.clientWidth;
   const scale = displayedWidth / ORIGINAL_WIDTH;
 
@@ -31,9 +30,8 @@ function updateLayout() {
   logo.style.top = logoTop + "px";
   logo.style.width = logoWidth + "px";
 
-  info.style.top = (logoTop + logoWidth * 0.8 + gap) + "px";
+  info.style.top = (logoTop + logoWidth * 0.75 + gap) + "px";
 }
 
-// jalankan saat load & resize
 window.addEventListener("load", updateLayout);
 window.addEventListener("resize", updateLayout);
