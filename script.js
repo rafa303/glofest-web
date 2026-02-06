@@ -1,4 +1,4 @@
-// ===== COUNTDOWN GLOFEST =====
+// === COUNTDOWN ===
 const eventDate = new Date("2026-03-08T16:00:00").getTime();
 const countdownEl = document.getElementById("countdown");
 
@@ -28,7 +28,7 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
 
-// ===== SCROLL REVEAL ANIMATION =====
+// === SCROLL REVEAL ===
 const reveals = document.querySelectorAll(".reveal");
 
 function revealOnScroll() {
@@ -46,14 +46,14 @@ window.addEventListener("scroll", revealOnScroll);
 revealOnScroll();
 
 
-// ===== PARALLAX BACKGROUND =====
+// === PARALLAX BACKGROUND ===
 window.addEventListener("scroll", () => {
   const scrollY = window.scrollY;
   document.querySelector(".bg").style.transform = `translateY(${scrollY * 0.2}px)`;
 });
 
 
-// ===== HERO GLOW ANIMATION =====
+// === GLOW ANIMATION TITLE ===
 const glowText = document.querySelector(".glow");
 let glow = 0;
 
@@ -63,4 +63,4 @@ setInterval(() => {
     0 0 ${10 + glow * 0.1}px rgba(255,215,160,0.4),
     0 0 ${30 + glow * 0.2}px rgba(255,215,160,0.2)
   `;
-}, 100);
+}, 120);
