@@ -10,43 +10,45 @@
 
 <section class="poster">
   <!-- background desktop -->
-  <img src="bg.png" class="bg-desktop" alt="Background Desktop">
+  <img src="bg.png" class="bg-desktop">
 
   <!-- background mobile -->
-  <img src="mobile.png" class="bg-mobile" alt="Background Mobile">
+  <img src="mobile.png" class="bg-mobile">
 
-  <div class="poster-content">
-    <img src="logo.png" class="logo" alt="GLOFEST Logo">
+  <!-- LOGO & BUTTON -->
+  <div class="poster-layer">
+    <img src="logo.png" class="logo">
 
-    <button class="btn-scroll" onclick="scrollToContent()">Lihat Info</button>
-  </div>
-</section>
-
-<section class="content">
-  <div class="card">
-    <h2>📅 Waktu & Tempat</h2>
-    <p>
-      Sabtu, 15 Maret 2026<br>
-      16.30 WIB - Selesai<br>
-      Aula SMA Progresif Bumi Shalawat
-    </p>
+    <button class="btn-scroll" onclick="scrollToInfo()">Lihat Info</button>
   </div>
 
-  <div class="card">
-    <h2>✨ Tema Acara</h2>
-    <p>Glow Together in Ramadhan</p>
+  <!-- INFO DI AREA POSTER -->
+  <div class="info-area" id="info">
+    <div class="card">
+      <h2>📅 Waktu & Tempat</h2>
+      <p>
+        Sabtu, 15 Maret 2026<br>
+        16.30 WIB - Selesai<br>
+        Aula SMA Progresif Bumi Shalawat
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>✨ Tema</h2>
+      <p>Glow Together in Ramadhan</p>
+    </div>
+
+    <div class="card">
+      <h2>📜 Rundown</h2>
+      <ul>
+        <li>16.30 - Opening</li>
+        <li>16.45 - Games</li>
+        <li>17.30 - Tausiyah</li>
+        <li>17.50 - Buka Bersama</li>
+      </ul>
+    </div>
   </div>
 
-  <div class="card">
-    <h2>📜 Rundown</h2>
-    <ul>
-      <li>16.30 - Opening</li>
-      <li>16.45 - Games</li>
-      <li>17.30 - Tausiyah</li>
-      <li>17.50 - Buka Bersama</li>
-      <li>18.30 - Closing</li>
-    </ul>
-  </div>
 </section>
 
 <footer>
