@@ -3,83 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GLOFEST 2.0</title>
+  <title>GLOFEST 2K26</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Background -->
-  <div class="bg"></div>
-  <div class="overlay"></div>
-  <div class="pattern"></div>
+  <section class="hero">
+    <div class="overlay">
+      <img src="logo.png" class="logo" alt="GLOFEST Logo">
 
-  <main class="wrapper">
+      <h1>GLOFEST 2K26</h1>
+      <p>Gathering & Iftar Event Angkatan</p>
 
-    <!-- HEADER LOGO -->
-    <header class="top-bar">
-      <div class="logo-left">GLOFEST</div>
-      <div class="logo-mid">👑</div>
-      <div class="logo-right">Glotera</div>
-    </header>
+      <button class="btn-scroll" onclick="scrollToContent()">Lihat Info</button>
+    </div>
+  </section>
 
-    <!-- TITLE -->
-    <section class="title-section">
-      <h1 class="title glow">GLOFEST <span>2.0</span></h1>
-      <p class="subtitle">GLOTERA FESTIVAL 2.0</p>
-    </section>
+  <section class="content">
+    <div class="card">
+      <h2>📅 Waktu & Tempat</h2>
+      <p>
+        Sabtu, 15 Maret 2026<br>
+        16.30 WIB - Selesai<br>
+        Aula SMA Progresif Bumi Shalawat
+      </p>
+    </div>
 
-    <!-- INFO BOX (SAMA KAYAK POSTER) -->
-    <section class="info-box">
+    <div class="card">
+      <h2>✨ Tema Acara</h2>
+      <p>
+        “Glow Together in Ramadhan”
+      </p>
+    </div>
 
-      <div class="info-card reveal">
-        <div class="icon">⏰</div>
-        <div class="info-text">
-          <p>Pukul 16.00 - 19.00 WIB</p>
-        </div>
-      </div>
+    <div class="card">
+      <h2>📜 Rundown Singkat</h2>
+      <ul>
+        <li>16.30 - Opening</li>
+        <li>16.45 - Games & Ice Breaking</li>
+        <li>17.30 - Tausiyah</li>
+        <li>17.50 - Buka Bersama</li>
+        <li>18.30 - Closing</li>
+      </ul>
+    </div>
 
-      <div class="info-card reveal">
-        <div class="icon">📅</div>
-        <div class="info-text">
-          <p>8 Maret 2026</p>
-        </div>
-      </div>
+    <div class="card">
+      <h2>📸 Galeri</h2>
+      <p>Coming soon...</p>
+    </div>
+  </section>
 
-      <div class="info-card reveal">
-        <div class="icon">📍</div>
-        <div class="info-text">
-          <p><b>Coming Soon in Surabaya</b></p>
-          <small>*akan diinformasikan lebih lanjut oleh panitia acara.</small>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- COUNTDOWN -->
-    <section class="countdown-section reveal">
-      <h3>Menuju Acara</h3>
-      <div id="countdown" class="countdown"></div>
-    </section>
-
-    <!-- CONTACT + QR -->
-    <section class="bottom-section reveal">
-      <div class="contact">
-        <h3>Contact Person:</h3>
-        <p>+62 857-2888-1234 (Aufa)</p>
-        <p>+62 821-3926-8696 (Waldan)</p>
-      </div>
-
-      <div class="qr-box">
-        <div class="qr">QR</div>
-        <p>Formulir Registrasi</p>
-      </div>
-      <div class="qr-box">
-        <div class="qr">QR</div>
-        <p>Formulir Pembayaran</p>
-      </div>
-    </section>
-
-  </main>
+  <footer>
+    <p>© 2026 GLOFEST | Angkatan</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
