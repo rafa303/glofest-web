@@ -100,7 +100,6 @@
             position: relative; overflow-y: auto; overflow-x: hidden;
             width: 100%; display: flex; flex-direction: column;
         }
-        /* Padding diperbesar agar judul tidak terpotong di HP */
         .scroll-content {
             padding: 80px 60px 120px; margin: auto 0;
             width: 100%; max-width: 600px; align-self: center;
@@ -338,7 +337,8 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby46WDYUpRg98XJHDBdoPf9chU6a_P8zcUOglkqlXm9MQFQkNGlqNn_CNoSuRnmYWFyhw/exec"; 
+        // Update URL dengan URL terbaru hasil deploy script Anda
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx56UNdnS8s05cCfC0ulBaOD_m1ryIPPpKHJCUePnSO7P1cBJPhyOtd1Ll4sqsGvV0PxQ/exec"; 
 
         let currentUser = null;
         let html5QrcodeScanner = null;
@@ -362,7 +362,6 @@
             const fieldNon = document.getElementById('field-non-alumni');
 
             if(type === 'alumni') {
-                // Pilih ALUMNI SMP -> Muncul Sekolah SMA, Sembunyikan Kelas SMASIF
                 alumniBtn.classList.add('active'); 
                 nonBtn.classList.remove('active');
                 
@@ -373,7 +372,6 @@
                 document.getElementById('reg-kelas').removeAttribute('required');
                 document.getElementById('reg-kelas').value = ""; 
             } else {
-                // Pilih SMASIF -> Muncul Kelas SMASIF, Sembunyikan Sekolah SMA
                 nonBtn.classList.add('active'); 
                 alumniBtn.classList.remove('active');
                 
@@ -401,7 +399,7 @@
 
             try {
                 const uid = "U-" + Date.now();
-                // Password dibuat sistem dan ditampilkan langsung
+                // Password dibuat sistem
                 const password = "GLO-" + Math.floor(1000 + Math.random() * 9000); 
                 const undian = Math.floor(100000 + Math.random() * 900000).toString();
                 
@@ -431,7 +429,7 @@
                     action: 'register',
                     uid: uid,
                     email: document.getElementById('reg-email').value,
-                    password: password,
+                    password: password, 
                     nama: document.getElementById('reg-nama').value,
                     kategori: kategori,
                     wa: document.getElementById('reg-wa').value,
@@ -445,8 +443,7 @@
                 const result = await res.json();
 
                 if(result.status === 'success') {
-                    // ALERT SUKSES DENGAN PASSWORD
-                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\nPassword: ${password}\n\nSILAKAN SCREENSHOT! Simpan password ini. Akun akan aktif setelah diverifikasi admin (Centang di Spreadsheet).`);
+                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\nPassword: ${password}\n\nSILAKAN SCREENSHOT! Simpan password ini. Akun akan aktif setelah diverifikasi panitia.`);
                     navTo('landing-page');
                 } else {
                     throw new Error(result.message);
