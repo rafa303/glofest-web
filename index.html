@@ -21,7 +21,7 @@
            RESET & VARIABLES
            ========================================= */
         :root {
-            /* Palette: Poster Accurate */
+            /* Palette: Poster Accurate (Cokelat & Emas) */
             --c-brown-dark: #3E2723;
             --c-brown-mid: #5D4037;
             --c-gold: #D4AF37;
@@ -126,18 +126,17 @@
             position: relative;
             overflow-y: auto;
             overflow-x: hidden;
-            max-width: 600px; /* Batas lebar form di desktop */
             width: 100%;
             display: flex;
             flex-direction: column;
         }
 
         .scroll-content {
-            padding: 40px;
-            min-height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 40px 60px;
+            margin: auto 0; /* Center vertically but safe for scroll */
+            width: 100%;
+            max-width: 600px;
+            align-self: center;
         }
 
         /* =========================================
@@ -306,7 +305,11 @@
                 flex: none; min-height: 60vh;
                 overflow: visible; /* Biar scroll body */
             }
-            .scroll-content { padding: 30px 20px 80px; } /* Extra padding bawah */
+            /* FIX: Tambahan padding bawah ekstra agar tombol tidak terpotong */
+            .scroll-content { 
+                padding: 30px 20px 100px 20px; 
+                margin: 0;
+            } 
         }
     </style>
 </head>
@@ -386,13 +389,13 @@
 
                         <!-- Dynamic Fields -->
                         <div id="field-alumni" class="form-group">
-                            <label class="form-label">Sekolah Lanjutan (SMA)</label>
-                            <input type="text" class="form-input" id="reg-asal" placeholder="Lanjut dimana sekarang?">
+                            <label class="form-label">Sekolah & Kelas SMA Sekarang</label>
+                            <input type="text" class="form-input" id="reg-asal" placeholder="Contoh: SMAN 1 Sidoarjo (11 IPA 2)">
                         </div>
 
                         <div id="field-non-alumni" class="form-group hidden">
                             <label class="form-label">Kelas di SMASIF</label>
-                            <input type="text" class="form-input" id="reg-kelas" placeholder="Cth: 12 IPA 1">
+                            <input type="text" class="form-input" id="reg-kelas" placeholder="Contoh: 12 IPA 1">
                         </div>
 
                         <div class="form-group">
@@ -491,17 +494,16 @@
         </div>
     </div>
 
-    <!-- SCRIPT (LOGIC SAMA SEPERTI SEBELUMNYA) -->
+    <!-- SCRIPT -->
     <script>
-        // === CONFIG (GUNAKAN URL YANG SAMA DENGAN VERSI SEBELUMNYA) ===
-        // Pastikan URL di bawah ini sama dengan URL hasil deploy script Anda
+        // === CONFIG (GUNAKAN URL HASIL DEPLOY TERBARU KAMU) ===
+        // URL tetap sama, logic check 'TRUE' ada di Google Apps Script
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby46WDYUpRg98XJHDBdoPf9chU6a_P8zcUOglkqlXm9MQFQkNGlqNn_CNoSuRnmYWFyhw/exec"; 
 
         let currentUser = null;
         let html5QrcodeScanner = null;
         let qrTimer = null;
 
-        // Navigasi dengan efek fade
         function navTo(id) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             setTimeout(() => {
@@ -515,7 +517,7 @@
             document.getElementById('login-error').innerText = "";
         }
 
-        // Toggle Tab
+        // Toggle Tab: Update field display and labels
         function toggleTab(type) {
             const alumniBtn = document.getElementById('tab-alumni');
             const nonBtn = document.getElementById('tab-non');
@@ -535,7 +537,6 @@
             }
         }
 
-        // Helper Base64
         const fileToBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -552,14 +553,15 @@
 
             try {
                 const uid = "U-" + Date.now();
-                // PASSWORD tidak digenerate di sini.
+                // FIX: Password digenerate sistem tapi tidak ditampilkan ke user
+                const password = "GLO-" + Math.floor(1000 + Math.random() * 9000); 
                 const undian = Math.floor(100000 + Math.random() * 900000).toString();
                 
                 let detail = "";
                 let kategori = "SMASIF";
                 if(!document.getElementById('field-alumni').classList.contains('hidden')) {
                     kategori = "Alumni SMP";
-                    detail = `Lanjut di: ${document.getElementById('reg-asal').value}`;
+                    detail = `SMA: ${document.getElementById('reg-asal').value}`;
                 } else {
                     kategori = "SMASIF";
                     detail = `Kelas: ${document.getElementById('reg-kelas').value}`;
@@ -580,7 +582,7 @@
                     action: 'register',
                     uid: uid,
                     email: document.getElementById('reg-email').value,
-                    // password: password, // HAPUS INI
+                    password: password, // Dikirim ke DB, user gatau
                     nama: document.getElementById('reg-nama').value,
                     kategori: kategori,
                     wa: document.getElementById('reg-wa').value,
@@ -594,7 +596,7 @@
                 const result = await res.json();
 
                 if(result.status === 'success') {
-                    // Update Alert
+                    // Alert sukses tanpa menampilkan password
                     alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\n\nSilakan tunggu verifikasi admin. Password akan dikirim via WA/Email setelah pembayaran dikonfirmasi.`);
                     navTo('landing-page');
                 } else {
