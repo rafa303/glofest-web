@@ -3,530 +3,707 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOFEST 2.0 - Official Event</title>
+    <title>GLOFEST 2.0 - Reunion</title>
     
-    <!-- FONTS: Corben (Retro) & Poppins (Modern) -->
+    <!-- FONTS: Syne (Artistic/Festival) & Manrope (Clean Modern) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Corben:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
     
-    <!-- LIBRARIES (QR Code & Scanner Only - No Supabase) -->
+    <!-- LIBRARIES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/phosphor-icons"></script>
 
     <style>
         /* =========================================
-           STYLE CSS (SAMA SEPERTI SEBELUMNYA)
+           RESET & VARIABLES
            ========================================= */
         :root {
-            --bg-gradient: linear-gradient(180deg, #D6A478 0%, #6d4c41 100%);
-            --brown-dark: #3E2723;
-            --gold: #FFC107;
-            --cream: #FFF8E1;
-            --glass: rgba(62, 39, 35, 0.9);
-            --border: 2px solid rgba(255, 193, 7, 0.5);
+            /* Palette: Poster Accurate */
+            --c-brown-dark: #3E2723;
+            --c-brown-mid: #5D4037;
+            --c-gold: #D4AF37;
+            --c-gold-light: #F9E79F;
+            --c-cream: #FFF8E1;
+            --c-white: #FFFFFF;
+            --c-paper: #F5F5F0;
+            
+            --f-title: 'Syne', sans-serif;
+            --f-body: 'Manrope', sans-serif;
+            
+            --radius-lg: 24px;
+            --radius-md: 12px;
+            --shadow-float: 0 20px 40px rgba(62, 39, 35, 0.15);
+            --border-ui: 1px solid rgba(93, 64, 55, 0.15);
         }
 
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
-            color: var(--cream);
-            min-height: 100vh;
-            overflow-x: hidden;
+            margin: 0; padding: 0;
+            font-family: var(--f-body);
+            background-color: var(--c-paper);
+            color: var(--c-brown-dark);
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll, handle inside containers */
         }
 
-        .noise-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
-            pointer-events: none; z-index: 0;
+        /* =========================================
+           LAYOUT: SPLIT SCREEN
+           ========================================= */
+        .main-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
         }
 
-        .container {
-            position: relative; z-index: 1;
-            max-width: 480px; margin: 0 auto; padding: 20px;
+        /* --- LEFT SIDE: VISUAL SHOWCASE --- */
+        .visual-panel {
+            flex: 1;
+            background: linear-gradient(135deg, var(--c-brown-dark) 0%, var(--c-brown-mid) 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--c-cream);
+            overflow: hidden;
+            padding: 40px;
         }
 
-        h1, h2, h3 { font-family: 'Corben', cursive; margin: 0; }
+        /* Pattern Overlay */
+        .visual-panel::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.05'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative; z-index: 2; text-align: center;
+            max-width: 500px;
+        }
+
+        .main-logo {
+            width: 180px; margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        .hero-title {
+            font-family: var(--f-title);
+            font-size: 4rem; line-height: 0.9;
+            margin: 0; color: var(--c-gold);
+            text-transform: uppercase;
+            font-weight: 800;
+        }
         
-        .retro-title {
-            font-size: 2.5rem; color: var(--gold);
-            text-shadow: 3px 3px 0px var(--brown-dark);
-            margin-top: 10px; text-transform: uppercase;
-        }
-        .subtitle { letter-spacing: 2px; font-size: 0.9rem; margin-top: 5px; opacity: 0.9; text-transform: uppercase; font-weight: bold; }
-
-        .main-logo { width: 100px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); margin-bottom: 10px; }
-
-        .glass-card {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.3);
+        .hero-badge {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--c-gold);
+            padding: 8px 20px;
             border-radius: 50px;
-            padding: 15px 25px; margin-bottom: 15px;
-            display: flex; align-items: center; gap: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
         }
-        .glass-card .icon { font-size: 1.8rem; }
-        .glass-card h3 { font-size: 1rem; font-family: 'Poppins', sans-serif; font-weight: 600; }
 
-        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
-        button { font-family: 'Poppins', sans-serif; cursor: pointer; transition: 0.2s; outline: none; }
+        .hero-details {
+            margin-top: 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            text-align: left;
+        }
+        .detail-item h4 { margin: 0; color: var(--c-gold); font-family: var(--f-title); font-size: 1.2rem; }
+        .detail-item p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9rem; }
 
+        /* --- RIGHT SIDE: INTERACTION HUB --- */
+        .interaction-panel {
+            flex: 1;
+            background: var(--c-paper);
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-width: 600px; /* Batas lebar form di desktop */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .scroll-content {
+            padding: 40px;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* =========================================
+           COMPONENTS
+           ========================================= */
+        
+        /* Transition Wrapper */
+        .page-section {
+            display: none;
+            animation: fadeInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .page-section.active { display: block; }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%; padding: 18px;
+            border: none; border-radius: var(--radius-md);
+            font-family: var(--f-body); font-weight: 800; font-size: 1rem;
+            cursor: pointer; transition: 0.2s;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
         .btn-primary {
-            background: var(--cream); color: var(--brown-dark);
-            border: none; padding: 15px; border-radius: 50px;
-            font-weight: bold; font-size: 1rem; width: 100%;
-            box-shadow: 0 4px 0 var(--brown-dark);
+            background: var(--c-brown-dark); color: var(--c-white);
+            box-shadow: 0 8px 20px rgba(62, 39, 35, 0.3);
         }
-        .btn-primary:active { transform: translateY(4px); box-shadow: none; }
+        .btn-primary:hover { transform: translateY(-2px); background: #4e342e; }
+        .btn-primary:active { transform: translateY(0); }
 
-        .btn-secondary {
-            background: transparent; color: var(--cream);
-            border: 2px solid var(--cream); padding: 12px;
-            border-radius: 50px; width: 100%; font-weight: bold;
+        .btn-outline {
+            background: transparent; color: var(--c-brown-dark);
+            border: 2px solid var(--c-brown-dark);
         }
+        .btn-outline:hover { background: rgba(93, 64, 55, 0.05); }
 
-        .btn-small { background: var(--gold); border: none; padding: 5px 15px; border-radius: 5px; color: #000; font-weight: bold; margin-top: 10px; }
-        .btn-text { background: none; border: none; color: var(--gold); margin-top: 15px; text-decoration: underline; }
-
-        .card-section {
-            background: var(--glass); padding: 30px 20px;
-            border-radius: 20px; border: var(--border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: fadeIn 0.5s ease;
+        .btn-link {
+            background: none; color: var(--c-brown-mid);
+            font-size: 0.9rem; text-decoration: underline; margin-top: 15px;
         }
 
-        .form-group { margin-bottom: 15px; text-align: left; }
-        input {
-            width: 100%; padding: 12px; margin-top: 5px;
-            border-radius: 10px; border: none;
-            background: var(--cream); color: var(--brown-dark);
-            font-weight: 500; box-sizing: border-box;
+        /* Forms */
+        .form-group { margin-bottom: 20px; }
+        .form-label {
+            display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem;
+            color: var(--c-brown-dark);
         }
-        input::placeholder { color: #888; }
-
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 10px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; }
-        .tab-btn.active { background: var(--gold); color: var(--brown-dark); border-color: var(--gold); font-weight: bold; }
-
-        .lottery-box {
-            border: 3px dashed var(--gold); padding: 20px;
-            text-align: center; border-radius: 15px; margin-bottom: 25px;
-            background: rgba(0,0,0,0.3);
-            transform: rotate(-1deg);
+        .form-input, .form-select {
+            width: 100%; padding: 16px;
+            background: var(--c-white);
+            border: var(--border-ui);
+            border-radius: var(--radius-md);
+            font-family: var(--f-body); font-size: 1rem; color: var(--c-brown-dark);
+            transition: 0.2s;
         }
-        .lottery-box h1 { font-size: 3rem; color: var(--gold); letter-spacing: 5px; margin: 10px 0; }
+        .form-input:focus, .form-select:focus {
+            outline: none; border-color: var(--c-brown-dark);
+            box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.1);
+        }
+        .form-file {
+            padding: 10px; background: #fff; border: 1px dashed var(--c-brown-dark);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex; background: #EFEBE9;
+            padding: 5px; border-radius: var(--radius-md);
+            margin-bottom: 30px;
+        }
+        .tab-btn {
+            flex: 1; padding: 12px; border: none; background: none;
+            font-weight: 700; color: #8D6E63; border-radius: 8px;
+            cursor: pointer; transition: 0.2s; font-family: var(--f-body);
+        }
+        .tab-btn.active {
+            background: var(--c-white); color: var(--c-brown-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Ticket Dashboard */
+        .ticket-container {
+            background: var(--c-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-float);
+            position: relative;
+            margin-top: 20px;
+        }
+        /* Perforated Edge Effect */
+        .ticket-header {
+            background: var(--c-brown-dark);
+            color: var(--c-gold);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            background-image: radial-gradient(var(--c-gold) 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+        .ticket-header::after {
+            content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 20px;
+            background: radial-gradient(circle, transparent 10px, var(--c-white) 10px);
+            background-size: 20px 20px;
+            background-position: center bottom;
+        }
         
-        .qr-area {
-            background: #fff; padding: 20px; border-radius: 15px;
-            color: #000; display: flex; flex-direction: column; align-items: center;
+        .ticket-body { padding: 40px 30px 30px; text-align: center; }
+        .user-name { font-family: var(--f-title); font-size: 2rem; font-weight: 800; margin: 0; line-height: 1.1; }
+        .user-role { 
+            background: var(--c-gold-light); color: var(--c-brown-dark);
+            padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            display: inline-block; margin-top: 10px;
         }
-        .timer { color: #d32f2f; font-weight: bold; font-size: 0.9rem; margin-top: 10px; }
-
-        .result-box {
-            background: #fff; color: #333; padding: 15px;
-            margin-top: 15px; border-radius: 10px; text-align: center;
-        }
-        .valid { border-left: 8px solid #2ecc71; background: #e8f8f5; }
-        .invalid { border-left: 8px solid #e74c3c; background: #fdedec; }
-
-        .hidden { display: none !important; }
-        .text-center { text-align: center; }
-        .row { display: flex; gap: 10px; }
         
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .ticket-divider {
+            border-top: 2px dashed #ddd; margin: 25px 0; position: relative;
+        }
+        /* Cutout circles */
+        .ticket-divider::before, .ticket-divider::after {
+            content: ''; position: absolute; top: -10px; width: 20px; height: 20px;
+            background: var(--c-paper); border-radius: 50%;
+        }
+        .ticket-divider::before { left: -40px; }
+        .ticket-divider::after { right: -40px; }
+
+        .qr-wrapper {
+            background: #fff; padding: 10px; display: inline-block;
+            border: 1px solid #eee; border-radius: 12px;
+        }
+
+        /* Contact Section */
+        .contact-pill {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: #fff; border: var(--border-ui); padding: 15px;
+            border-radius: var(--radius-md); margin-top: 30px;
+            font-size: 0.9rem;
+        }
+        .contact-btn {
+            background: #25D366; color: white; text-decoration: none;
+            padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 0.8rem;
+        }
+
+        /* =========================================
+           MOBILE RESPONSIVENESS
+           ========================================= */
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; overflow-y: auto; }
+            
+            .visual-panel {
+                flex: none; height: 40vh; /* Visual jadi header di HP */
+                padding: 20px;
+                border-radius: 0 0 30px 30px;
+                z-index: 10;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+            .hero-title { font-size: 2.5rem; }
+            .hero-details { display: none; /* Hide details on mobile header to save space */ }
+            .main-logo { width: 120px; }
+
+            .interaction-panel {
+                flex: none; min-height: 60vh;
+                overflow: visible; /* Biar scroll body */
+            }
+            .scroll-content { padding: 30px 20px 80px; } /* Extra padding bawah */
+        }
     </style>
 </head>
 <body>
 
-    <div class="noise-bg"></div>
-
-    <div class="container">
+    <div class="main-container">
         
-        <!-- HEADER -->
-        <header class="text-center">
-            <img src="logo.png" alt="GLOFEST" class="main-logo" onerror="this.style.display='none'">
-            <h1 class="retro-title">GLOFEST 2.0</h1>
-            <p class="subtitle">GLOTERA FESTIVAL 2026</p>
-        </header>
+        <!-- LEFT: VISUAL (Desktop) / TOP (Mobile) -->
+        <div class="visual-panel">
+            <div class="hero-content">
+                <img src="logo.png" alt="GLOFEST" class="main-logo" onerror="this.style.display='none'">
+                <h1 class="hero-title">GLOFEST<br>2.0</h1>
+                <div class="hero-badge">REUNION 2026</div>
 
-        <!-- 1. LANDING PAGE -->
-        <div id="landing-page">
-            <div class="glass-card">
-                <span class="icon">🕒</span>
-                <div>
-                    <h3>Pukul 16.00 - 19.00 WIB</h3>
-                </div>
-            </div>
-            <div class="glass-card">
-                <span class="icon">📅</span>
-                <div>
-                    <h3>8 Maret 2026</h3>
-                </div>
-            </div>
-            <div class="glass-card">
-                <span class="icon">📍</span>
-                <div>
-                    <h3>Coming Soon In Surabaya</h3>
-                    <small>*Lokasi akan diupdate</small>
-                </div>
-            </div>
-
-            <div class="btn-group">
-                <button id="btn-to-register" class="btn-primary">DAFTAR SEKARANG</button>
-                <button id="btn-to-login" class="btn-secondary">LOGIN (PESERTA/PANITIA)</button>
-            </div>
-        </div>
-
-        <!-- 2. REGISTER PAGE -->
-        <div id="register-section" class="card-section hidden">
-            <h2 class="text-center" style="color:var(--gold); margin-bottom:20px;">Formulir Pendaftaran</h2>
-            
-            <div class="tabs">
-                <button class="tab-btn active" id="tab-alumni">Alumni</button>
-                <button class="tab-btn" id="tab-non">Non-Alumni</button>
-            </div>
-
-            <form id="reg-form">
-                <input type="text" id="reg-nama" placeholder="Nama Lengkap" required>
-                
-                <div id="field-alumni">
-                    <div class="row">
-                        <input type="text" id="reg-angkatan" placeholder="Angkatan (Tahun)">
-                        <input type="text" id="reg-kelas" placeholder="Kelas Terakhir">
+                <!-- Info Desktop Only -->
+                <div class="hero-details">
+                    <div class="detail-item">
+                        <h4>Kapan?</h4>
+                        <p>8 Maret 2026<br>16.00 WIB</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Dimana?</h4>
+                        <p>Surabaya<br>Secret Location</p>
                     </div>
                 </div>
-                <div id="field-non-alumni" class="hidden">
-                    <input type="text" id="reg-asal" placeholder="Asal Sekolah / Instansi">
+            </div>
+        </div>
+
+        <!-- RIGHT: INTERACTION -->
+        <div class="interaction-panel">
+            <div class="scroll-content">
+                
+                <!-- 1. LANDING MENU -->
+                <div id="landing-page" class="page-section active">
+                    <h2 style="font-family: var(--f-title); font-size: 2rem; margin-bottom: 10px;">Sugeng Rawuh!</h2>
+                    <p style="color:#666; margin-bottom: 30px;">Selamat datang di portal resmi Glofest 2.0. Silakan pilih menu di bawah ini.</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <button class="btn btn-primary" onclick="navTo('register-section')">
+                            <i class="ph-pencil-simple-bold"></i> DAFTAR SEKARANG
+                        </button>
+                        <button class="btn btn-outline" onclick="navTo('login-section')">
+                            <i class="ph-sign-in-bold"></i> LOGIN AKUN
+                        </button>
+                    </div>
+
+                    <div class="contact-pill">
+                        <span>Butuh bantuan?</span>
+                        <a href="https://wa.me/6285728881234" target="_blank" class="contact-btn">Chat Aufa</a>
+                        <a href="https://wa.me/6282139268696" target="_blank" class="contact-btn">Chat Waldan</a>
+                    </div>
                 </div>
 
-                <input type="email" id="reg-email" placeholder="Email (Username)" required>
-                <input type="tel" id="reg-wa" placeholder="Nomor WhatsApp" required>
-                <input type="number" id="reg-nominal" placeholder="Nominal Transfer (Rp)" required>
-                <input type="text" id="reg-bukti" placeholder="Keterangan Transfer (cth: BCA a.n Budi)">
-                
-                <button type="submit" class="btn-primary" style="margin-top:20px;">KIRIM DATA</button>
-                <button type="button" class="btn-text btn-back">Kembali</button>
-            </form>
-        </div>
+                <!-- 2. REGISTER FORM -->
+                <div id="register-section" class="page-section">
+                    <h2 style="font-family: var(--f-title);">Daftar Baru</h2>
+                    <p style="color:#666; margin-bottom: 20px;">Isi data diri kamu dengan benar ya!</p>
 
-        <!-- 3. LOGIN PAGE -->
-        <div id="login-section" class="card-section hidden">
-            <h2 class="text-center" style="color:var(--gold); margin-bottom:20px;">Login Area</h2>
-            <form id="login-form">
-                <input type="email" id="login-email" placeholder="Email" required>
-                <input type="password" id="login-pass" placeholder="Password" required>
-                
-                <button type="submit" class="btn-primary" style="margin-top:20px;">MASUK</button>
-                <button type="button" class="btn-text btn-back">Kembali</button>
-            </form>
-        </div>
+                    <div class="tabs">
+                        <button class="tab-btn active" id="tab-alumni" onclick="toggleTab('alumni')">ALUMNI SMP</button>
+                        <button class="tab-btn" id="tab-non" onclick="toggleTab('non')">SMASIF</button>
+                    </div>
 
-        <!-- 4. DASHBOARD PESERTA -->
-        <div id="dashboard-peserta" class="card-section hidden">
-            <h2 class="text-center" style="color:var(--gold)">Tiket Masuk</h2>
-            <p class="text-center">Halo, <span id="u-nama" style="font-weight:bold; color:var(--cream)">...</span></p>
-            
-            <div class="lottery-box">
-                <small style="color:var(--cream); letter-spacing:2px;">KODE UNDIAN</small>
-                <h1 id="u-undian">---</h1>
+                    <form id="reg-form">
+                        <div class="form-group">
+                            <label class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-input" id="reg-nama" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Jenis Kelamin</label>
+                            <select id="reg-gender" class="form-select" required>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Fields -->
+                        <div id="field-alumni" class="form-group">
+                            <label class="form-label">Sekolah Lanjutan (SMA)</label>
+                            <input type="text" class="form-input" id="reg-asal" placeholder="Lanjut dimana sekarang?">
+                        </div>
+
+                        <div id="field-non-alumni" class="form-group hidden">
+                            <label class="form-label">Kelas di SMASIF</label>
+                            <input type="text" class="form-input" id="reg-kelas" placeholder="Cth: 12 IPA 1">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email (Untuk Login)</label>
+                            <input type="email" class="form-input" id="reg-email" placeholder="Email aktif..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">WhatsApp</label>
+                            <input type="tel" class="form-input" id="reg-wa" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Nominal Transfer</label>
+                            <input type="text" class="form-input" id="reg-nominal" value="Rp 170.000" readonly style="background:#eee; font-weight:bold;">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Bukti Transfer</label>
+                            <input type="file" id="reg-bukti" class="form-input form-file" accept="image/*" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">KIRIM DATA</button>
+                        <button type="button" class="btn btn-link" onclick="navTo('landing-page')">Batal / Kembali</button>
+                    </form>
+                </div>
+
+                <!-- 3. LOGIN FORM -->
+                <div id="login-section" class="page-section">
+                    <h2 style="font-family: var(--f-title);">Login Peserta</h2>
+                    <p style="color:#666; margin-bottom: 20px;">Masuk untuk melihat tiket QR Code.</p>
+
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="login-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input" id="login-pass" required>
+                        </div>
+
+                        <div id="login-error" style="color:#D32F2F; margin-bottom: 15px; font-size: 0.9rem;"></div>
+
+                        <button type="submit" class="btn btn-primary">MASUK</button>
+                        <button type="button" class="btn btn-link" onclick="navTo('landing-page')">Kembali</button>
+                    </form>
+                </div>
+
+                <!-- 4. DASHBOARD (TICKET STYLE) -->
+                <div id="dashboard-peserta" class="page-section">
+                    <div class="ticket-container">
+                        <div class="ticket-header">
+                            <div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:2px; opacity:0.8;">OFFICIAL TICKET</div>
+                            <h2 style="margin:5px 0 0; font-family:var(--f-title); font-size:1.8rem;">GLOFEST 2.0</h2>
+                        </div>
+                        <div class="ticket-body">
+                            <h1 class="user-name" id="u-nama">...</h1>
+                            <span class="user-role" id="u-kategori">...</span>
+                            
+                            <div class="ticket-divider"></div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <div style="font-size:0.7rem; color:#999; text-transform:uppercase; font-weight:bold;">LUCKY NUMBER</div>
+                                <div style="font-size:2rem; font-family:var(--f-title); color:var(--c-brown-dark);" id="u-undian">...</div>
+                            </div>
+
+                            <div class="qr-wrapper">
+                                <div id="qrcode"></div>
+                            </div>
+                            <div id="qr-timer" style="margin-top:10px; color:#D32F2F; font-weight:bold; font-size:0.8rem;"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-outline" onclick="doLogout()" style="margin-top: 20px;">LOGOUT</button>
+                </div>
+
+                <!-- 5. PANITIA SCANNER -->
+                <div id="dashboard-panitia" class="page-section">
+                    <h2 style="font-family: var(--f-title);">Scanner Panitia</h2>
+                    
+                    <div style="background:#000; padding:10px; border-radius:12px; margin-top:20px;">
+                        <div id="reader"></div>
+                    </div>
+
+                    <div id="scan-result" style="display:none; margin-top:20px; padding:20px; border-radius:12px; text-align:center; border:1px solid #ddd;">
+                        <h3 id="res-title" style="margin:0;">...</h3>
+                        <p id="res-body" style="margin:5px 0;">...</p>
+                        <button class="btn btn-primary" id="btn-reset-scan" style="margin-top:10px; padding:10px;">SCAN NEXT</button>
+                    </div>
+
+                    <button class="btn btn-link" onclick="doLogout()">Keluar</button>
+                </div>
+
             </div>
-
-            <div class="qr-area">
-                <div id="qrcode"></div>
-                <p id="qr-timer" class="timer">Memuat QR...</p>
-            </div>
-
-            <button id="btn-logout-p" class="btn-secondary" style="margin-top:20px;">KELUAR</button>
         </div>
-
-        <!-- 5. DASHBOARD PANITIA -->
-        <div id="dashboard-panitia" class="card-section hidden">
-            <h2 class="text-center" style="color:var(--gold); margin-bottom:10px;">Scanner Panitia</h2>
-            
-            <div style="background:#000; padding:10px; border-radius:10px;">
-                <div id="reader"></div>
-            </div>
-            
-            <div id="scan-result" class="result-box hidden">
-                <h3 id="res-title">STATUS</h3>
-                <p id="res-body">Detail...</p>
-                <button id="btn-reset-scan" class="btn-small">Scan Lagi</button>
-            </div>
-
-            <button id="btn-logout-a" class="btn-secondary" style="margin-top:20px;">KELUAR</button>
-        </div>
-
     </div>
 
+    <!-- SCRIPT (LOGIC SAMA SEPERTI SEBELUMNYA) -->
     <script>
-        // =========================================
-        // CONFIGURATION (WAJIB DIISI!)
-        // =========================================
-        
-        // 1. Paste URL Web App Google Script kamu di sini
-        // Contoh: "https://script.google.com/macros/s/XXXXX/exec"
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfZ263iXZh8ocid2dVMxIYI_92zqnoM2zqZrFC0cM2xrj5r0iRVJRutbkOGj5GCgv-nw/exec"; 
+        // === CONFIG (GUNAKAN URL YANG SAMA DENGAN VERSI SEBELUMNYA) ===
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx56UNdnS8s05cCfC0ulBaOD_m1ryIPPpKHJCUePnSO7P1cBJPhyOtd1Ll4sqsGvV0PxQ/exec"; 
 
-        // =========================================
-        // JAVASCRIPT LOGIC
-        // =========================================
         let currentUser = null;
         let html5QrcodeScanner = null;
         let qrTimer = null;
 
-        // 2. NAVIGASI
+        // Navigasi dengan efek fade
         function navTo(id) {
-            const sections = ['landing-page', 'register-section', 'login-section', 'dashboard-peserta', 'dashboard-panitia'];
-            sections.forEach(sec => document.getElementById(sec).classList.add('hidden'));
-            
-            const target = document.getElementById(id);
-            if(target) target.classList.remove('hidden');
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            setTimeout(() => {
+                const target = document.getElementById(id);
+                if(target) target.classList.add('active');
+            }, 100);
 
             if(id !== 'dashboard-panitia' && html5QrcodeScanner) {
-                html5QrcodeScanner.clear().catch(err => console.log("Scanner clear:", err));
+                html5QrcodeScanner.clear().catch(e => console.log(e));
+            }
+            document.getElementById('login-error').innerText = "";
+        }
+
+        // Toggle Tab
+        function toggleTab(type) {
+            const alumniBtn = document.getElementById('tab-alumni');
+            const nonBtn = document.getElementById('tab-non');
+            const fieldAlumni = document.getElementById('field-alumni');
+            const fieldNon = document.getElementById('field-non-alumni');
+
+            if(type === 'alumni') {
+                alumniBtn.classList.add('active'); nonBtn.classList.remove('active');
+                fieldAlumni.classList.remove('hidden'); fieldNon.classList.add('hidden');
+                document.getElementById('reg-asal').setAttribute('required', '');
+                document.getElementById('reg-kelas').removeAttribute('required');
+            } else {
+                nonBtn.classList.add('active'); alumniBtn.classList.remove('active');
+                fieldNon.classList.remove('hidden'); fieldAlumni.classList.add('hidden');
+                document.getElementById('reg-kelas').setAttribute('required', '');
+                document.getElementById('reg-asal').removeAttribute('required');
             }
         }
 
-        // 3. EVENT LISTENERS
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            if(!GOOGLE_SCRIPT_URL) {
-                alert("PERINGATAN: URL Google Script belum diisi di kode!");
-            }
-
-            // Tombol Navigasi
-            document.getElementById('btn-to-register').addEventListener('click', () => navTo('register-section'));
-            document.getElementById('btn-to-login').addEventListener('click', () => navTo('login-section'));
-            
-            document.querySelectorAll('.btn-back').forEach(btn => {
-                btn.addEventListener('click', () => navTo('landing-page'));
-            });
-
-            document.getElementById('btn-logout-p').addEventListener('click', doLogout);
-            document.getElementById('btn-logout-a').addEventListener('click', doLogout);
-
-            // Tab Register
-            document.getElementById('tab-alumni').addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById('tab-alumni').classList.add('active');
-                document.getElementById('tab-non').classList.remove('active');
-                document.getElementById('field-alumni').classList.remove('hidden');
-                document.getElementById('field-non-alumni').classList.add('hidden');
-            });
-
-            document.getElementById('tab-non').addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById('tab-non').classList.add('active');
-                document.getElementById('tab-alumni').classList.remove('active');
-                document.getElementById('field-non-alumni').classList.remove('hidden');
-                document.getElementById('field-alumni').classList.add('hidden');
-            });
-
-            // Form Submits
-            document.getElementById('reg-form').addEventListener('submit', handleRegister);
-            document.getElementById('login-form').addEventListener('submit', handleLogin);
-
-            // Reset Scanner
-            document.getElementById('btn-reset-scan').addEventListener('click', () => {
-                document.getElementById('scan-result').classList.add('hidden');
-                html5QrcodeScanner.resume();
-            });
-
-            console.log("GLOFEST Sheets System Ready.");
+        // Helper Base64
+        const fileToBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
         });
 
-        // 4. LOGIC REGISTER (Send to Sheets)
-        async function handleRegister(e) {
+        // Register Logic
+        document.getElementById('reg-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.innerText;
-            btn.innerText = "Mencatat ke Excel..."; btn.disabled = true;
-
-            const nama = document.getElementById('reg-nama').value;
-            const email = document.getElementById('reg-email').value;
-            const wa = document.getElementById('reg-wa').value;
-            const nominal = document.getElementById('reg-nominal').value;
-            const password = "GLOFEST-" + Math.floor(1000 + Math.random() * 9000);
-            const undian = Math.floor(100000 + Math.random() * 900000).toString();
-            const uid = "U-" + Date.now(); // Simple UID generation
-
-            let detail = "";
-            let kategori = "Non-Alumni";
-            if(!document.getElementById('field-alumni').classList.contains('hidden')) {
-                kategori = "Alumni";
-                detail = `Angkatan ${document.getElementById('reg-angkatan').value} - ${document.getElementById('reg-kelas').value}`;
-            } else {
-                detail = document.getElementById('reg-asal').value;
-            }
-
-            // Payload untuk Google Sheet
-            const payload = {
-                action: 'register',
-                uid: uid,
-                email: email,
-                password: password,
-                nama: nama,
-                kategori: kategori,
-                wa: wa,
-                kode_undian: undian,
-                detail_info: `${detail} | Bayar: ${nominal}`
-            };
+            btn.innerText = "Mengirim..."; btn.disabled = true;
 
             try {
-                // Gunakan no-cors untuk kirim data saja (tapi tidak bisa baca response detail di beberapa browser)
-                // Atau gunakan redirect = follow
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
+                const uid = "U-" + Date.now();
+                const password = "GLO-" + Math.floor(1000 + Math.random() * 9000);
+                const undian = Math.floor(100000 + Math.random() * 900000).toString();
                 
-                const result = await response.json();
+                let detail = "";
+                let kategori = "SMASIF";
+                if(!document.getElementById('field-alumni').classList.contains('hidden')) {
+                    kategori = "Alumni SMP";
+                    detail = `Lanjut di: ${document.getElementById('reg-asal').value}`;
+                } else {
+                    kategori = "SMASIF";
+                    detail = `Kelas: ${document.getElementById('reg-kelas').value}`;
+                }
 
-                if (result.status === 'success') {
-                    alert(`REGISTRASI SUKSES!\n\nEmail: ${email}\nPassword: ${password}\n\nSilakan Screenshot password ini!`);
-                    navTo('login-section');
+                // File Handling
+                const fileInput = document.getElementById('reg-bukti');
+                let fileData = ""; let fileName = ""; let fileType = "";
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    if(file.size > 3 * 1024 * 1024) throw new Error("Ukuran file terlalu besar (Max 3MB)");
+                    fileName = file.name; fileType = file.type;
+                    const fullBase64 = await fileToBase64(file);
+                    fileData = fullBase64.split(',')[1];
+                }
+
+                const payload = {
+                    action: 'register',
+                    uid: uid,
+                    email: document.getElementById('reg-email').value,
+                    password: password,
+                    nama: document.getElementById('reg-nama').value,
+                    kategori: kategori,
+                    wa: document.getElementById('reg-wa').value,
+                    kode_undian: undian,
+                    gender: document.getElementById('reg-gender').value,
+                    detail_info: detail,
+                    fileData: fileData, fileName: fileName, fileType: fileType
+                };
+
+                const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const result = await res.json();
+
+                if(result.status === 'success') {
+                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\nPassword: ${payload.password}\n\nTunggu verifikasi admin untuk login.`);
+                    navTo('landing-page');
                 } else {
                     throw new Error(result.message);
                 }
-
             } catch (err) {
-                console.error(err);
-                alert("Gagal koneksi ke Spreadsheet (Cek CORS/Script): " + err.message);
-                // Fallback UI for demo purpose if CORS blocks locally
-                alert("Jika ini error CORS, pastikan Script dideploy sebagai 'Anyone'. Data mungkin tetap masuk, coba login.");
+                alert("Gagal: " + err.message);
             } finally {
                 btn.innerText = originalText; btn.disabled = false;
             }
-        }
+        });
 
-        // 5. LOGIC LOGIN (Read from Sheets)
-        async function handleLogin(e) {
+        // Login Logic
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
-            btn.innerText = "Mengecek Database..."; btn.disabled = true;
-
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-pass').value;
+            btn.innerText = "Mengecek..."; btn.disabled = true;
+            const errDiv = document.getElementById('login-error');
+            errDiv.innerHTML = "";
 
             try {
+                const email = document.getElementById('login-email').value;
+                const pass = document.getElementById('login-pass').value;
                 const url = `${GOOGLE_SCRIPT_URL}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(pass)}`;
-                const response = await fetch(url);
-                const result = await response.json();
+                
+                const res = await fetch(url);
+                const result = await res.json();
 
                 if(result.status === 'success') {
                     currentUser = result.data;
-                    
-                    if(currentUser.role === 'panitia') {
-                        initPanitia();
-                    } else {
-                        initPeserta();
-                    }
+                    if(currentUser.role === 'panitia') initPanitia();
+                    else initPeserta();
                 } else {
-                    throw new Error(result.message);
+                    errDiv.innerHTML = `${result.message}<br><br><a href="https://wa.me/6281335895758" style="color:#D32F2F; font-weight:bold;">Hubungi Rouf (WA)</a>`;
                 }
-
             } catch (err) {
-                alert("Login Gagal: " + err.message);
+                errDiv.innerHTML = "Gagal koneksi server. Coba lagi.";
             } finally {
                 btn.innerText = "MASUK"; btn.disabled = false;
             }
-        }
+        });
 
         function doLogout() {
             currentUser = null;
             window.location.reload();
         }
 
-        // 6. DASHBOARD PESERTA
+        // Peserta UI
         function initPeserta() {
             navTo('dashboard-peserta');
             document.getElementById('u-nama').innerText = currentUser.nama;
+            document.getElementById('u-kategori').innerText = currentUser.kategori;
             document.getElementById('u-undian').innerText = currentUser.kode_undian || '-';
 
             const container = document.getElementById('qrcode');
             container.innerHTML = "";
+            const payload = { uid: currentUser.uid, exp: Date.now() + (15 * 60 * 1000) };
 
-            const payload = {
-                uid: currentUser.uid,
-                exp: Date.now() + (15 * 60 * 1000) 
-            };
+            new QRCode(container, { text: JSON.stringify(payload), width: 120, height: 120, colorDark: "#3E2723", colorLight: "#FFFFFF" });
 
-            new QRCode(container, {
-                text: JSON.stringify(payload),
-                width: 180, height: 180
-            });
-
-            // Timer
             clearInterval(qrTimer);
             const timerDisplay = document.getElementById('qr-timer');
             qrTimer = setInterval(() => {
                 const diff = payload.exp - Date.now();
                 if(diff < 0) {
-                    timerDisplay.innerText = "EXPIRED";
-                    container.style.opacity = "0.2";
+                    timerDisplay.innerText = "QR EXPIRED"; container.style.opacity = "0.2";
                     clearInterval(qrTimer);
                 } else {
                     const m = Math.floor(diff / 60000);
                     const s = Math.floor((diff % 60000) / 1000);
-                    timerDisplay.innerText = `Valid: ${m}:${s < 10 ? '0'+s : s}`;
+                    timerDisplay.innerText = `Refresh: ${m}:${s < 10 ? '0'+s : s}`;
                 }
             }, 1000);
         }
 
-        // 7. DASHBOARD PANITIA
+        // Panitia UI
         function initPanitia() {
             navTo('dashboard-panitia');
             if(!html5QrcodeScanner) {
-                html5QrcodeScanner = new Html5QrcodeScanner(
-                    "reader", { fps: 10, qrbox: 250 });
-                html5QrcodeScanner.render(onScanSuccess, (err) => {});
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+                html5QrcodeScanner.render(onScanSuccess, (e) => {});
             }
         }
 
         async function onScanSuccess(decodedText) {
             html5QrcodeScanner.pause();
-            
-            const resBox = document.getElementById('scan-result');
+            const resDiv = document.getElementById('scan-result');
             const title = document.getElementById('res-title');
             const body = document.getElementById('res-body');
-            
-            resBox.classList.remove('hidden');
-            resBox.className = "result-box"; 
+            resDiv.style.display = 'block';
             title.innerText = "Memproses...";
-            body.innerText = "Menghubungi Spreadsheet...";
-
+            
             try {
                 const data = JSON.parse(decodedText);
-                if(Date.now() > data.exp) throw new Error("QR Kadaluwarsa");
+                if(Date.now() > data.exp) throw new Error("QR Expired");
 
-                // Kirim ke Google Sheet untuk update kehadiran
-                const payload = {
-                    action: 'scan',
-                    uid: data.uid
-                };
-
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
+                const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'scan', uid: data.uid }) });
+                const result = await res.json();
 
                 if(result.status === 'success') {
-                    title.innerText = "✅ VALID";
-                    body.innerText = `Nama: ${result.nama}\nKategori: ${result.kategori}`;
-                    resBox.classList.add('valid');
+                    title.innerText = "✅ VALID"; title.style.color = "green";
+                    body.innerText = `${result.nama} (${result.kategori})`;
                 } else {
                     throw new Error(result.message);
                 }
-
             } catch (err) {
-                title.innerText = "❌ GAGAL";
+                title.innerText = "❌ DITOLAK"; title.style.color = "red";
                 body.innerText = err.message;
-                resBox.classList.add('invalid');
             }
         }
+
+        document.getElementById('btn-reset-scan').addEventListener('click', () => {
+            document.getElementById('scan-result').style.display = 'none';
+            html5QrcodeScanner.resume();
+        });
     </script>
 </body>
 </html>
