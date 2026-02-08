@@ -281,6 +281,10 @@
             padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 0.8rem;
         }
 
+        .btn-rouf {
+            display: block; margin-top: 10px; color: #D32F2F; text-decoration: none; font-weight: bold; font-size: 0.9rem;
+        }
+
         /* =========================================
            MOBILE RESPONSIVENESS
            ========================================= */
@@ -419,7 +423,7 @@
                 <!-- 3. LOGIN FORM -->
                 <div id="login-section" class="page-section">
                     <h2 style="font-family: var(--f-title);">Login Peserta</h2>
-                    <p style="color:#666; margin-bottom: 20px;">Masuk untuk melihat tiket QR Code.</p>
+                    <p style="color:#666; margin-bottom: 20px;">Masuk jika akun sudah diverifikasi admin.</p>
 
                     <form id="login-form">
                         <div class="form-group">
@@ -490,7 +494,8 @@
     <!-- SCRIPT (LOGIC SAMA SEPERTI SEBELUMNYA) -->
     <script>
         // === CONFIG (GUNAKAN URL YANG SAMA DENGAN VERSI SEBELUMNYA) ===
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx56UNdnS8s05cCfC0ulBaOD_m1ryIPPpKHJCUePnSO7P1cBJPhyOtd1Ll4sqsGvV0PxQ/exec"; 
+        // Pastikan URL di bawah ini sama dengan URL hasil deploy script Anda
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby46WDYUpRg98XJHDBdoPf9chU6a_P8zcUOglkqlXm9MQFQkNGlqNn_CNoSuRnmYWFyhw/exec"; 
 
         let currentUser = null;
         let html5QrcodeScanner = null;
@@ -547,7 +552,7 @@
 
             try {
                 const uid = "U-" + Date.now();
-                const password = "GLO-" + Math.floor(1000 + Math.random() * 9000);
+                // PASSWORD tidak digenerate di sini.
                 const undian = Math.floor(100000 + Math.random() * 900000).toString();
                 
                 let detail = "";
@@ -575,7 +580,7 @@
                     action: 'register',
                     uid: uid,
                     email: document.getElementById('reg-email').value,
-                    password: password,
+                    // password: password, // HAPUS INI
                     nama: document.getElementById('reg-nama').value,
                     kategori: kategori,
                     wa: document.getElementById('reg-wa').value,
@@ -589,7 +594,8 @@
                 const result = await res.json();
 
                 if(result.status === 'success') {
-                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\nPassword: ${payload.password}\n\nTunggu verifikasi admin untuk login.`);
+                    // Update Alert
+                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\n\nSilakan tunggu verifikasi admin. Password akan dikirim via WA/Email setelah pembayaran dikonfirmasi.`);
                     navTo('landing-page');
                 } else {
                     throw new Error(result.message);
@@ -622,7 +628,7 @@
                     if(currentUser.role === 'panitia') initPanitia();
                     else initPeserta();
                 } else {
-                    errDiv.innerHTML = `${result.message}<br><br><a href="https://wa.me/6281335895758" style="color:#D32F2F; font-weight:bold;">Hubungi Rouf (WA)</a>`;
+                    errDiv.innerHTML = `${result.message}<br><br><a href="https://wa.me/6281335895758" target="_blank" class="btn-rouf">Hubungi Rouf (WA)</a>`;
                 }
             } catch (err) {
                 errDiv.innerHTML = "Gagal koneksi server. Coba lagi.";
