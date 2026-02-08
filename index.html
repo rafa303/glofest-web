@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GLOFEST 2.0 - Reunion</title>
     
-    <!-- FONTS: Syne (Artistic/Festival) & Manrope (Clean Modern) -->
+    <!-- FONTS: Syne (Artistic) & Manrope (Clean) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
@@ -18,10 +18,9 @@
 
     <style>
         /* =========================================
-           RESET & VARIABLES
+           STYLE & VISUALS
            ========================================= */
         :root {
-            /* Palette: Poster Accurate (Cokelat & Emas) */
             --c-brown-dark: #3E2723;
             --c-brown-mid: #5D4037;
             --c-gold: #D4AF37;
@@ -47,19 +46,12 @@
             background-color: var(--c-paper);
             color: var(--c-brown-dark);
             height: 100vh;
-            overflow: hidden; /* Prevent body scroll, handle inside containers */
+            overflow: hidden; 
         }
 
-        /* =========================================
-           LAYOUT: SPLIT SCREEN
-           ========================================= */
-        .main-container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-        }
+        .main-container { display: flex; height: 100vh; width: 100vw; }
 
-        /* --- LEFT SIDE: VISUAL SHOWCASE --- */
+        /* --- VISUAL PANEL (KIRI/ATAS) --- */
         .visual-panel {
             flex: 1;
             background: linear-gradient(135deg, var(--c-brown-dark) 0%, var(--c-brown-mid) 100%);
@@ -72,19 +64,13 @@
             overflow: hidden;
             padding: 40px;
         }
-
-        /* Pattern Overlay */
         .visual-panel::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.05'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z'/%3E%3C/g%3E%3C/svg%3E");
             opacity: 0.3;
         }
 
-        .hero-content {
-            position: relative; z-index: 2; text-align: center;
-            max-width: 500px;
-        }
-
+        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 500px; }
         .main-logo {
             width: 180px; margin-bottom: 20px;
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
@@ -93,247 +79,126 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         .hero-title {
-            font-family: var(--f-title);
-            font-size: 4rem; line-height: 0.9;
-            margin: 0; color: var(--c-gold);
-            text-transform: uppercase;
-            font-weight: 800;
+            font-family: var(--f-title); font-size: 4rem; line-height: 0.9;
+            margin: 0; color: var(--c-gold); text-transform: uppercase; font-weight: 800;
         }
-        
         .hero-badge {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--c-gold);
-            padding: 8px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            margin-top: 20px;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            border: 1px solid var(--c-gold); padding: 8px 20px;
+            border-radius: 50px; display: inline-block; margin-top: 20px;
             font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
         }
-
         .hero-details {
-            margin-top: 40px;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-            text-align: left;
+            margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;
         }
         .detail-item h4 { margin: 0; color: var(--c-gold); font-family: var(--f-title); font-size: 1.2rem; }
         .detail-item p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9rem; }
 
-        /* --- RIGHT SIDE: INTERACTION HUB --- */
+        /* --- INTERACTION PANEL (KANAN/BAWAH) --- */
         .interaction-panel {
-            flex: 1;
-            background: var(--c-paper);
-            position: relative;
-            overflow-y: auto;
-            overflow-x: hidden;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
+            flex: 1; background: var(--c-paper);
+            position: relative; overflow-y: auto; overflow-x: hidden;
+            width: 100%; display: flex; flex-direction: column;
         }
-
         .scroll-content {
-            padding: 40px 60px;
-            margin: auto 0; /* Center vertically but safe for scroll */
-            width: 100%;
-            max-width: 600px;
-            align-self: center;
+            padding: 60px 60px 100px; margin: auto 0;
+            width: 100%; max-width: 600px; align-self: center;
         }
 
-        /* =========================================
-           COMPONENTS
-           ========================================= */
-        
-        /* Transition Wrapper */
-        .page-section {
-            display: none;
-            animation: fadeInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        /* --- COMPONENTS --- */
+        .page-section { display: none; animation: fadeInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .page-section.active { display: block; }
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* Buttons */
         .btn {
-            width: 100%; padding: 18px;
-            border: none; border-radius: var(--radius-md);
+            width: 100%; padding: 18px; border: none; border-radius: var(--radius-md);
             font-family: var(--f-body); font-weight: 800; font-size: 1rem;
-            cursor: pointer; transition: 0.2s;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
+            cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
         .btn-primary {
             background: var(--c-brown-dark); color: var(--c-white);
             box-shadow: 0 8px 20px rgba(62, 39, 35, 0.3);
         }
-        .btn-primary:hover { transform: translateY(-2px); background: #4e342e; }
-        .btn-primary:active { transform: translateY(0); }
+        .btn-primary:active { transform: translateY(2px); box-shadow: none; }
+        .btn-outline { background: transparent; color: var(--c-brown-dark); border: 2px solid var(--c-brown-dark); }
+        .btn-link { background: none; color: var(--c-brown-mid); font-size: 0.9rem; text-decoration: underline; margin-top: 15px; }
 
-        .btn-outline {
-            background: transparent; color: var(--c-brown-dark);
-            border: 2px solid var(--c-brown-dark);
-        }
-        .btn-outline:hover { background: rgba(93, 64, 55, 0.05); }
-
-        .btn-link {
-            background: none; color: var(--c-brown-mid);
-            font-size: 0.9rem; text-decoration: underline; margin-top: 15px;
-        }
-
-        /* Forms */
         .form-group { margin-bottom: 20px; }
-        .form-label {
-            display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem;
-            color: var(--c-brown-dark);
-        }
+        .form-label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; color: var(--c-brown-dark); }
         .form-input, .form-select {
-            width: 100%; padding: 16px;
-            background: var(--c-white);
-            border: var(--border-ui);
-            border-radius: var(--radius-md);
+            width: 100%; padding: 16px; background: var(--c-white);
+            border: var(--border-ui); border-radius: var(--radius-md);
             font-family: var(--f-body); font-size: 1rem; color: var(--c-brown-dark);
-            transition: 0.2s;
         }
-        .form-input:focus, .form-select:focus {
-            outline: none; border-color: var(--c-brown-dark);
-            box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.1);
-        }
-        .form-file {
-            padding: 10px; background: #fff; border: 1px dashed var(--c-brown-dark);
-        }
+        .form-file { padding: 10px; border: 1px dashed var(--c-brown-dark); }
+        
+        .hidden { display: none !important; }
 
-        /* Tabs */
-        .tabs {
-            display: flex; background: #EFEBE9;
-            padding: 5px; border-radius: var(--radius-md);
-            margin-bottom: 30px;
-        }
+        /* TABS */
+        .tabs { display: flex; background: #EFEBE9; padding: 5px; border-radius: var(--radius-md); margin-bottom: 30px; }
         .tab-btn {
-            flex: 1; padding: 12px; border: none; background: none;
-            font-weight: 700; color: #8D6E63; border-radius: 8px;
+            flex: 1; padding: 14px; border: none; background: none;
+            font-weight: 800; color: #8D6E63; border-radius: 8px;
             cursor: pointer; transition: 0.2s; font-family: var(--f-body);
+            text-transform: uppercase; font-size: 0.9rem;
         }
         .tab-btn.active {
-            background: var(--c-white); color: var(--c-brown-dark);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: var(--c-gold); color: var(--c-brown-dark);
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
         }
 
-        /* Ticket Dashboard */
+        /* TICKET */
         .ticket-container {
-            background: var(--c-white);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-float);
-            position: relative;
-            margin-top: 20px;
+            background: var(--c-white); border-radius: var(--radius-lg);
+            overflow: hidden; box-shadow: var(--shadow-float); margin-top: 20px;
         }
-        /* Perforated Edge Effect */
         .ticket-header {
-            background: var(--c-brown-dark);
-            color: var(--c-gold);
-            padding: 30px;
-            text-align: center;
-            position: relative;
-            background-image: radial-gradient(var(--c-gold) 1px, transparent 1px);
-            background-size: 10px 10px;
+            background: var(--c-brown-dark); color: var(--c-gold); padding: 30px; text-align: center;
+            background-image: radial-gradient(var(--c-gold) 1px, transparent 1px); background-size: 10px 10px;
         }
-        .ticket-header::after {
-            content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 20px;
-            background: radial-gradient(circle, transparent 10px, var(--c-white) 10px);
-            background-size: 20px 20px;
-            background-position: center bottom;
-        }
-        
         .ticket-body { padding: 40px 30px 30px; text-align: center; }
         .user-name { font-family: var(--f-title); font-size: 2rem; font-weight: 800; margin: 0; line-height: 1.1; }
         .user-role { 
-            background: var(--c-gold-light); color: var(--c-brown-dark);
-            padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
-            display: inline-block; margin-top: 10px;
+            background: var(--c-gold-light); color: var(--c-brown-dark); padding: 5px 12px;
+            border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-top: 10px;
         }
-        
-        .ticket-divider {
-            border-top: 2px dashed #ddd; margin: 25px 0; position: relative;
-        }
-        /* Cutout circles */
-        .ticket-divider::before, .ticket-divider::after {
-            content: ''; position: absolute; top: -10px; width: 20px; height: 20px;
-            background: var(--c-paper); border-radius: 50%;
-        }
-        .ticket-divider::before { left: -40px; }
-        .ticket-divider::after { right: -40px; }
+        .ticket-divider { border-top: 2px dashed #ddd; margin: 25px 0; }
+        .qr-wrapper { background: #fff; padding: 10px; display: inline-block; border: 1px solid #eee; border-radius: 12px; }
 
-        .qr-wrapper {
-            background: #fff; padding: 10px; display: inline-block;
-            border: 1px solid #eee; border-radius: 12px;
-        }
-
-        /* Contact Section */
+        /* CONTACT */
         .contact-pill {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             background: #fff; border: var(--border-ui); padding: 15px;
-            border-radius: var(--radius-md); margin-top: 30px;
-            font-size: 0.9rem;
+            border-radius: var(--radius-md); margin-top: 30px; font-size: 0.9rem;
         }
         .contact-btn {
             background: #25D366; color: white; text-decoration: none;
             padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 0.8rem;
         }
 
-        .btn-rouf {
-            display: block; margin-top: 10px; color: #D32F2F; text-decoration: none; font-weight: bold; font-size: 0.9rem;
-        }
-
-        /* =========================================
-           MOBILE RESPONSIVENESS
-           ========================================= */
         @media (max-width: 900px) {
             .main-container { flex-direction: column; overflow-y: auto; }
-            
-            .visual-panel {
-                flex: none; height: 40vh; /* Visual jadi header di HP */
-                padding: 20px;
-                border-radius: 0 0 30px 30px;
-                z-index: 10;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            }
+            .visual-panel { flex: none; height: 35vh; padding: 20px; border-radius: 0 0 30px 30px; z-index: 10; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
             .hero-title { font-size: 2.5rem; }
-            .hero-details { display: none; /* Hide details on mobile header to save space */ }
-            .main-logo { width: 120px; }
-
-            .interaction-panel {
-                flex: none; min-height: 60vh;
-                overflow: visible; /* Biar scroll body */
-            }
-            /* FIX: Tambahan padding bawah ekstra agar tombol tidak terpotong */
-            .scroll-content { 
-                padding: 30px 20px 100px 20px; 
-                margin: 0;
-            } 
+            .hero-details { display: none; }
+            .main-logo { width: 100px; }
+            .interaction-panel { flex: none; min-height: 65vh; overflow: visible; }
+            .scroll-content { padding: 40px 20px 100px 20px; margin: 0; }
         }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        
-        <!-- LEFT: VISUAL (Desktop) / TOP (Mobile) -->
+        <!-- LEFT: VISUAL -->
         <div class="visual-panel">
             <div class="hero-content">
                 <img src="logo.png" alt="GLOFEST" class="main-logo" onerror="this.style.display='none'">
                 <h1 class="hero-title">GLOFEST<br>2.0</h1>
                 <div class="hero-badge">REUNION 2026</div>
-
-                <!-- Info Desktop Only -->
                 <div class="hero-details">
-                    <div class="detail-item">
-                        <h4>Kapan?</h4>
-                        <p>8 Maret 2026<br>16.00 WIB</p>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Dimana?</h4>
-                        <p>Surabaya<br>Secret Location</p>
-                    </div>
+                    <div class="detail-item"><h4>Kapan?</h4><p>8 Maret 2026<br>16.00 WIB</p></div>
+                    <div class="detail-item"><h4>Dimana?</h4><p>Surabaya<br>Secret Location</p></div>
                 </div>
             </div>
         </div>
@@ -342,20 +207,14 @@
         <div class="interaction-panel">
             <div class="scroll-content">
                 
-                <!-- 1. LANDING MENU -->
+                <!-- 1. LANDING -->
                 <div id="landing-page" class="page-section active">
                     <h2 style="font-family: var(--f-title); font-size: 2rem; margin-bottom: 10px;">Sugeng Rawuh!</h2>
                     <p style="color:#666; margin-bottom: 30px;">Selamat datang di portal resmi Glofest 2.0. Silakan pilih menu di bawah ini.</p>
-
                     <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <button class="btn btn-primary" onclick="navTo('register-section')">
-                            <i class="ph-pencil-simple-bold"></i> DAFTAR SEKARANG
-                        </button>
-                        <button class="btn btn-outline" onclick="navTo('login-section')">
-                            <i class="ph-sign-in-bold"></i> LOGIN AKUN
-                        </button>
+                        <button class="btn btn-primary" onclick="navTo('register-section')"><i class="ph-pencil-simple-bold"></i> DAFTAR SEKARANG</button>
+                        <button class="btn btn-outline" onclick="navTo('login-section')"><i class="ph-sign-in-bold"></i> LOGIN AKUN</button>
                     </div>
-
                     <div class="contact-pill">
                         <span>Butuh bantuan?</span>
                         <a href="https://wa.me/6285728881234" target="_blank" class="contact-btn">Chat Aufa</a>
@@ -363,14 +222,15 @@
                     </div>
                 </div>
 
-                <!-- 2. REGISTER FORM -->
+                <!-- 2. REGISTER -->
                 <div id="register-section" class="page-section">
                     <h2 style="font-family: var(--f-title);">Daftar Baru</h2>
                     <p style="color:#666; margin-bottom: 20px;">Isi data diri kamu dengan benar ya!</p>
 
                     <div class="tabs">
-                        <button class="tab-btn active" id="tab-alumni" onclick="toggleTab('alumni')">ALUMNI SMP</button>
-                        <button class="tab-btn" id="tab-non" onclick="toggleTab('non')">SMASIF</button>
+                        <!-- PENTING: onclick dipasang langsung di sini agar tidak gagal -->
+                        <button type="button" class="tab-btn active" id="tab-alumni" onclick="toggleTab('alumni')">ALUMNI SMP</button>
+                        <button type="button" class="tab-btn" id="tab-non" onclick="toggleTab('non')">SMASIF</button>
                     </div>
 
                     <form id="reg-form">
@@ -378,7 +238,6 @@
                             <label class="form-label">Nama Lengkap</label>
                             <input type="text" class="form-input" id="reg-nama" required>
                         </div>
-
                         <div class="form-group">
                             <label class="form-label">Jenis Kelamin</label>
                             <select id="reg-gender" class="form-select" required>
@@ -387,7 +246,7 @@
                             </select>
                         </div>
 
-                        <!-- Dynamic Fields -->
+                        <!-- INPUT DINAMIS -->
                         <div id="field-alumni" class="form-group">
                             <label class="form-label">Sekolah & Kelas SMA Sekarang</label>
                             <input type="text" class="form-input" id="reg-asal" placeholder="Contoh: SMAN 1 Sidoarjo (11 IPA 2)">
@@ -402,17 +261,14 @@
                             <label class="form-label">Email (Untuk Login)</label>
                             <input type="email" class="form-input" id="reg-email" placeholder="Email aktif..." required>
                         </div>
-
                         <div class="form-group">
                             <label class="form-label">WhatsApp</label>
                             <input type="tel" class="form-input" id="reg-wa" required>
                         </div>
-
                         <div class="form-group">
                             <label class="form-label">Nominal Transfer</label>
                             <input type="text" class="form-input" id="reg-nominal" value="Rp 170.000" readonly style="background:#eee; font-weight:bold;">
                         </div>
-
                         <div class="form-group">
                             <label class="form-label">Bukti Transfer</label>
                             <input type="file" id="reg-bukti" class="form-input form-file" accept="image/*" required>
@@ -423,11 +279,10 @@
                     </form>
                 </div>
 
-                <!-- 3. LOGIN FORM -->
+                <!-- 3. LOGIN -->
                 <div id="login-section" class="page-section">
                     <h2 style="font-family: var(--f-title);">Login Peserta</h2>
                     <p style="color:#666; margin-bottom: 20px;">Masuk jika akun sudah diverifikasi admin.</p>
-
                     <form id="login-form">
                         <div class="form-group">
                             <label class="form-label">Email</label>
@@ -437,15 +292,13 @@
                             <label class="form-label">Password</label>
                             <input type="password" class="form-input" id="login-pass" required>
                         </div>
-
                         <div id="login-error" style="color:#D32F2F; margin-bottom: 15px; font-size: 0.9rem;"></div>
-
                         <button type="submit" class="btn btn-primary">MASUK</button>
                         <button type="button" class="btn btn-link" onclick="navTo('landing-page')">Kembali</button>
                     </form>
                 </div>
 
-                <!-- 4. DASHBOARD (TICKET STYLE) -->
+                <!-- 4. DASHBOARD -->
                 <div id="dashboard-peserta" class="page-section">
                     <div class="ticket-container">
                         <div class="ticket-header">
@@ -455,49 +308,35 @@
                         <div class="ticket-body">
                             <h1 class="user-name" id="u-nama">...</h1>
                             <span class="user-role" id="u-kategori">...</span>
-                            
                             <div class="ticket-divider"></div>
-                            
                             <div style="margin-bottom: 15px;">
                                 <div style="font-size:0.7rem; color:#999; text-transform:uppercase; font-weight:bold;">LUCKY NUMBER</div>
                                 <div style="font-size:2rem; font-family:var(--f-title); color:var(--c-brown-dark);" id="u-undian">...</div>
                             </div>
-
-                            <div class="qr-wrapper">
-                                <div id="qrcode"></div>
-                            </div>
+                            <div class="qr-wrapper"><div id="qrcode"></div></div>
                             <div id="qr-timer" style="margin-top:10px; color:#D32F2F; font-weight:bold; font-size:0.8rem;"></div>
                         </div>
                     </div>
-                    
                     <button class="btn btn-outline" onclick="doLogout()" style="margin-top: 20px;">LOGOUT</button>
                 </div>
 
-                <!-- 5. PANITIA SCANNER -->
+                <!-- 5. PANITIA -->
                 <div id="dashboard-panitia" class="page-section">
                     <h2 style="font-family: var(--f-title);">Scanner Panitia</h2>
-                    
-                    <div style="background:#000; padding:10px; border-radius:12px; margin-top:20px;">
-                        <div id="reader"></div>
-                    </div>
-
+                    <div style="background:#000; padding:10px; border-radius:12px; margin-top:20px;"><div id="reader"></div></div>
                     <div id="scan-result" style="display:none; margin-top:20px; padding:20px; border-radius:12px; text-align:center; border:1px solid #ddd;">
                         <h3 id="res-title" style="margin:0;">...</h3>
                         <p id="res-body" style="margin:5px 0;">...</p>
                         <button class="btn btn-primary" id="btn-reset-scan" style="margin-top:10px; padding:10px;">SCAN NEXT</button>
                     </div>
-
                     <button class="btn btn-link" onclick="doLogout()">Keluar</button>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // === CONFIG (GUNAKAN URL HASIL DEPLOY TERBARU KAMU) ===
-        // URL tetap sama, logic check 'TRUE' ada di Google Apps Script
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby46WDYUpRg98XJHDBdoPf9chU6a_P8zcUOglkqlXm9MQFQkNGlqNn_CNoSuRnmYWFyhw/exec"; 
 
         let currentUser = null;
@@ -510,14 +349,11 @@
                 const target = document.getElementById(id);
                 if(target) target.classList.add('active');
             }, 100);
-
-            if(id !== 'dashboard-panitia' && html5QrcodeScanner) {
-                html5QrcodeScanner.clear().catch(e => console.log(e));
-            }
+            if(id !== 'dashboard-panitia' && html5QrcodeScanner) html5QrcodeScanner.clear().catch(e => console.log(e));
             document.getElementById('login-error').innerText = "";
         }
 
-        // Toggle Tab: Update field display and labels
+        // --- FUNGSI GANTI TAB YANG DIPERBAIKI ---
         function toggleTab(type) {
             const alumniBtn = document.getElementById('tab-alumni');
             const nonBtn = document.getElementById('tab-non');
@@ -525,15 +361,30 @@
             const fieldNon = document.getElementById('field-non-alumni');
 
             if(type === 'alumni') {
-                alumniBtn.classList.add('active'); nonBtn.classList.remove('active');
-                fieldAlumni.classList.remove('hidden'); fieldNon.classList.add('hidden');
+                // Pilih ALUMNI SMP
+                alumniBtn.classList.add('active'); 
+                nonBtn.classList.remove('active');
+                
+                // Tampilkan Sekolah Asal, Sembunyikan Kelas SMASIF
+                fieldAlumni.classList.remove('hidden'); 
+                fieldNon.classList.add('hidden');
+                
                 document.getElementById('reg-asal').setAttribute('required', '');
                 document.getElementById('reg-kelas').removeAttribute('required');
+                // Bersihkan input lain agar tidak salah kirim
+                document.getElementById('reg-kelas').value = ""; 
             } else {
-                nonBtn.classList.add('active'); alumniBtn.classList.remove('active');
-                fieldNon.classList.remove('hidden'); fieldAlumni.classList.add('hidden');
+                // Pilih SMASIF
+                nonBtn.classList.add('active'); 
+                alumniBtn.classList.remove('active');
+                
+                // Tampilkan Kelas SMASIF, Sembunyikan Sekolah Asal
+                fieldNon.classList.remove('hidden'); 
+                fieldAlumni.classList.add('hidden');
+                
                 document.getElementById('reg-kelas').setAttribute('required', '');
                 document.getElementById('reg-asal').removeAttribute('required');
+                document.getElementById('reg-asal').value = "";
             }
         }
 
@@ -544,7 +395,6 @@
             reader.onerror = error => reject(error);
         });
 
-        // Register Logic
         document.getElementById('reg-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
@@ -553,12 +403,13 @@
 
             try {
                 const uid = "U-" + Date.now();
-                // FIX: Password digenerate sistem tapi tidak ditampilkan ke user
                 const password = "GLO-" + Math.floor(1000 + Math.random() * 9000); 
                 const undian = Math.floor(100000 + Math.random() * 900000).toString();
                 
                 let detail = "";
                 let kategori = "SMASIF";
+                
+                // Cek Tab Aktif berdasarkan Class Hidden
                 if(!document.getElementById('field-alumni').classList.contains('hidden')) {
                     kategori = "Alumni SMP";
                     detail = `SMA: ${document.getElementById('reg-asal').value}`;
@@ -567,7 +418,6 @@
                     detail = `Kelas: ${document.getElementById('reg-kelas').value}`;
                 }
 
-                // File Handling
                 const fileInput = document.getElementById('reg-bukti');
                 let fileData = ""; let fileName = ""; let fileType = "";
                 if (fileInput.files.length > 0) {
@@ -582,7 +432,7 @@
                     action: 'register',
                     uid: uid,
                     email: document.getElementById('reg-email').value,
-                    password: password, // Dikirim ke DB, user gatau
+                    password: password,
                     nama: document.getElementById('reg-nama').value,
                     kategori: kategori,
                     wa: document.getElementById('reg-wa').value,
@@ -596,7 +446,6 @@
                 const result = await res.json();
 
                 if(result.status === 'success') {
-                    // Alert sukses tanpa menampilkan password
                     alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\n\nSilakan tunggu verifikasi admin. Password akan dikirim via WA/Email setelah pembayaran dikonfirmasi.`);
                     navTo('landing-page');
                 } else {
@@ -609,7 +458,6 @@
             }
         });
 
-        // Login Logic
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
@@ -630,7 +478,7 @@
                     if(currentUser.role === 'panitia') initPanitia();
                     else initPeserta();
                 } else {
-                    errDiv.innerHTML = `${result.message}<br><br><a href="https://wa.me/6281335895758" target="_blank" class="btn-rouf">Hubungi Rouf (WA)</a>`;
+                    errDiv.innerHTML = `${result.message}<br><br><a href="https://wa.me/6281335895758" target="_blank" class="btn-link" style="color:#D32F2F; font-weight:bold;">Hubungi Rouf (WA)</a>`;
                 }
             } catch (err) {
                 errDiv.innerHTML = "Gagal koneksi server. Coba lagi.";
@@ -644,7 +492,6 @@
             window.location.reload();
         }
 
-        // Peserta UI
         function initPeserta() {
             navTo('dashboard-peserta');
             document.getElementById('u-nama').innerText = currentUser.nama;
@@ -672,7 +519,6 @@
             }, 1000);
         }
 
-        // Panitia UI
         function initPanitia() {
             navTo('dashboard-panitia');
             if(!html5QrcodeScanner) {
