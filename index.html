@@ -100,8 +100,9 @@
             position: relative; overflow-y: auto; overflow-x: hidden;
             width: 100%; display: flex; flex-direction: column;
         }
+        /* Padding diperbesar agar judul tidak terpotong di HP */
         .scroll-content {
-            padding: 60px 60px 100px; margin: auto 0;
+            padding: 80px 60px 120px; margin: auto 0;
             width: 100%; max-width: 600px; align-self: center;
         }
 
@@ -134,7 +135,7 @@
         
         .hidden { display: none !important; }
 
-        /* TABS */
+        /* TABS FIXED */
         .tabs { display: flex; background: #EFEBE9; padding: 5px; border-radius: var(--radius-md); margin-bottom: 30px; }
         .tab-btn {
             flex: 1; padding: 14px; border: none; background: none;
@@ -183,7 +184,7 @@
             .hero-details { display: none; }
             .main-logo { width: 100px; }
             .interaction-panel { flex: none; min-height: 65vh; overflow: visible; }
-            .scroll-content { padding: 40px 20px 100px 20px; margin: 0; }
+            .scroll-content { padding: 40px 20px 120px 20px; margin: 0; }
         }
     </style>
 </head>
@@ -228,7 +229,7 @@
                     <p style="color:#666; margin-bottom: 20px;">Isi data diri kamu dengan benar ya!</p>
 
                     <div class="tabs">
-                        <!-- PENTING: onclick dipasang langsung di sini agar tidak gagal -->
+                        <!-- Type Button agar tidak submit form -->
                         <button type="button" class="tab-btn active" id="tab-alumni" onclick="toggleTab('alumni')">ALUMNI SMP</button>
                         <button type="button" class="tab-btn" id="tab-non" onclick="toggleTab('non')">SMASIF</button>
                     </div>
@@ -353,7 +354,7 @@
             document.getElementById('login-error').innerText = "";
         }
 
-        // --- FUNGSI GANTI TAB YANG DIPERBAIKI ---
+        // --- FUNGSI GANTI TAB YANG SUDAH DIPERBAIKI ---
         function toggleTab(type) {
             const alumniBtn = document.getElementById('tab-alumni');
             const nonBtn = document.getElementById('tab-non');
@@ -361,24 +362,21 @@
             const fieldNon = document.getElementById('field-non-alumni');
 
             if(type === 'alumni') {
-                // Pilih ALUMNI SMP
+                // Pilih ALUMNI SMP -> Muncul Sekolah SMA, Sembunyikan Kelas SMASIF
                 alumniBtn.classList.add('active'); 
                 nonBtn.classList.remove('active');
                 
-                // Tampilkan Sekolah Asal, Sembunyikan Kelas SMASIF
                 fieldAlumni.classList.remove('hidden'); 
                 fieldNon.classList.add('hidden');
                 
                 document.getElementById('reg-asal').setAttribute('required', '');
                 document.getElementById('reg-kelas').removeAttribute('required');
-                // Bersihkan input lain agar tidak salah kirim
                 document.getElementById('reg-kelas').value = ""; 
             } else {
-                // Pilih SMASIF
+                // Pilih SMASIF -> Muncul Kelas SMASIF, Sembunyikan Sekolah SMA
                 nonBtn.classList.add('active'); 
                 alumniBtn.classList.remove('active');
                 
-                // Tampilkan Kelas SMASIF, Sembunyikan Sekolah Asal
                 fieldNon.classList.remove('hidden'); 
                 fieldAlumni.classList.add('hidden');
                 
@@ -403,13 +401,14 @@
 
             try {
                 const uid = "U-" + Date.now();
+                // Password dibuat sistem dan ditampilkan langsung
                 const password = "GLO-" + Math.floor(1000 + Math.random() * 9000); 
                 const undian = Math.floor(100000 + Math.random() * 900000).toString();
                 
                 let detail = "";
                 let kategori = "SMASIF";
                 
-                // Cek Tab Aktif berdasarkan Class Hidden
+                // Cek Tab Aktif
                 if(!document.getElementById('field-alumni').classList.contains('hidden')) {
                     kategori = "Alumni SMP";
                     detail = `SMA: ${document.getElementById('reg-asal').value}`;
@@ -446,7 +445,8 @@
                 const result = await res.json();
 
                 if(result.status === 'success') {
-                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\n\nSilakan tunggu verifikasi admin. Password akan dikirim via WA/Email setelah pembayaran dikonfirmasi.`);
+                    // ALERT SUKSES DENGAN PASSWORD
+                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\nPassword: ${password}\n\nSILAKAN SCREENSHOT! Simpan password ini. Akun akan aktif setelah diverifikasi admin (Centang di Spreadsheet).`);
                     navTo('landing-page');
                 } else {
                     throw new Error(result.message);
