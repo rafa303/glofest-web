@@ -3,60 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOFEST 2.0</title>
+    <title>GLOFEST 2.0 - Official Event</title>
     
+    <!-- FONTS: Corben (Retro) & Poppins (Modern) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Corben:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
+    <!-- LIBRARIES (QR Code & Scanner Only - No Supabase) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <style>
+        /* =========================================
+           STYLE CSS (SAMA SEPERTI SEBELUMNYA)
+           ========================================= */
+        :root {
+            --bg-gradient: linear-gradient(180deg, #D6A478 0%, #6d4c41 100%);
+            --brown-dark: #3E2723;
+            --gold: #FFC107;
+            --cream: #FFF8E1;
+            --glass: rgba(62, 39, 35, 0.9);
+            --border: 2px solid rgba(255, 193, 7, 0.5);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--cream);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .noise-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0;
+        }
+
+        .container {
+            position: relative; z-index: 1;
+            max-width: 480px; margin: 0 auto; padding: 20px;
+        }
+
+        h1, h2, h3 { font-family: 'Corben', cursive; margin: 0; }
+        
+        .retro-title {
+            font-size: 2.5rem; color: var(--gold);
+            text-shadow: 3px 3px 0px var(--brown-dark);
+            margin-top: 10px; text-transform: uppercase;
+        }
+        .subtitle { letter-spacing: 2px; font-size: 0.9rem; margin-top: 5px; opacity: 0.9; text-transform: uppercase; font-weight: bold; }
+
+        .main-logo { width: 100px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); margin-bottom: 10px; }
+
+        .glass-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            padding: 15px 25px; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .glass-card .icon { font-size: 1.8rem; }
+        .glass-card h3 { font-size: 1rem; font-family: 'Poppins', sans-serif; font-weight: 600; }
+
+        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
+        button { font-family: 'Poppins', sans-serif; cursor: pointer; transition: 0.2s; outline: none; }
+
+        .btn-primary {
+            background: var(--cream); color: var(--brown-dark);
+            border: none; padding: 15px; border-radius: 50px;
+            font-weight: bold; font-size: 1rem; width: 100%;
+            box-shadow: 0 4px 0 var(--brown-dark);
+        }
+        .btn-primary:active { transform: translateY(4px); box-shadow: none; }
+
+        .btn-secondary {
+            background: transparent; color: var(--cream);
+            border: 2px solid var(--cream); padding: 12px;
+            border-radius: 50px; width: 100%; font-weight: bold;
+        }
+
+        .btn-small { background: var(--gold); border: none; padding: 5px 15px; border-radius: 5px; color: #000; font-weight: bold; margin-top: 10px; }
+        .btn-text { background: none; border: none; color: var(--gold); margin-top: 15px; text-decoration: underline; }
+
+        .card-section {
+            background: var(--glass); padding: 30px 20px;
+            border-radius: 20px; border: var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        input {
+            width: 100%; padding: 12px; margin-top: 5px;
+            border-radius: 10px; border: none;
+            background: var(--cream); color: var(--brown-dark);
+            font-weight: 500; box-sizing: border-box;
+        }
+        input::placeholder { color: #888; }
+
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 10px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; }
+        .tab-btn.active { background: var(--gold); color: var(--brown-dark); border-color: var(--gold); font-weight: bold; }
+
+        .lottery-box {
+            border: 3px dashed var(--gold); padding: 20px;
+            text-align: center; border-radius: 15px; margin-bottom: 25px;
+            background: rgba(0,0,0,0.3);
+            transform: rotate(-1deg);
+        }
+        .lottery-box h1 { font-size: 3rem; color: var(--gold); letter-spacing: 5px; margin: 10px 0; }
+        
+        .qr-area {
+            background: #fff; padding: 20px; border-radius: 15px;
+            color: #000; display: flex; flex-direction: column; align-items: center;
+        }
+        .timer { color: #d32f2f; font-weight: bold; font-size: 0.9rem; margin-top: 10px; }
+
+        .result-box {
+            background: #fff; color: #333; padding: 15px;
+            margin-top: 15px; border-radius: 10px; text-align: center;
+        }
+        .valid { border-left: 8px solid #2ecc71; background: #e8f8f5; }
+        .invalid { border-left: 8px solid #e74c3c; background: #fdedec; }
+
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .row { display: flex; gap: 10px; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
     <div class="noise-bg"></div>
-    <div class="ornament-top"></div>
 
     <div class="container">
         
-        <header class="text-center fade-in">
-            <img src="logo.png" alt="GLOFEST" class="main-logo">
-            <h1 class="retro-text">GLOFEST 2.0</h1>
+        <!-- HEADER -->
+        <header class="text-center">
+            <img src="logo.png" alt="GLOFEST" class="main-logo" onerror="this.style.display='none'">
+            <h1 class="retro-title">GLOFEST 2.0</h1>
             <p class="subtitle">GLOTERA FESTIVAL 2026</p>
         </header>
 
-        <div id="landing-page" class="fade-in">
+        <!-- 1. LANDING PAGE -->
+        <div id="landing-page">
             <div class="glass-card">
-                <div class="icon">🕒</div>
+                <span class="icon">🕒</span>
                 <div>
                     <h3>Pukul 16.00 - 19.00 WIB</h3>
                 </div>
             </div>
             <div class="glass-card">
-                <div class="icon">📅</div>
+                <span class="icon">📅</span>
                 <div>
                     <h3>8 Maret 2026</h3>
                 </div>
             </div>
             <div class="glass-card">
-                <div class="icon">📍</div>
+                <span class="icon">📍</span>
                 <div>
                     <h3>Coming Soon In Surabaya</h3>
-                    <small>*Lokasi menyusul</small>
+                    <small>*Lokasi akan diupdate</small>
                 </div>
             </div>
 
             <div class="btn-group">
-                <button onclick="navTo('register-section')" class="btn-primary">DAFTAR SEKARANG</button>
-                <button onclick="navTo('login-section')" class="btn-secondary">LOGIN (PESERTA/PANITIA)</button>
+                <button id="btn-to-register" class="btn-primary">DAFTAR SEKARANG</button>
+                <button id="btn-to-login" class="btn-secondary">LOGIN (PESERTA/PANITIA)</button>
             </div>
         </div>
 
+        <!-- 2. REGISTER PAGE -->
         <div id="register-section" class="card-section hidden">
-            <h2 class="section-title">Pendaftaran</h2>
+            <h2 class="text-center" style="color:var(--gold); margin-bottom:20px;">Formulir Pendaftaran</h2>
             
             <div class="tabs">
-                <button class="tab-btn active" onclick="setTab('alumni')">Alumni</button>
-                <button class="tab-btn" onclick="setTab('non-alumni')">Non-Alumni</button>
+                <button class="tab-btn active" id="tab-alumni">Alumni</button>
+                <button class="tab-btn" id="tab-non">Non-Alumni</button>
             </div>
 
             <form id="reg-form">
@@ -75,58 +204,329 @@
                 <input type="email" id="reg-email" placeholder="Email (Username)" required>
                 <input type="tel" id="reg-wa" placeholder="Nomor WhatsApp" required>
                 <input type="number" id="reg-nominal" placeholder="Nominal Transfer (Rp)" required>
-                <input type="text" id="reg-bukti" placeholder="Keterangan Transfer (ex: BCA a.n Budi)">
+                <input type="text" id="reg-bukti" placeholder="Keterangan Transfer (cth: BCA a.n Budi)">
                 
-                <button type="submit" class="btn-primary">KIRIM DATA</button>
-                <button type="button" onclick="navTo('landing-page')" class="btn-text">Kembali</button>
+                <button type="submit" class="btn-primary" style="margin-top:20px;">KIRIM DATA</button>
+                <button type="button" class="btn-text btn-back">Kembali</button>
             </form>
         </div>
 
+        <!-- 3. LOGIN PAGE -->
         <div id="login-section" class="card-section hidden">
-            <h2 class="section-title">Login</h2>
+            <h2 class="text-center" style="color:var(--gold); margin-bottom:20px;">Login Area</h2>
             <form id="login-form">
                 <input type="email" id="login-email" placeholder="Email" required>
                 <input type="password" id="login-pass" placeholder="Password" required>
-                <button type="submit" class="btn-primary">MASUK</button>
-                <button type="button" onclick="navTo('landing-page')" class="btn-text">Kembali</button>
+                
+                <button type="submit" class="btn-primary" style="margin-top:20px;">MASUK</button>
+                <button type="button" class="btn-text btn-back">Kembali</button>
             </form>
         </div>
 
+        <!-- 4. DASHBOARD PESERTA -->
         <div id="dashboard-peserta" class="card-section hidden">
-            <h2 class="section-title">Tiket Masuk</h2>
-            <p class="text-center">Halo, <span id="u-nama" style="color:var(--gold)">...</span></p>
+            <h2 class="text-center" style="color:var(--gold)">Tiket Masuk</h2>
+            <p class="text-center">Halo, <span id="u-nama" style="font-weight:bold; color:var(--cream)">...</span></p>
             
             <div class="lottery-box">
-                <small>KODE UNDIAN</small>
+                <small style="color:var(--cream); letter-spacing:2px;">KODE UNDIAN</small>
                 <h1 id="u-undian">---</h1>
             </div>
 
             <div class="qr-area">
                 <div id="qrcode"></div>
-                <p id="qr-timer" class="timer">Refresh dalam 15:00</p>
+                <p id="qr-timer" class="timer">Memuat QR...</p>
             </div>
 
-            <button onclick="doLogout()" class="btn-secondary">KELUAR</button>
+            <button id="btn-logout-p" class="btn-secondary" style="margin-top:20px;">KELUAR</button>
         </div>
 
+        <!-- 5. DASHBOARD PANITIA -->
         <div id="dashboard-panitia" class="card-section hidden">
-            <h2 class="section-title">Scanner Panitia</h2>
-            <div id="reader"></div>
+            <h2 class="text-center" style="color:var(--gold); margin-bottom:10px;">Scanner Panitia</h2>
+            
+            <div style="background:#000; padding:10px; border-radius:10px;">
+                <div id="reader"></div>
+            </div>
             
             <div id="scan-result" class="result-box hidden">
                 <h3 id="res-title">STATUS</h3>
                 <p id="res-body">Detail...</p>
-                <button onclick="resetScanner()" class="btn-small">Scan Lagi</button>
+                <button id="btn-reset-scan" class="btn-small">Scan Lagi</button>
             </div>
 
-            <button onclick="doLogout()" class="btn-secondary">KELUAR</button>
+            <button id="btn-logout-a" class="btn-secondary" style="margin-top:20px;">KELUAR</button>
         </div>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script src="script.js"></script>
+    <script>
+        // =========================================
+        // CONFIGURATION (WAJIB DIISI!)
+        // =========================================
+        
+        // 1. Paste URL Web App Google Script kamu di sini
+        // Contoh: "https://script.google.com/macros/s/XXXXX/exec"
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfZ263iXZh8ocid2dVMxIYI_92zqnoM2zqZrFC0cM2xrj5r0iRVJRutbkOGj5GCgv-nw/exec"; 
+
+        // =========================================
+        // JAVASCRIPT LOGIC
+        // =========================================
+        let currentUser = null;
+        let html5QrcodeScanner = null;
+        let qrTimer = null;
+
+        // 2. NAVIGASI
+        function navTo(id) {
+            const sections = ['landing-page', 'register-section', 'login-section', 'dashboard-peserta', 'dashboard-panitia'];
+            sections.forEach(sec => document.getElementById(sec).classList.add('hidden'));
+            
+            const target = document.getElementById(id);
+            if(target) target.classList.remove('hidden');
+
+            if(id !== 'dashboard-panitia' && html5QrcodeScanner) {
+                html5QrcodeScanner.clear().catch(err => console.log("Scanner clear:", err));
+            }
+        }
+
+        // 3. EVENT LISTENERS
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            if(!GOOGLE_SCRIPT_URL) {
+                alert("PERINGATAN: URL Google Script belum diisi di kode!");
+            }
+
+            // Tombol Navigasi
+            document.getElementById('btn-to-register').addEventListener('click', () => navTo('register-section'));
+            document.getElementById('btn-to-login').addEventListener('click', () => navTo('login-section'));
+            
+            document.querySelectorAll('.btn-back').forEach(btn => {
+                btn.addEventListener('click', () => navTo('landing-page'));
+            });
+
+            document.getElementById('btn-logout-p').addEventListener('click', doLogout);
+            document.getElementById('btn-logout-a').addEventListener('click', doLogout);
+
+            // Tab Register
+            document.getElementById('tab-alumni').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('tab-alumni').classList.add('active');
+                document.getElementById('tab-non').classList.remove('active');
+                document.getElementById('field-alumni').classList.remove('hidden');
+                document.getElementById('field-non-alumni').classList.add('hidden');
+            });
+
+            document.getElementById('tab-non').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('tab-non').classList.add('active');
+                document.getElementById('tab-alumni').classList.remove('active');
+                document.getElementById('field-non-alumni').classList.remove('hidden');
+                document.getElementById('field-alumni').classList.add('hidden');
+            });
+
+            // Form Submits
+            document.getElementById('reg-form').addEventListener('submit', handleRegister);
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+
+            // Reset Scanner
+            document.getElementById('btn-reset-scan').addEventListener('click', () => {
+                document.getElementById('scan-result').classList.add('hidden');
+                html5QrcodeScanner.resume();
+            });
+
+            console.log("GLOFEST Sheets System Ready.");
+        });
+
+        // 4. LOGIC REGISTER (Send to Sheets)
+        async function handleRegister(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = "Mencatat ke Excel..."; btn.disabled = true;
+
+            const nama = document.getElementById('reg-nama').value;
+            const email = document.getElementById('reg-email').value;
+            const wa = document.getElementById('reg-wa').value;
+            const nominal = document.getElementById('reg-nominal').value;
+            const password = "GLOFEST-" + Math.floor(1000 + Math.random() * 9000);
+            const undian = Math.floor(100000 + Math.random() * 900000).toString();
+            const uid = "U-" + Date.now(); // Simple UID generation
+
+            let detail = "";
+            let kategori = "Non-Alumni";
+            if(!document.getElementById('field-alumni').classList.contains('hidden')) {
+                kategori = "Alumni";
+                detail = `Angkatan ${document.getElementById('reg-angkatan').value} - ${document.getElementById('reg-kelas').value}`;
+            } else {
+                detail = document.getElementById('reg-asal').value;
+            }
+
+            // Payload untuk Google Sheet
+            const payload = {
+                action: 'register',
+                uid: uid,
+                email: email,
+                password: password,
+                nama: nama,
+                kategori: kategori,
+                wa: wa,
+                kode_undian: undian,
+                detail_info: `${detail} | Bayar: ${nominal}`
+            };
+
+            try {
+                // Gunakan no-cors untuk kirim data saja (tapi tidak bisa baca response detail di beberapa browser)
+                // Atau gunakan redirect = follow
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert(`REGISTRASI SUKSES!\n\nEmail: ${email}\nPassword: ${password}\n\nSilakan Screenshot password ini!`);
+                    navTo('login-section');
+                } else {
+                    throw new Error(result.message);
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("Gagal koneksi ke Spreadsheet (Cek CORS/Script): " + err.message);
+                // Fallback UI for demo purpose if CORS blocks locally
+                alert("Jika ini error CORS, pastikan Script dideploy sebagai 'Anyone'. Data mungkin tetap masuk, coba login.");
+            } finally {
+                btn.innerText = originalText; btn.disabled = false;
+            }
+        }
+
+        // 5. LOGIC LOGIN (Read from Sheets)
+        async function handleLogin(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerText = "Mengecek Database..."; btn.disabled = true;
+
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+
+            try {
+                const url = `${GOOGLE_SCRIPT_URL}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(pass)}`;
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if(result.status === 'success') {
+                    currentUser = result.data;
+                    
+                    if(currentUser.role === 'panitia') {
+                        initPanitia();
+                    } else {
+                        initPeserta();
+                    }
+                } else {
+                    throw new Error(result.message);
+                }
+
+            } catch (err) {
+                alert("Login Gagal: " + err.message);
+            } finally {
+                btn.innerText = "MASUK"; btn.disabled = false;
+            }
+        }
+
+        function doLogout() {
+            currentUser = null;
+            window.location.reload();
+        }
+
+        // 6. DASHBOARD PESERTA
+        function initPeserta() {
+            navTo('dashboard-peserta');
+            document.getElementById('u-nama').innerText = currentUser.nama;
+            document.getElementById('u-undian').innerText = currentUser.kode_undian || '-';
+
+            const container = document.getElementById('qrcode');
+            container.innerHTML = "";
+
+            const payload = {
+                uid: currentUser.uid,
+                exp: Date.now() + (15 * 60 * 1000) 
+            };
+
+            new QRCode(container, {
+                text: JSON.stringify(payload),
+                width: 180, height: 180
+            });
+
+            // Timer
+            clearInterval(qrTimer);
+            const timerDisplay = document.getElementById('qr-timer');
+            qrTimer = setInterval(() => {
+                const diff = payload.exp - Date.now();
+                if(diff < 0) {
+                    timerDisplay.innerText = "EXPIRED";
+                    container.style.opacity = "0.2";
+                    clearInterval(qrTimer);
+                } else {
+                    const m = Math.floor(diff / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
+                    timerDisplay.innerText = `Valid: ${m}:${s < 10 ? '0'+s : s}`;
+                }
+            }, 1000);
+        }
+
+        // 7. DASHBOARD PANITIA
+        function initPanitia() {
+            navTo('dashboard-panitia');
+            if(!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5QrcodeScanner(
+                    "reader", { fps: 10, qrbox: 250 });
+                html5QrcodeScanner.render(onScanSuccess, (err) => {});
+            }
+        }
+
+        async function onScanSuccess(decodedText) {
+            html5QrcodeScanner.pause();
+            
+            const resBox = document.getElementById('scan-result');
+            const title = document.getElementById('res-title');
+            const body = document.getElementById('res-body');
+            
+            resBox.classList.remove('hidden');
+            resBox.className = "result-box"; 
+            title.innerText = "Memproses...";
+            body.innerText = "Menghubungi Spreadsheet...";
+
+            try {
+                const data = JSON.parse(decodedText);
+                if(Date.now() > data.exp) throw new Error("QR Kadaluwarsa");
+
+                // Kirim ke Google Sheet untuk update kehadiran
+                const payload = {
+                    action: 'scan',
+                    uid: data.uid
+                };
+
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if(result.status === 'success') {
+                    title.innerText = "✅ VALID";
+                    body.innerText = `Nama: ${result.nama}\nKategori: ${result.kategori}`;
+                    resBox.classList.add('valid');
+                } else {
+                    throw new Error(result.message);
+                }
+
+            } catch (err) {
+                title.innerText = "❌ GAGAL";
+                body.innerText = err.message;
+                resBox.classList.add('invalid');
+            }
+        }
+    </script>
 </body>
 </html>
