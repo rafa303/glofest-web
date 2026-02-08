@@ -134,6 +134,14 @@
         
         .hidden { display: none !important; }
 
+        /* INPUT PASSWORD WITH ICON */
+        .password-wrapper { position: relative; }
+        .password-wrapper input { padding-right: 45px; }
+        .password-toggle {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; color: #888; font-size: 1.2rem;
+        }
+
         /* TABS FIXED */
         .tabs { display: flex; background: #EFEBE9; padding: 5px; border-radius: var(--radius-md); margin-bottom: 30px; }
         .tab-btn {
@@ -228,7 +236,6 @@
                     <p style="color:#666; margin-bottom: 20px;">Isi data diri kamu dengan benar ya!</p>
 
                     <div class="tabs">
-                        <!-- Type Button agar tidak submit form -->
                         <button type="button" class="tab-btn active" id="tab-alumni" onclick="toggleTab('alumni')">ALUMNI SMP</button>
                         <button type="button" class="tab-btn" id="tab-non" onclick="toggleTab('non')">SMASIF</button>
                     </div>
@@ -290,7 +297,10 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-input" id="login-pass" required>
+                            <div class="password-wrapper">
+                                <input type="password" class="form-input" id="login-pass" required>
+                                <i class="ph-eye-slash password-toggle" id="toggle-pass" onclick="togglePassword()"></i>
+                            </div>
                         </div>
                         <div id="login-error" style="color:#D32F2F; margin-bottom: 15px; font-size: 0.9rem;"></div>
                         <button type="submit" class="btn btn-primary">MASUK</button>
@@ -337,7 +347,8 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Update URL dengan URL terbaru hasil deploy script Anda
+        // === CONFIG (GUNAKAN URL HASIL DEPLOY TERBARU KAMU) ===
+        // JANGAN LUPA DEPLOY SCRIPT G-APPS-SCRIPT JADI 'NEW VERSION'
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZ2drv2MXvO00lPRIBtrCZ7Dg_EKc6dYrZ0mXh4e-t9kqv0V4LZQzqOZfk68ct2pYzhA/exec"; 
 
         let currentUser = null;
@@ -354,7 +365,20 @@
             document.getElementById('login-error').innerText = "";
         }
 
-        // --- FUNGSI GANTI TAB YANG SUDAH DIPERBAIKI ---
+        // Toggle Password Visibility
+        function togglePassword() {
+            const passInput = document.getElementById('login-pass');
+            const icon = document.getElementById('toggle-pass');
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                icon.classList.replace('ph-eye-slash', 'ph-eye');
+            } else {
+                passInput.type = "password";
+                icon.classList.replace('ph-eye', 'ph-eye-slash');
+            }
+        }
+
+        // Toggle Tab
         function toggleTab(type) {
             const alumniBtn = document.getElementById('tab-alumni');
             const nonBtn = document.getElementById('tab-non');
@@ -364,20 +388,16 @@
             if(type === 'alumni') {
                 alumniBtn.classList.add('active'); 
                 nonBtn.classList.remove('active');
-                
                 fieldAlumni.classList.remove('hidden'); 
                 fieldNon.classList.add('hidden');
-                
                 document.getElementById('reg-asal').setAttribute('required', '');
                 document.getElementById('reg-kelas').removeAttribute('required');
                 document.getElementById('reg-kelas').value = ""; 
             } else {
                 nonBtn.classList.add('active'); 
                 alumniBtn.classList.remove('active');
-                
                 fieldNon.classList.remove('hidden'); 
                 fieldAlumni.classList.add('hidden');
-                
                 document.getElementById('reg-kelas').setAttribute('required', '');
                 document.getElementById('reg-asal').removeAttribute('required');
                 document.getElementById('reg-asal').value = "";
@@ -399,14 +419,12 @@
 
             try {
                 const uid = "U-" + Date.now();
-                // Password dibuat sistem
                 const password = "GLO-" + Math.floor(1000 + Math.random() * 9000); 
                 const undian = Math.floor(100000 + Math.random() * 900000).toString();
                 
                 let detail = "";
                 let kategori = "SMASIF";
                 
-                // Cek Tab Aktif
                 if(!document.getElementById('field-alumni').classList.contains('hidden')) {
                     kategori = "Alumni SMP";
                     detail = `SMA: ${document.getElementById('reg-asal').value}`;
@@ -443,7 +461,7 @@
                 const result = await res.json();
 
                 if(result.status === 'success') {
-                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\nPassword: ${password}\n\nSILAKAN SCREENSHOT! Simpan password ini. Akun akan aktif setelah diverifikasi panitia.`);
+                    alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\nPassword: ${password}\n\nSILAKAN SCREENSHOT! Simpan password ini. Akun akan aktif setelah diverifikasi admin (Centang di Spreadsheet).`);
                     navTo('landing-page');
                 } else {
                     throw new Error(result.message);
