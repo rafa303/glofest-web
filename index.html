@@ -246,9 +246,15 @@
             background: radial-gradient(circle, transparent 10px, #FFF 11px) repeat-x; background-size: 24px 24px;
         }
         .u-name { font-family: var(--f-title); font-size: 2rem; margin: 0; line-height: 1.1; color: var(--accent-orange); }
-        .u-role { display: inline-block; background: #F8F5F2; padding: 5px 15px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; margin-top: 10px; border: 1px solid #E5D5C5;}
         
-        .qr-box { margin: 15px auto 10px; padding: 15px; background: #FFF; border: 2px solid #F8F5F2; border-radius: 16px; display: inline-block;}
+        /* WARNA KATEGORI TIKET LEBIH GELAP BIAR JELAS */
+        .u-role { 
+            display: inline-block; background: #F8F5F2; padding: 5px 15px; border-radius: 20px; 
+            font-weight: 700; font-size: 0.85rem; margin-top: 10px; border: 1px solid #E5D5C5; 
+            color: var(--text-dark); 
+        }
+        
+        .qr-box { margin: 0 auto; background: #FFF; border: 2px solid #F8F5F2; border-radius: 16px; display: inline-block; padding: 15px;}
         
         /* PANITIA DOORPRIZE UI */
         .doorprize-display {
@@ -285,10 +291,10 @@
     <!-- 1. LANDING PAGE -->
     <div id="landing-page" class="page-section active">
         <div class="logo-wrapper">
-            <!-- LOGO ANGKATAN DI PALING ATAS, DIPERKECIL -->
-            <img src="logo.png" alt="Logo Angkatan" style="width: 80px; height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px;" onerror="this.alt='Gambar logo.png belum tersedia'">
+            <!-- LOGO ANGKATAN DIPERKECIL LAGI JADI 50px -->
+            <img src="logo.png" alt="Logo Angkatan" style="width: 50px; height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px;" onerror="this.alt='Gambar logo.png belum tersedia'">
 
-            <!-- LOGO UTAMA HASIL DESAIN, JARAK BAWAH DIPERKECIL -->
+            <!-- LOGO UTAMA -->
             <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 500px; height: auto; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); margin-bottom: 15px;" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
         </div>
 
@@ -412,12 +418,23 @@
                     <div style="font-size: 1.8rem; font-family: var(--f-title); color: var(--accent-orange); letter-spacing: 2px;" id="u-undian">...</div>
                 </div>
 
-                <div id="qr-container" style="margin-top: 20px;">
-                    <button class="btn-solid" id="btn-show-qr" onclick="generateTicketQR()" style="background: var(--accent-orange);"><i class="ph-qr-code"></i> Tampilkan QR Code</button>
+                <!-- CONTAINER QR CODE DENGAN PLACEHOLDER -->
+                <div style="margin-top: 20px; position: relative; display: inline-block;">
+                    <!-- Placeholder QR yang di-blur -->
+                    <div id="qr-placeholder" class="qr-box" style="filter: blur(6px); opacity: 0.4; width: 160px; height: 160px; display: flex; justify-content: center; align-items: center;">
+                        <i class="ph-qr-code" style="font-size: 100px; color: var(--text-dark);"></i>
+                    </div>
                     
-                    <div class="qr-box hidden" id="qrcode"></div>
-                    <div id="qr-timer" style="font-size: 0.85rem; font-weight: 700; color: #D32F2F; margin-top: 5px;" class="hidden"></div>
+                    <!-- Overlay Tombol -->
+                    <div id="qr-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 160px; display: flex; justify-content: center; align-items: center;">
+                        <button class="btn-solid" id="btn-show-qr" onclick="generateTicketQR()" style="background: var(--accent-orange); width: auto; padding: 10px 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 2px solid #FFF;"><i class="ph-qr-code"></i> Tampilkan</button>
+                    </div>
+
+                    <!-- Tempat QR Code Asli -->
+                    <div class="qr-box hidden" id="qrcode" style="width: 160px; height: 160px; display: flex; justify-content: center; align-items: center;"></div>
                 </div>
+                
+                <div id="qr-timer" style="font-size: 0.85rem; font-weight: 700; color: #D32F2F; margin-top: 10px;" class="hidden"></div>
             </div>
         </div>
         
@@ -503,7 +520,7 @@
             try { html5QrcodeScanner.clear(); } catch(e) {} 
         }
         // Matikan timer QR kalau pindah halaman
-        clearInterval(qrTimerInterval);
+        expireQR();
     }
 
     // --- UI INTERACTIONS ---
@@ -617,27 +634,50 @@
     });
 
     // --- DASHBOARD PESERTA & QR LOGIC ---
+    function resetQRUI(btnText, btnColor) {
+        document.getElementById('qrcode').classList.add('hidden');
+        document.getElementById('qr-timer').classList.add('hidden');
+        
+        document.getElementById('qr-placeholder').classList.remove('hidden');
+        document.getElementById('qr-overlay').classList.remove('hidden');
+        
+        const btnQr = document.getElementById('btn-show-qr');
+        btnQr.innerHTML = `<i class="ph-arrows-clockwise-bold"></i> ${btnText}`;
+        btnQr.style.background = btnColor;
+    }
+
+    function expireQR() {
+        clearInterval(qrTimerInterval);
+        // Cek kalau lagi di tab peserta dan QR lagi nyala, maka matikan
+        if (document.getElementById('dashboard-peserta').classList.contains('active') && currentUser) {
+            resetQRUI("Ulang QR (Kadaluarsa)", "#D32F2F"); // Merah
+        }
+    }
+
+    // Deteksi kalau user keluar/pindah tab aplikasi
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden && currentUser && !document.getElementById('qrcode').classList.contains('hidden')) {
+            expireQR();
+        }
+    });
+
     function initPeserta() {
         navTo('dashboard-peserta');
         document.getElementById('u-nama').innerText = currentUser.nama;
         document.getElementById('u-kategori').innerText = currentUser.kategori;
         document.getElementById('u-undian').innerText = currentUser.undian || "-";
         
-        // Reset QR Area
-        document.getElementById('qrcode').classList.add('hidden');
-        document.getElementById('qr-timer').classList.add('hidden');
-        const btnQr = document.getElementById('btn-show-qr');
-        btnQr.classList.remove('hidden');
-        btnQr.innerHTML = '<i class="ph-qr-code"></i> Tampilkan QR Code';
-        btnQr.style.background = "var(--accent-orange)";
+        // Setup awal UI QR
+        resetQRUI("Tampilkan", "var(--accent-orange)");
     }
 
     function generateTicketQR() {
-        const btn = document.getElementById('btn-show-qr');
+        document.getElementById('qr-placeholder').classList.add('hidden');
+        document.getElementById('qr-overlay').classList.add('hidden');
+        
         const box = document.getElementById('qrcode');
         const timerText = document.getElementById('qr-timer');
-
-        btn.classList.add('hidden');
+        
         box.classList.remove('hidden');
         timerText.classList.remove('hidden');
         box.innerHTML = "";
@@ -648,21 +688,14 @@
 
         new QRCode(box, { 
             text: JSON.stringify(payload), 
-            width: 160, height: 160, colorDark: "#5A3A1A", colorLight: "#ffffff" 
+            width: 140, height: 140, colorDark: "#5A3A1A", colorLight: "#ffffff" 
         });
 
         clearInterval(qrTimerInterval);
         qrTimerInterval = setInterval(() => {
             const diff = expTime - Date.now();
             if(diff <= 0) {
-                clearInterval(qrTimerInterval);
-                box.classList.add('hidden');
-                timerText.classList.add('hidden');
-                
-                // Munculin tombol ulang
-                btn.classList.remove('hidden');
-                btn.innerHTML = '<i class="ph-arrows-clockwise-bold"></i> Ulang QR (Kadaluarsa)';
-                btn.style.background = "#D32F2F"; // Merah
+                expireQR();
             } else {
                 const m = Math.floor(diff / 60000);
                 const s = Math.floor((diff % 60000) / 1000);
@@ -775,7 +808,7 @@
     }
 
     function doLogout() { 
-        currentUser = null; clearInterval(qrTimerInterval); clearInterval(spinInterval);
+        currentUser = null; expireQR(); clearInterval(spinInterval);
         document.getElementById('login-form').reset(); navTo('landing-page'); 
     }
 
