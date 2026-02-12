@@ -1,583 +1,661 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GLOFEST 2.0 - Glotera Festival</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOFEST 2.0 - Glotera Festival</title>
 
-<!-- FAVICON (LOGO DI SEBELAH JUDUL TAB) -->
-<link rel="icon" href="logo.png" type="image/png">
-<link rel="shortcut icon" href="logoblack.png" type="image/png">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Shrikhand&display=swap" rel="stylesheet">
 
-<!-- FONTS: Syne (Artistic) & Manrope (Clean) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <!-- LIBRARIES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://unpkg.com/phosphor-icons"></script>
 
-<!-- LIBRARIES -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<!-- Icons -->
-<script src="https://unpkg.com/phosphor-icons"></script>
+    <style>
+        /* ================= STYLE & VISUALS ================= */
+        :root {
+            --bg-top: #D5B18A;
+            --bg-bottom: #8A5A33;
+            --text-light: #FFFFFF;
+            --text-dark: #5A3A1A;
+            --accent-orange: #C98A53;
+            --accent-glow: rgba(201, 138, 83, 0.5);
+            
+            --f-title: 'Shrikhand', cursive;
+            --f-body: 'Poppins', sans-serif;
 
-<style>
-/* =========================================
-          STYLE & VISUALS
-          ========================================= */
-:root {
---c-brown-dark: #3E2723;
---c-brown-mid: #5D4037;
---c-gold: #D4AF37;
---c-gold-light: #F9E79F;
---c-cream: #FFF8E1;
---c-white: #FFFFFF;
---c-paper: #F5F5F0;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-blur: blur(16px);
+        }
 
---f-title: 'Syne', sans-serif;
---f-body: 'Manrope', sans-serif;
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
---radius-lg: 24px;
---radius-md: 12px;
---shadow-float: 0 20px 40px rgba(62, 39, 35, 0.15);
---border-ui: 1px solid rgba(93, 64, 55, 0.15);
-}
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 10px; }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0; padding: 0;
+            font-family: var(--f-body);
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+            background-attachment: fixed;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-body {
-margin: 0; padding: 0;
-font-family: var(--f-body);
-background-color: var(--c-paper);
-color: var(--c-brown-dark);
-height: 100vh;
-overflow: hidden; 
-}
+        /* HALFTONE PATTERN */
+        .dot-pattern {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 0;
+            background-image: radial-gradient(rgba(0, 0, 0, 0.08) 2px, transparent 2px);
+            background-size: 14px 14px;
+        }
 
-.main-container { display: flex; height: 100vh; width: 100vw; }
+        /* ORNAMENTS */
+        .bg-ornament {
+            position: fixed; pointer-events: none; z-index: 1; opacity: 0.15;
+            background-size: contain; background-repeat: no-repeat;
+            animation: floatOrnament 8s ease-in-out infinite;
+        }
+        @keyframes floatOrnament {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .ornament-left {
+            bottom: -20px; left: -50px; width: 300px; height: 600px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path fill="%23000" d="M30 200V80L40 20h20l10 60v120z"/></svg>');
+            background-position: bottom left;
+        }
+        .ornament-right {
+            bottom: 30px; right: -50px; width: 350px; height: 400px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150"><path fill="%23000" d="M10 150l90-100 90 100zM80 50h40v100H80z"/></svg>');
+            background-position: bottom right;
+            animation-delay: -4s;
+        }
 
-/* --- VISUAL PANEL (KIRI/ATAS) --- */
-.visual-panel {
-flex: 1;
-background: linear-gradient(135deg, var(--c-brown-dark) 0%, var(--c-brown-mid) 100%);
-position: relative;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-color: var(--c-cream);
-overflow: hidden;
-padding: 40px;
-}
-.visual-panel::before {
-content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.05'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z'/%3E%3C/g%3E%3C/svg%3E");
-opacity: 0.3;
-}
+        .app-container {
+            width: 100%; max-width: 500px; margin: 40px 20px;
+            position: relative; z-index: 10; display: flex; flex-direction: column;
+        }
 
-.hero-content { position: relative; z-index: 2; text-align: center; max-width: 500px; }
-.main-logo {
-width: 180px; margin-bottom: 20px;
-filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
-animation: float 6s ease-in-out infinite;
-}
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .page-section { display: none; animation: fadeIn 0.4s ease forwards; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-.hero-title {
-font-family: var(--f-title); font-size: 4rem; line-height: 0.9;
-margin: 0; color: var(--c-gold); text-transform: uppercase; font-weight: 800;
-}
-.hero-badge {
-background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-border: 1px solid var(--c-gold); padding: 8px 20px;
-border-radius: 50px; display: inline-block; margin-top: 20px;
-font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
-}
-.hero-details {
-margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;
-}
-.detail-item h4 { margin: 0; color: var(--c-gold); font-family: var(--f-title); font-size: 1.2rem; }
-.detail-item p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9rem; }
+        .logo-wrapper { text-align: center; margin-bottom: 50px; position: relative; display: flex; flex-direction: column; align-items: center;}
 
-/* --- INTERACTION PANEL (KANAN/BAWAH) --- */
-.interaction-panel {
-flex: 1; background: var(--c-paper);
-position: relative; overflow-y: auto; overflow-x: hidden;
-width: 100%; display: flex; flex-direction: column;
-}
-.scroll-content {
-padding: 80px 60px 120px; margin: auto 0;
-width: 100%; max-width: 600px; align-self: center;
-}
+        /* BUTTONS */
+        .pill-btn {
+            display: flex; align-items: center;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 2px solid var(--glass-border); border-radius: 60px;
+            padding: 8px 25px 8px 8px; margin-bottom: 20px;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); width: 100%;
+            position: relative; overflow: hidden;
+        }
+        .pill-btn:hover { 
+            background: rgba(255, 255, 255, 0.25); transform: translateY(-3px); 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2), 0 0 15px var(--accent-glow); border-color: #FFF;
+        }
+        .pill-icon {
+            background: #FFFFFF; color: var(--accent-orange);
+            border-radius: 50%; width: 55px; height: 55px;
+            display: flex; justify-content: center; align-items: center; font-size: 1.8rem;
+            margin-right: 20px; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .pill-text-title { font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
+        .pill-text-sub { font-size: 0.8rem; font-weight: 400; opacity: 0.9; }
 
-/* --- COMPONENTS --- */
-.page-section { display: none; animation: fadeInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-.page-section.active { display: block; }
-@keyframes fadeInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        /* CONTACT AREA */
+        .contact-area {
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
+            margin-top: 40px; display: flex; flex-direction: column; gap: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .contact-header {
+            font-family: var(--f-body); font-weight: 700; font-size: 0.9rem; color: #FFF;
+            text-transform: uppercase; letter-spacing: 2px; text-align: center;
+            margin-bottom: 5px; border-bottom: 1px dashed rgba(255,255,255,0.3); padding-bottom: 10px;
+        }
+        .contact-item {
+            display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.1);
+            padding: 12px 15px; border-radius: 12px; text-decoration: none; color: #FFF;
+            transition: 0.3s; border: 1px solid transparent;
+        }
+        .contact-item:hover {
+            background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .contact-icon {
+            background: #25D366; color: #FFF; width: 40px; height: 40px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); flex-shrink: 0;
+        }
 
-.btn {
-width: 100%; padding: 18px; border: none; border-radius: var(--radius-md);
-font-family: var(--f-body); font-weight: 800; font-size: 1rem;
-cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px;
-}
-.btn-primary {
-background: var(--c-brown-dark); color: var(--c-white);
-box-shadow: 0 8px 20px rgba(62, 39, 35, 0.3);
-}
-.btn-primary:active { transform: translateY(2px); box-shadow: none; }
-.btn-outline { background: transparent; color: var(--c-brown-dark); border: 2px solid var(--c-brown-dark); }
-.btn-link { background: none; color: var(--c-brown-mid); font-size: 0.9rem; text-decoration: underline; margin-top: 15px; }
+        /* PANELS & FORMS */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px);
+            border-radius: 24px; padding: 30px; color: var(--text-dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.5);
+        }
+        
+        .panel-title {
+            font-family: var(--f-title); color: var(--accent-orange);
+            font-size: 2.2rem; margin: 0 0 5px 0; text-align: center;
+            letter-spacing: 3px; text-shadow: 1px 1px 0px #DAC0A3;
+        }
+        .panel-subtitle { text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 25px; }
 
-.form-group { margin-bottom: 20px; }
-.form-label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; color: var(--c-brown-dark); }
-.form-input, .form-select {
-width: 100%; padding: 16px; background: var(--c-white);
-border: var(--border-ui); border-radius: var(--radius-md);
-font-family: var(--f-body); font-size: 1rem; color: var(--c-brown-dark);
-}
-.form-file { padding: 10px; border: 1px dashed var(--c-brown-dark); }
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+        .input-wrapper { position: relative; }
+        .input-wrapper i.prefix-icon {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            color: #A09385; font-size: 1.2rem;
+        }
+        .form-input, .form-select {
+            width: 100%; padding: 14px 16px 14px 45px; 
+            background: #F8F5F2; border: 1px solid #D1C4B7; border-radius: 12px;
+            font-family: var(--f-body); font-size: 1rem; color: var(--text-dark); outline: none; transition: 0.3s;
+        }
+        .form-input:focus { border-color: var(--accent-orange); background: #FFF; box-shadow: 0 0 0 3px rgba(201, 138, 83, 0.2); }
+        .form-file { padding: 10px; padding-left: 10px; border: 2px dashed #D1C4B7; background: transparent; cursor: pointer; }
 
-.hidden { display: none !important; }
+        /* PREVIEW IMAGE */
+        #img-preview-container { margin-top: 10px; text-align: center; display: none; }
+        #img-preview { max-width: 100%; max-height: 150px; border-radius: 8px; border: 2px solid #EAE0D5; object-fit: cover; }
 
-/* INPUT PASSWORD WITH ICON */
-.password-wrapper { position: relative; }
-.password-wrapper input { padding-right: 45px; }
-.password-toggle {
-position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-cursor: pointer; color: #888; font-size: 1.2rem;
-}
+        /* TABS */
+        .tabs { display: flex; background: #F8F5F2; padding: 5px; border-radius: 14px; margin-bottom: 25px; border: 1px solid #EAE0D5;}
+        .tab-btn {
+            flex: 1; padding: 12px; border: none; border-radius: 10px;
+            background: transparent; font-family: var(--f-body); font-weight: 600; color: #888; cursor: pointer; transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--accent-orange); color: #FFF; box-shadow: 0 4px 10px rgba(201, 138, 83, 0.3); }
 
-/* TABS FIXED */
-.tabs { display: flex; background: #EFEBE9; padding: 5px; border-radius: var(--radius-md); margin-bottom: 30px; }
-.tab-btn {
-flex: 1; padding: 14px; border: none; background: none;
-font-weight: 800; color: #8D6E63; border-radius: 8px;
-cursor: pointer; transition: 0.2s; font-family: var(--f-body);
-text-transform: uppercase; font-size: 0.9rem;
-}
-.tab-btn.active {
-background: var(--c-gold); color: var(--c-brown-dark);
-box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
-}
+        .btn-solid {
+            width: 100%; padding: 15px; border: none; border-radius: 12px;
+            background: var(--text-dark); color: #FFF;
+            font-family: var(--f-body); font-weight: 600; font-size: 1.1rem;
+            cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s;
+        }
+        .btn-solid:hover:not(:disabled) { background: #3a220d; transform: translateY(-2px); }
+        .btn-solid:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* TICKET */
-.ticket-container {
-background: var(--c-white); border-radius: var(--radius-lg);
-overflow: hidden; box-shadow: var(--shadow-float); margin-top: 20px;
-}
-.ticket-header {
-background: var(--c-brown-dark); color: var(--c-gold); padding: 30px; text-align: center;
-background-image: radial-gradient(var(--c-gold) 1px, transparent 1px); background-size: 10px 10px;
-}
-.ticket-body { padding: 40px 30px 30px; text-align: center; }
-.user-name { font-family: var(--f-title); font-size: 2rem; font-weight: 800; margin: 0; line-height: 1.1; }
-.user-role { 
-background: var(--c-gold-light); color: var(--c-brown-dark); padding: 5px 12px;
-border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-top: 10px;
-}
-.ticket-divider { border-top: 2px dashed #ddd; margin: 25px 0; }
-.qr-wrapper { background: #fff; padding: 10px; display: inline-block; border: 1px solid #eee; border-radius: 12px; }
+        .btn-text {
+            width: 100%; padding: 15px; background: none; border: none;
+            color: var(--accent-orange); font-family: var(--f-body); font-weight: 600; cursor: pointer; text-decoration: underline;
+        }
 
-/* CONTACT */
-.contact-pill {
-display: flex; align-items: center; justify-content: center; gap: 10px;
-background: #fff; border: var(--border-ui); padding: 15px;
-border-radius: var(--radius-md); margin-top: 30px; font-size: 0.9rem;
-}
-.contact-btn {
-background: #25D366; color: white; text-decoration: none;
-padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 0.8rem;
-}
+        /* CUSTOM MODAL */
+        .custom-modal {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+            z-index: 9999; display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;
+        }
+        .custom-modal.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: #FFF; border-radius: 24px; padding: 30px; text-align: center;
+            max-width: 400px; width: 100%; transform: translateY(20px); transition: 0.3s;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        .custom-modal.show .modal-content { transform: translateY(0); }
+        .modal-icon { font-size: 3.5rem; margin-bottom: 15px; }
+        .modal-icon.success { color: #25D366; }
+        .modal-icon.error { color: #ff4d4d; }
+        .modal-title { font-family: var(--f-title); font-size: 1.8rem; color: var(--text-dark); margin: 0 0 10px 0; }
+        .modal-desc { color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5; white-space: pre-wrap; }
 
-@media (max-width: 900px) {
-.main-container { flex-direction: column; overflow-y: auto; }
-.visual-panel { flex: none; height: 35vh; padding: 20px; border-radius: 0 0 30px 30px; z-index: 10; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-.hero-title { font-size: 2.5rem; }
-.hero-details { display: none; }
-.main-logo { width: 100px; }
-.interaction-panel { flex: none; min-height: 65vh; overflow: visible; }
-.scroll-content { padding: 40px 20px 120px 20px; margin: 0; }
-}
-</style>
+        /* TICKET DASHBOARD */
+        .ticket-card {
+            background: #FFF; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .ticket-head {
+            background: linear-gradient(135deg, var(--bg-top), var(--accent-orange)); 
+            padding: 30px 20px; text-align: center; color: #FFF; position: relative;
+        }
+        .ticket-head::after {
+            content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 20px;
+            background: radial-gradient(circle, transparent 10px, #FFF 11px) repeat-x; background-size: 24px 24px;
+        }
+        .u-name { font-family: var(--f-title); font-size: 2.2rem; margin: 0; line-height: 1.1; color: var(--accent-orange); }
+        .u-role { display: inline-block; background: #F8F5F2; padding: 5px 15px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-top: 10px; border: 1px solid #E5D5C5;}
+        
+        .qr-box { margin: 25px auto 10px; padding: 15px; background: #FFF; border: 2px solid #F8F5F2; border-radius: 16px; display: inline-block;}
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 500px) {
+            .app-container { margin: 20px 15px; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="main-container">
-<!-- LEFT: VISUAL -->
-<div class="visual-panel">
-<div class="hero-content">
-<img src="logo.png" alt="GLOFEST" class="main-logo" onerror="this.style.display='none'">
-<h1 class="hero-title">GLOFEST<br>2.0</h1>
-<div class="hero-badge">Glotera Festival 2026</div>
-<div class="hero-details">
-<div class="detail-item"><h4>Kapan?</h4><p>8 Maret 2026<br>16.00 WIB</p></div>
-<div class="detail-item"><h4>Dimana?</h4><p>Surabaya<br>Akan diinformasikan oleh panitia.</p></div>
-</div>
-</div>
+<div class="dot-pattern"></div>
+<div class="bg-ornament ornament-left"></div>
+<div class="bg-ornament ornament-right"></div>
+
+<!-- CUSTOM MODAL POPUP -->
+<div id="app-modal" class="custom-modal">
+    <div class="modal-content">
+        <div id="modal-icon" class="modal-icon success"><i class="ph-check-circle-fill"></i></div>
+        <h3 id="modal-title" class="modal-title">Berhasil!</h3>
+        <p id="modal-desc" class="modal-desc">Pesan di sini</p>
+        <button class="btn-solid" onclick="closeModal()" id="modal-btn">Tutup</button>
+    </div>
 </div>
 
-<!-- RIGHT: INTERACTION -->
-<div class="interaction-panel">
-<div class="scroll-content">
+<div class="app-container">
 
-<!-- 1. LANDING -->
-<div id="landing-page" class="page-section active">
-<h2 style="font-family: var(--f-title); font-size: 2rem; margin-bottom: 10px;">Sugeng Rawuh!</h2>
-<p style="color:#666; margin-bottom: 30px;">Selamat datang di portal resmi Glofest 2.0. Silakan pilih menu di bawah ini.</p>
-<div style="display: flex; flex-direction: column; gap: 15px;">
-<button class="btn btn-primary" onclick="navTo('register-section')"><i class="ph-pencil-simple-bold"></i> DAFTAR SEKARANG</button>
-<button class="btn btn-outline" onclick="navTo('login-section')"><i class="ph-sign-in-bold"></i> LOGIN AKUN</button>
-</div>
-<div class="contact-pill">
-<span>Butuh bantuan?</span>
-<a href="https://wa.me/6285728881234" target="_blank" class="contact-btn">Chat Aufa</a>
-<a href="https://wa.me/6282139268696" target="_blank" class="contact-btn">Chat Waldan</a>
-</div>
+    <!-- 1. LANDING PAGE -->
+    <div id="landing-page" class="page-section active">
+        <div class="logo-wrapper">
+            <!-- LOGO UTAMA HASIL DESAIN -->
+            <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 380px; height: auto; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
+        </div>
+
+        <div class="pill-btn" onclick="navTo('register-section')">
+            <div class="pill-icon"><i class="ph-note-pencil-bold"></i></div>
+            <div class="pill-text">
+                <div class="pill-text-title">Daftar Sekarang</div>
+                <div class="pill-text-sub">Registrasi Peserta & Alumni</div>
+            </div>
+        </div>
+
+        <div class="pill-btn" onclick="navTo('login-section')">
+            <div class="pill-icon"><i class="ph-ticket-bold"></i></div>
+            <div class="pill-text">
+                <div class="pill-text-title">Akses Tiket</div>
+                <div class="pill-text-sub">Masuk dengan Kode Tiket</div>
+            </div>
+        </div>
+
+        <div class="contact-area">
+            <div class="contact-header">
+                <i class="ph-headset-fill" style="margin-right: 5px;"></i> Pusat Bantuan
+            </div>
+            <a href="https://wa.me/6285728881234" target="_blank" class="contact-item">
+                <div class="contact-icon"><i class="ph-whatsapp-logo-fill"></i></div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.95rem;">Aufa (Putra)</div>
+                    <div style="font-size: 0.8rem; opacity: 0.9;">+62 857-2888-1234</div>
+                </div>
+            </a>
+            <a href="https://wa.me/6282139268696" target="_blank" class="contact-item">
+                <div class="contact-icon"><i class="ph-whatsapp-logo-fill"></i></div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.95rem;">Aisyah (Putri)</div>
+                    <div style="font-size: 0.8rem; opacity: 0.9;">+62 821-3926-8696</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 2. REGISTER PAGE -->
+    <div id="register-section" class="page-section">
+        <div class="glass-panel">
+            <h2 class="panel-title">REGISTRASI</h2>
+            <p class="panel-subtitle">Isi data diri untuk mendapatkan Kode Tiket</p>
+            
+            <div class="tabs">
+                <button type="button" class="tab-btn active" id="tab-non" onclick="toggleTab('non')">Siswa SMASIF</button>
+                <button type="button" class="tab-btn" id="tab-alumni" onclick="toggleTab('alumni')">Alumni SMP</button>
+            </div>
+
+            <form id="reg-form">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <div class="input-wrapper">
+                        <i class="ph-user-fill prefix-icon"></i>
+                        <input type="text" class="form-input" id="reg-nama" placeholder="Nama sesuai absen..." required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nomor WhatsApp</label>
+                    <div class="input-wrapper">
+                        <i class="ph-whatsapp-logo-fill prefix-icon"></i>
+                        <!-- Pola input wajib angka -->
+                        <input type="tel" class="form-input" id="reg-wa" pattern="[0-9]+" placeholder="08..." required>
+                    </div>
+                    <small style="font-size: 0.75rem; color: #666;">*Untuk jaga-jaga jika lupa kode.</small>
+                </div>
+
+                <!-- Bukti Bayar -->
+                <div id="field-bukti" class="form-group hidden">
+                    <label class="form-label">Bukti Pembayaran (Rp 170.000)</label>
+                    <input type="file" id="reg-bukti" class="form-input form-file" accept="image/png, image/jpeg, image/jpg">
+                    <small style="font-size: 0.75rem; color: #666;">*Format JPG/PNG maks 3MB</small>
+                    <!-- Preview Image -->
+                    <div id="img-preview-container">
+                        <img id="img-preview" src="#" alt="Preview Bukti">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-solid" id="btn-submit-reg">Dapatkan Kode Tiket <i class="ph-arrow-right-bold"></i></button>
+                <button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. LOGIN PAGE -->
+    <div id="login-section" class="page-section">
+        <div class="glass-panel">
+            <h2 class="panel-title">AKSES TIKET</h2>
+            <p class="panel-subtitle">Masukkan Kode Unik Anda</p>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label">Kode Tiket</label>
+                    <div class="input-wrapper">
+                        <i class="ph-ticket-fill prefix-icon"></i>
+                        <input type="text" class="form-input" id="login-kode" placeholder="Contoh: GLO-123" required style="text-transform: uppercase; font-weight: 700; letter-spacing: 2px; text-align: center; padding-left: 16px;">
+                    </div>
+                </div>
+                
+                <div id="login-error" style="color:red; margin-bottom: 15px; font-weight:600; font-size: 0.9rem; text-align:center;"></div>
+                
+                <button type="submit" class="btn-solid" id="btn-submit-login">Tampilkan Tiket <i class="ph-qr-code-bold"></i></button>
+                <button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. DASHBOARD PESERTA -->
+    <div id="dashboard-peserta" class="page-section">
+        <div class="ticket-card">
+            <div class="ticket-head">
+                <h2 style="font-family: var(--f-title); font-size: 2rem; margin: 0; letter-spacing: 1px;">GLOFEST 2.0</h2>
+                <div style="font-size: 0.8rem; letter-spacing: 2px; opacity: 0.9; margin-top: 5px;">TIKET MASUK</div>
+            </div>
+            
+            <div style="padding: 40px 30px 30px; text-align: center; color: var(--text-dark);">
+                <div style="font-size: 0.8rem; font-weight: 600; color: #888; text-transform: uppercase;">Nama Tamu</div>
+                <h1 class="u-name" id="u-nama">...</h1>
+                <div class="u-role" id="u-kategori">...</div>
+                
+                <div style="margin-top: 25px;">
+                    <div style="font-size: 0.8rem; font-weight: 600; color: #888; text-transform: uppercase;">KODE TIKET</div>
+                    <div style="font-size: 2rem; font-family: var(--f-title); color: var(--text-dark);" id="u-kode">...</div>
+                </div>
+
+                <div class="qr-box" id="qrcode"></div>
+                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">Tunjukkan QR ini ke panitia</div>
+            </div>
+        </div>
+        
+        <button class="btn-outline-white" onclick="doLogout()" style="margin-top: 20px; width: 100%; padding: 12px; border: 2px solid rgba(255,255,255,0.5); background: transparent; color: #fff; border-radius: 30px; cursor: pointer; font-family: var(--f-body); font-weight: 600;">Keluar</button>
+    </div>
+
+    <!-- 5. DASHBOARD SCANNER (PANITIA) -->
+    <div id="dashboard-panitia" class="page-section">
+        <div class="glass-panel">
+            <h2 class="panel-title">SCANNER</h2>
+            <div style="border: 4px solid #F8F5F2; border-radius: 16px; padding: 5px; margin-bottom: 20px; overflow:hidden;">
+                <div id="reader"></div>
+            </div>
+            
+            <div id="scan-result" style="display:none; padding: 20px; border-radius: 12px; background: #F8F5F2; text-align: center;">
+                <h3 id="res-title" style="margin:0; font-family: var(--f-title); color: var(--accent-orange); font-size: 1.6rem;">...</h3>
+                <p id="res-body" style="font-weight: 700; margin-top: 8px;">...</p>
+                <button class="btn-solid" id="btn-reset-scan" style="margin-top: 15px;">Scan Lagi <i class="ph-arrows-clockwise-bold"></i></button>
+            </div>
+
+            <button class="btn-text" onclick="doLogout()">Tutup Scanner</button>
+        </div>
+    </div>
 </div>
 
-<!-- 2. REGISTER -->
-<div id="register-section" class="page-section">
-<h2 style="font-family: var(--f-title);">Daftar Baru</h2>
-<p style="color:#666; margin-bottom: 20px;">Isi data diri kamu dengan benar ya!</p>
-
-<div class="tabs">
-<button type="button" class="tab-btn active" id="tab-alumni" onclick="toggleTab('alumni')">ALUMNI SMP</button>
-<button type="button" class="tab-btn" id="tab-non" onclick="toggleTab('non')">SMASIF</button>
-</div>
-
-<form id="reg-form">
-<div class="form-group">
-<label class="form-label">Nama Lengkap</label>
-<input type="text" class="form-input" id="reg-nama" required>
-</div>
-<div class="form-group">
-<label class="form-label">Jenis Kelamin</label>
-<select id="reg-gender" class="form-select" required>
-<option value="Laki-laki">Laki-laki</option>
-<option value="Perempuan">Perempuan</option>
-</select>
-</div>
-
-<!-- INPUT DINAMIS -->
-<div id="field-alumni" class="form-group">
-<label class="form-label">Sekolah & Kelas SMA Sekarang</label>
-<input type="text" class="form-input" id="reg-asal" placeholder="Contoh: SMAN 1 Sidoarjo (11 IPA 2)">
-</div>
-
-<div id="field-non-alumni" class="form-group hidden">
-<label class="form-label">Kelas di SMASIF</label>
-<input type="text" class="form-input" id="reg-kelas" placeholder="Contoh: 12 IPA 1">
-</div>
-
-<div class="form-group">
-<label class="form-label">Email (Untuk Login)</label>
-<input type="email" class="form-input" id="reg-email" placeholder="Email aktif..." required>
-</div>
-<div class="form-group">
-<label class="form-label">WhatsApp</label>
-<input type="tel" class="form-input" id="reg-wa" required>
-</div>
-<div class="form-group">
-<label class="form-label">Nominal Transfer</label>
-<input type="text" class="form-input" id="reg-nominal" value="Rp 170.000" readonly style="background:#eee; font-weight:bold;">
-</div>
-<div class="form-group">
-<label class="form-label">Bukti Transfer</label>
-<input type="file" id="reg-bukti" class="form-input form-file" accept="image/*" required>
-</div>
-
-<button type="submit" class="btn btn-primary">KIRIM DATA</button>
-<button type="button" class="btn btn-link" onclick="navTo('landing-page')">Batal / Kembali</button>
-</form>
-</div>
-
-<!-- 3. LOGIN -->
-<div id="login-section" class="page-section">
-<h2 style="font-family: var(--f-title);">Login Peserta</h2>
-<p style="color:#666; margin-bottom: 20px;">Masuk jika akun sudah diverifikasi admin.</p>
-<form id="login-form">
-<div class="form-group">
-<label class="form-label">Email</label>
-<input type="email" class="form-input" id="login-email" required>
-</div>
-<div class="form-group">
-<label class="form-label">Password</label>
-<div class="password-wrapper">
-<input type="password" class="form-input" id="login-pass" required>
-<i class="ph-eye-slash password-toggle" id="toggle-pass" onclick="togglePassword()"></i>
-</div>
-</div>
-<div id="login-error" style="color:#D32F2F; margin-bottom: 15px; font-size: 0.9rem;"></div>
-<button type="submit" class="btn btn-primary">MASUK</button>
-<button type="button" class="btn btn-link" onclick="navTo('landing-page')">Kembali</button>
-</form>
-</div>
-
-<!-- 4. DASHBOARD -->
-<div id="dashboard-peserta" class="page-section">
-<div class="ticket-container">
-<div class="ticket-header">
-<div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:2px; opacity:0.8;">OFFICIAL TICKET</div>
-<h2 style="margin:5px 0 0; font-family:var(--f-title); font-size:1.8rem;">GLOFEST 2.0</h2>
-</div>
-<div class="ticket-body">
-<h1 class="user-name" id="u-nama">...</h1>
-<span class="user-role" id="u-kategori">...</span>
-<div class="ticket-divider"></div>
-<div style="margin-bottom: 15px;">
-<div style="font-size:0.7rem; color:#999; text-transform:uppercase; font-weight:bold;">LUCKY NUMBER</div>
-<div style="font-size:2rem; font-family:var(--f-title); color:var(--c-brown-dark);" id="u-undian">...</div>
-</div>
-<div class="qr-wrapper"><div id="qrcode"></div></div>
-<div id="qr-timer" style="margin-top:10px; color:#D32F2F; font-weight:bold; font-size:0.8rem;"></div>
-</div>
-</div>
-<button class="btn btn-outline" onclick="doLogout()" style="margin-top: 20px;">LOGOUT</button>
-</div>
-
-<!-- 5. PANITIA -->
-<div id="dashboard-panitia" class="page-section">
-<h2 style="font-family: var(--f-title);">Scanner Panitia</h2>
-<div style="background:#000; padding:10px; border-radius:12px; margin-top:20px;"><div id="reader"></div></div>
-<div id="scan-result" style="display:none; margin-top:20px; padding:20px; border-radius:12px; text-align:center; border:1px solid #ddd;">
-<h3 id="res-title" style="margin:0;">...</h3>
-<p id="res-body" style="margin:5px 0;">...</p>
-<button class="btn btn-primary" id="btn-reset-scan" style="margin-top:10px; padding:10px;">SCAN NEXT</button>
-</div>
-<button class="btn btn-link" onclick="doLogout()">Keluar</button>
-</div>
-</div>
-</div>
-</div>
-
-<!-- JAVASCRIPT LOGIC -->
 <script>
-// === CONFIG (GUNAKAN URL HASIL DEPLOY TERBARU KAMU) ===
-// JANGAN LUPA DEPLOY SCRIPT G-APPS-SCRIPT JADI 'NEW VERSION'
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZ2drv2MXvO00lPRIBtrCZ7Dg_EKc6dYrZ0mXh4e-t9kqv0V4LZQzqOZfk68ct2pYzhA/exec"; 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzhMROihv-w0kNjdeATFm5o-vGFFKBzKj5kyfodeYWY9-VzrGDZYcyUNQ5ZIrI_AqSGtg/exec"; 
+    // === MASUKKAN URL DEPLOY WEB APP DI SINI SETELAH DEPLOY ===
+    const GOOGLE_SCRIPT_URL = ""; 
 
-let currentUser = null;
-let html5QrcodeScanner = null;
-let qrTimer = null;
+    let currentUser = null;
+    let html5QrcodeScanner = null;
 
-function navTo(id) {
-document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-setTimeout(() => {
-const target = document.getElementById(id);
-if(target) target.classList.add('active');
-}, 100);
-if(id !== 'dashboard-panitia' && html5QrcodeScanner) html5QrcodeScanner.clear().catch(e => console.log(e));
-document.getElementById('login-error').innerText = "";
-}
+    // --- MODAL LOGIC ---
+    function showModal(title, message, isSuccess = true, callback = null) {
+        const modal = document.getElementById('app-modal');
+        const icon = document.getElementById('modal-icon');
+        
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-desc').innerText = message;
+        
+        if(isSuccess) {
+            icon.className = "modal-icon success";
+            icon.innerHTML = '<i class="ph-check-circle-fill"></i>';
+        } else {
+            icon.className = "modal-icon error";
+            icon.innerHTML = '<i class="ph-x-circle-fill"></i>';
+        }
+        
+        modal.classList.add('show');
+        
+        document.getElementById('modal-btn').onclick = () => {
+            closeModal();
+            if(callback) callback();
+        };
+    }
+    function closeModal() { document.getElementById('app-modal').classList.remove('show'); }
 
-// Toggle Password Visibility
-function togglePassword() {
-const passInput = document.getElementById('login-pass');
-const icon = document.getElementById('toggle-pass');
-if (passInput.type === "password") {
-passInput.type = "text";
-icon.classList.replace('ph-eye-slash', 'ph-eye');
-} else {
-passInput.type = "password";
-icon.classList.replace('ph-eye', 'ph-eye-slash');
-}
-}
+    // --- NAVIGATION ---
+    function navTo(id) {
+        document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+        setTimeout(() => { if(document.getElementById(id)) document.getElementById(id).classList.add('active'); }, 50);
+        document.getElementById('login-error').innerText = "";
+        if(id !== 'dashboard-panitia' && html5QrcodeScanner) { try { html5QrcodeScanner.clear(); } catch(e) {} }
+    }
 
-// Toggle Tab
-function toggleTab(type) {
-const alumniBtn = document.getElementById('tab-alumni');
-const nonBtn = document.getElementById('tab-non');
-const fieldAlumni = document.getElementById('field-alumni');
-const fieldNon = document.getElementById('field-non-alumni');
+    // --- UI INTERACTIONS ---
+    function toggleTab(type) {
+        const alumniBtn = document.getElementById('tab-alumni');
+        const nonBtn = document.getElementById('tab-non');
+        const fieldBukti = document.getElementById('field-bukti');
 
-if(type === 'alumni') {
-alumniBtn.classList.add('active'); 
-nonBtn.classList.remove('active');
-fieldAlumni.classList.remove('hidden'); 
-fieldNon.classList.add('hidden');
-document.getElementById('reg-asal').setAttribute('required', '');
-document.getElementById('reg-kelas').removeAttribute('required');
-document.getElementById('reg-kelas').value = ""; 
-} else {
-nonBtn.classList.add('active'); 
-alumniBtn.classList.remove('active');
-fieldNon.classList.remove('hidden'); 
-fieldAlumni.classList.add('hidden');
-document.getElementById('reg-kelas').setAttribute('required', '');
-document.getElementById('reg-asal').removeAttribute('required');
-document.getElementById('reg-asal').value = "";
-}
-}
+        if(type === 'alumni') {
+            alumniBtn.classList.add('active'); nonBtn.classList.remove('active');
+            fieldBukti.classList.remove('hidden'); 
+            document.getElementById('reg-bukti').setAttribute('required', '');
+        } else {
+            nonBtn.classList.add('active'); alumniBtn.classList.remove('active');
+            fieldBukti.classList.add('hidden'); 
+            document.getElementById('reg-bukti').removeAttribute('required');
+        }
+    }
 
-const fileToBase64 = file => new Promise((resolve, reject) => {
-const reader = new FileReader();
-reader.readAsDataURL(file);
-reader.onload = () => resolve(reader.result);
-reader.onerror = error => reject(error);
-});
+    // IMAGE PREVIEW LOGIC
+    document.getElementById('reg-bukti').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const previewContainer = document.getElementById('img-preview-container');
+        const previewImage = document.getElementById('img-preview');
+        
+        if(file) {
+            if(file.size > 3 * 1024 * 1024) {
+                showModal("File Kebesaran", "Maksimal ukuran foto adalah 3MB ya.", false);
+                this.value = ''; previewContainer.style.display = "none"; return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewContainer.style.display = "block";
+            }
+            reader.readAsDataURL(file);
+        } else {
+            previewContainer.style.display = "none";
+        }
+    });
 
-document.getElementById('reg-form').addEventListener('submit', async (e) => {
-e.preventDefault();
-const btn = e.target.querySelector('button[type="submit"]');
-const originalText = btn.innerText;
-btn.innerText = "Mengirim..."; btn.disabled = true;
+    const fileToBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+    });
 
-try {
-const uid = "U-" + Date.now();
-const password = "GLO-" + Math.floor(1000 + Math.random() * 9000); 
-const undian = Math.floor(100000 + Math.random() * 900000).toString();
+    async function apiCall(payload) {
+        if (!GOOGLE_SCRIPT_URL) return mockApi(payload); 
+        try {
+            const res = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST', body: JSON.stringify(payload)
+            });
+            return await res.json();
+        } catch (error) { throw new Error("Gagal koneksi ke server. Coba lagi nanti."); }
+    }
 
-let detail = "";
-let kategori = "SMASIF";
+    // --- REGISTRASI ---
+    document.getElementById('reg-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btn-submit-reg');
+        btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Memproses...'; btn.disabled = true;
 
-if(!document.getElementById('field-alumni').classList.contains('hidden')) {
-kategori = "Alumni SMP";
-detail = `SMA: ${document.getElementById('reg-asal').value}`;
-} else {
-kategori = "SMASIF";
-detail = `Kelas: ${document.getElementById('reg-kelas').value}`;
-}
+        try {
+            const isAlumni = document.getElementById('tab-alumni').classList.contains('active');
+            let fileData = ""; let fileName = "";
+            
+            if (isAlumni) {
+                const fileInput = document.getElementById('reg-bukti');
+                if (fileInput.files.length > 0) {
+                    fileData = await fileToBase64(fileInput.files[0]);
+                    fileName = `BUKTI_${Date.now()}_${fileInput.files[0].name}`;
+                }
+            }
 
-const fileInput = document.getElementById('reg-bukti');
-let fileData = ""; let fileName = ""; let fileType = "";
-if (fileInput.files.length > 0) {
-const file = fileInput.files[0];
-if(file.size > 3 * 1024 * 1024) throw new Error("Ukuran file terlalu besar (Max 3MB)");
-fileName = file.name; fileType = file.type;
-const fullBase64 = await fileToBase64(file);
-fileData = fullBase64.split(',')[1];
-}
+            const payload = {
+                action: 'register',
+                nama: document.getElementById('reg-nama').value,
+                wa: document.getElementById('reg-wa').value,
+                kategori: isAlumni ? 'Alumni' : 'Siswa SMASIF',
+                fileData: fileData, fileName: fileName
+            };
 
-const payload = {
-action: 'register',
-uid: uid,
-email: document.getElementById('reg-email').value,
-password: password, 
-nama: document.getElementById('reg-nama').value,
-kategori: kategori,
-wa: document.getElementById('reg-wa').value,
-kode_undian: undian,
-gender: document.getElementById('reg-gender').value,
-detail_info: detail,
-fileData: fileData, fileName: fileName, fileType: fileType
-};
+            const result = await apiCall(payload);
+            if(result.status === 'success') {
+                const msg = `Halo ${result.nama},\n\nIni adalah Kode Tiketmu:\n👉 ${result.kode} 👈\n\nCATAT ATAU SCREENSHOT kode ini untuk masuk!`;
+                showModal("Registrasi Berhasil!", msg, true, () => {
+                    navTo('login-section');
+                    e.target.reset();
+                    document.getElementById('img-preview-container').style.display = "none";
+                });
+            } else { throw new Error(result.message); }
+        } catch (err) { 
+            showModal("Gagal", err.message, false); 
+        } finally { 
+            btn.innerHTML = 'Dapatkan Kode Tiket <i class="ph-arrow-right-bold"></i>'; btn.disabled = false; 
+        }
+    });
 
-const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-const result = await res.json();
+    // --- LOGIN ---
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btn-submit-login');
+        btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengecek...'; btn.disabled = true;
+        const errDiv = document.getElementById('login-error');
+        errDiv.innerText = "";
+        
+        try {
+            const kode = document.getElementById('login-kode').value.toUpperCase();
+            if(kode === "PANITIA-GLO") {
+                 currentUser = { role: 'panitia' }; initPanitia(); return;
+            }
 
-if(result.status === 'success') {
-alert(`PENDAFTARAN BERHASIL!\n\nEmail: ${payload.email}\nPassword: ${password}\n\nSILAKAN SCREENSHOT! Simpan password ini. Akun akan aktif setelah diverifikasi admin (Centang di Spreadsheet).`);
-navTo('landing-page');
-} else {
-throw new Error(result.message);
-}
-} catch (err) {
-alert("Gagal: " + err.message);
-} finally {
-btn.innerText = originalText; btn.disabled = false;
-}
-});
+            const result = await apiCall({ action: 'login', kode: kode });
+            if(result.status === 'success') {
+                currentUser = result.data;
+                initPeserta();
+            } else { errDiv.innerText = result.message; }
+        } catch (err) { errDiv.innerText = err.message; } 
+        finally { btn.innerHTML = 'Tampilkan Tiket <i class="ph-qr-code-bold"></i>'; btn.disabled = false; }
+    });
 
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-e.preventDefault();
-const btn = e.target.querySelector('button[type="submit"]');
-btn.innerText = "Mengecek..."; btn.disabled = true;
-const errDiv = document.getElementById('login-error');
-errDiv.innerHTML = "";
+    function initPeserta() {
+        navTo('dashboard-peserta');
+        document.getElementById('u-nama').innerText = currentUser.nama;
+        document.getElementById('u-kategori').innerText = currentUser.kategori;
+        document.getElementById('u-kode').innerText = currentUser.kode;
+        
+        document.getElementById('qrcode').innerHTML = "";
+        new QRCode(document.getElementById('qrcode'), { 
+            text: JSON.stringify({ kode: currentUser.kode, uid: currentUser.uid }), 
+            width: 150, height: 150, colorDark: "#5A3A1A", colorLight: "#ffffff" 
+        });
+    }
 
-try {
-const email = document.getElementById('login-email').value;
-const pass = document.getElementById('login-pass').value;
-const url = `${GOOGLE_SCRIPT_URL}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(pass)}`;
+    // --- SCANNER (VERSI AMAN NGECEK DATABASE) ---
+    function initPanitia() {
+        navTo('dashboard-panitia');
+        html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+        
+        html5QrcodeScanner.render(async (decoded) => {
+            html5QrcodeScanner.pause(); // Stop scan bentar biar ga dobel
+            
+            const resDiv = document.getElementById('scan-result');
+            const title = document.getElementById('res-title');
+            const body = document.getElementById('res-body');
+            
+            resDiv.style.display = 'block';
+            title.innerHTML = "<i class='ph-spinner ph-spin'></i> Cek Database...";
+            title.style.color = "var(--text-dark)";
+            body.innerText = "Mohon tunggu...";
 
-const res = await fetch(url);
-const result = await res.json();
+            try {
+                const data = JSON.parse(decoded);
+                if(!data.kode) throw new Error("Format QR Tidak Dikenal.");
 
-if(result.status === 'success') {
-currentUser = result.data;
-if(currentUser.role === 'panitia') initPanitia();
-else initPeserta();
-} else {
-errDiv.innerHTML = `${result.message}<br><br><a href="https://wa.me/6281335895758" target="_blank" class="btn-link" style="color:#D32F2F; font-weight:bold;">Apakah Ada Kendala?</a>`;
-}
-} catch (err) {
-errDiv.innerHTML = "Gagal koneksi server. Coba lagi.";
-} finally {
-btn.innerText = "MASUK"; btn.disabled = false;
-}
-});
+                // Cek ke backend beneran
+                const result = await apiCall({ action: 'scan', kode: data.kode });
+                
+                if(result.status === 'success') {
+                    title.innerHTML = "✅ TIKET VALID";
+                    title.style.color = "#2E7D32"; // Hijau
+                    body.innerHTML = `${result.data.nama}<br><span style="color:#666; font-size:0.9rem;">${result.data.kategori}</span>`;
+                } else {
+                    throw new Error(result.message); // Misal: "Tiket sudah digunakan!"
+                }
+            } catch (err) {
+                title.innerHTML = "❌ DITOLAK";
+                title.style.color = "#D32F2F"; // Merah
+                body.innerText = err.message || "QR Code tidak valid!";
+            }
+        });
 
-function doLogout() {
-currentUser = null;
-window.location.reload();
-}
+        document.getElementById('btn-reset-scan').onclick = () => {
+            document.getElementById('scan-result').style.display = 'none';
+            html5QrcodeScanner.resume();
+        };
+    }
 
-function initPeserta() {
-navTo('dashboard-peserta');
-document.getElementById('u-nama').innerText = currentUser.nama;
-document.getElementById('u-kategori').innerText = currentUser.kategori;
-document.getElementById('u-undian').innerText = currentUser.kode_undian || '-';
+    function doLogout() { 
+        currentUser = null; 
+        document.getElementById('login-form').reset(); 
+        navTo('landing-page'); 
+    }
 
-const container = document.getElementById('qrcode');
-container.innerHTML = "";
-const payload = { uid: currentUser.uid, exp: Date.now() + (15 * 60 * 1000) };
-
-new QRCode(container, { text: JSON.stringify(payload), width: 120, height: 120, colorDark: "#3E2723", colorLight: "#FFFFFF" });
-
-clearInterval(qrTimer);
-const timerDisplay = document.getElementById('qr-timer');
-qrTimer = setInterval(() => {
-const diff = payload.exp - Date.now();
-if(diff < 0) {
-timerDisplay.innerText = "QR EXPIRED"; container.style.opacity = "0.2";
-clearInterval(qrTimer);
-} else {
-const m = Math.floor(diff / 60000);
-const s = Math.floor((diff % 60000) / 1000);
-timerDisplay.innerText = `Refresh: ${m}:${s < 10 ? '0'+s : s}`;
-}
-}, 1000);
-}
-
-function initPanitia() {
-navTo('dashboard-panitia');
-if(!html5QrcodeScanner) {
-html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
-html5QrcodeScanner.render(onScanSuccess, (e) => {});
-}
-}
-
-async function onScanSuccess(decodedText) {
-html5QrcodeScanner.pause();
-const resDiv = document.getElementById('scan-result');
-const title = document.getElementById('res-title');
-const body = document.getElementById('res-body');
-resDiv.style.display = 'block';
-title.innerText = "Memproses...";
-
-try {
-const data = JSON.parse(decodedText);
-if(Date.now() > data.exp) throw new Error("QR Expired");
-
-const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'scan', uid: data.uid }) });
-const result = await res.json();
-
-if(result.status === 'success') {
-title.innerText = "✅ VALID"; title.style.color = "green";
-body.innerText = `${result.nama} (${result.kategori})`;
-} else {
-throw new Error(result.message);
-}
-} catch (err) {
-title.innerText = "❌ DITOLAK"; title.style.color = "red";
-body.innerText = err.message;
-}
-}
-
-document.getElementById('btn-reset-scan').addEventListener('click', () => {
-document.getElementById('scan-result').style.display = 'none';
-html5QrcodeScanner.resume();
-});
+    // MOCK API (Hapus saat disambung ke script asli)
+    function mockApi(p) {
+        return new Promise(r => setTimeout(() => {
+            if(p.action === 'register') r({status:'success', nama:p.nama, kode:'GLO-'+Math.floor(Math.random()*1000)});
+            if(p.action === 'login') r({status:'success', data:{nama:'Rafa Mock', kategori:'Siswa SMASIF', kode:p.kode, uid:'123'}});
+            // Mock simulasi scan
+            if(p.action === 'scan') {
+                if(Math.random() > 0.3) r({status:'success', data:{nama:'Tamu Undangan', kategori:'Alumni'}});
+                else r({status:'error', message:'Tiket sudah di-scan sebelumnya!'}); // simulasi error 30%
+            }
+        }, 1200));
+    }
 </script>
 </body>
 </html>
