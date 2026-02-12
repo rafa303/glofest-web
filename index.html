@@ -2,13 +2,13 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GLOFEST 2.0 - Glotera Festival</title>
 
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Shrikhand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Shrikhand&display=swap" rel="stylesheet">
 
     <!-- LIBRARIES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -23,14 +23,14 @@
             --text-light: #FFFFFF;
             --text-dark: #5A3A1A;
             --accent-orange: #C98A53;
-            --accent-glow: rgba(201, 138, 83, 0.5);
+            --accent-glow: rgba(201, 138, 83, 0.6);
             
             --f-title: 'Shrikhand', cursive;
             --f-body: 'Poppins', sans-serif;
 
             --glass-bg: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-blur: blur(16px);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-blur: blur(20px);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -38,8 +38,8 @@
         /* HILANGKAN SLIDING BAR SCROLLBAR */
         ::-webkit-scrollbar { display: none; }
         body {
-            -ms-overflow-style: none; /* IE and Edge */
-            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
             margin: 0; padding: 0;
             font-family: var(--f-body);
             background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
@@ -53,7 +53,36 @@
             position: relative;
         }
 
-        /* HALFTONE PATTERN */
+        /* ================= LOADING SCREEN ================= */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #8A5A33; /* Warna gelap agar kontras */
+            z-index: 999999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.6s cubic-bezier(0.8, 0, 0.2, 1), visibility 0.6s;
+        }
+        #loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        
+        .loader-spinner {
+            width: 60px; height: 60px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top: 4px solid var(--accent-orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite, glowPulse 2s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        .loader-text {
+            font-family: var(--f-title); font-size: 2rem;
+            color: #FFF; letter-spacing: 3px;
+            text-shadow: 0 0 15px var(--accent-glow);
+            animation: pulseOpacity 1.5s infinite alternate;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 10px var(--accent-glow); } 50% { box-shadow: 0 0 25px var(--accent-glow), inset 0 0 15px var(--accent-glow); } }
+        @keyframes pulseOpacity { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* ================= BACKGROUND EFFECTS ================= */
         .dot-pattern {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 0;
@@ -61,15 +90,28 @@
             background-size: 14px 14px;
         }
 
+        /* Ambient Orbs */
+        .ambient-orb {
+            position: fixed; border-radius: 50%; filter: blur(60px); opacity: 0.5;
+            pointer-events: none; z-index: 0; animation: floatOrb 12s ease-in-out infinite alternate;
+        }
+        .orb-1 { width: 300px; height: 300px; background: #C98A53; top: -50px; left: -100px; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: #D5B18A; bottom: -100px; right: -150px; animation-delay: -5s; }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.2); }
+        }
+
         /* ORNAMENTS */
         .bg-ornament {
-            position: fixed; pointer-events: none; z-index: 1; opacity: 0.15;
+            position: fixed; pointer-events: none; z-index: 1; opacity: 0.12;
             background-size: contain; background-repeat: no-repeat;
             animation: floatOrnament 8s ease-in-out infinite;
         }
         @keyframes floatOrnament {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
         }
         .ornament-left {
             bottom: -20px; left: -50px; width: 300px; height: 600px;
@@ -83,52 +125,69 @@
             animation-delay: -4s;
         }
 
-        /* CONTAINER UTAMA */
+        /* ================= LAYOUT ================= */
         .app-container {
             width: 100%; max-width: 500px; margin: 40px 20px;
             position: relative; z-index: 10; display: flex; flex-direction: column;
-            flex-grow: 1; /* Biar nempel ke footer */
+            flex-grow: 1; justify-content: center;
         }
 
-        /* COPYRIGHT FOOTER */
         .copyright-text {
-            text-align: center;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
-            padding: 20px 0;
-            font-weight: 600;
-            letter-spacing: 1px;
-            z-index: 10;
-            margin-top: auto;
-            text-transform: uppercase;
+            text-align: center; font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);
+            padding: 20px 0; font-weight: 600; letter-spacing: 1.5px;
+            z-index: 10; margin-top: auto; text-transform: uppercase;
         }
 
-        .page-section { display: none; animation: fadeIn 0.4s ease forwards; width: 100%; }
-        .page-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* ================= PAGE TRANSITIONS & ANIMATIONS ================= */
+        .page-section { display: none; width: 100%; opacity: 0; }
+        .page-section.active { display: block; animation: smoothFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        @keyframes smoothFadeIn { 
+            0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(5px); } 
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+        }
 
-        .logo-wrapper { text-align: center; margin-bottom: 25px; position: relative; display: flex; flex-direction: column; align-items: center;}
+        /* Staggered Animations for Landing Page */
+        .stagger-item { opacity: 0; transform: translateY(20px); }
+        .page-section.active .stagger-item:nth-child(1) { animation: slideUpFade 0.6s ease forwards 0.1s; }
+        .page-section.active .stagger-item:nth-child(2) { animation: slideUpFade 0.6s ease forwards 0.2s; }
+        .page-section.active .stagger-item:nth-child(3) { animation: slideUpFade 0.6s ease forwards 0.3s; }
+        .page-section.active .stagger-item:nth-child(4) { animation: slideUpFade 0.6s ease forwards 0.4s; }
 
-        /* BUTTONS */
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+
+        .logo-wrapper { text-align: center; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center;}
+
+        /* ================= BUTTONS & COMPONENTS ================= */
         .pill-btn {
             display: flex; align-items: center;
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-            border: 2px solid var(--glass-border); border-radius: 60px;
+            border: 1px solid var(--glass-border); border-radius: 60px;
             padding: 8px 25px 8px 8px; margin-bottom: 20px;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); width: 100%;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15), inset 0 0 0 transparent; width: 100%;
             position: relative; overflow: hidden;
         }
-        .pill-btn:hover { 
-            background: rgba(255, 255, 255, 0.25); transform: translateY(-3px); 
-            box-shadow: 0 12px 25px rgba(0,0,0,0.2), 0 0 15px var(--accent-glow); border-color: #FFF;
+        .pill-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-20deg); transition: 0.5s;
         }
+        .pill-btn:hover { 
+            background: rgba(255, 255, 255, 0.25); transform: translateY(-4px) scale(1.02); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2), 0 0 20px var(--accent-glow); border-color: #FFF;
+        }
+        .pill-btn:hover::before { left: 150%; }
+        .pill-btn:active { transform: translateY(1px) scale(0.98); }
+
         .pill-icon {
             background: #FFFFFF; color: var(--accent-orange);
             border-radius: 50%; width: 55px; height: 55px;
             display: flex; justify-content: center; align-items: center; font-size: 1.8rem;
             margin-right: 20px; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        .pill-btn:hover .pill-icon { transform: rotate(-10deg) scale(1.1); }
         .pill-text-title { font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
         .pill-text-sub { font-size: 0.8rem; font-weight: 400; opacity: 0.9; }
 
@@ -137,8 +196,10 @@
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
             margin-top: 20px; display: flex; flex-direction: column; gap: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: 0.3s;
         }
+        .contact-area:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.6); }
+        
         .contact-header {
             font-family: var(--f-body); font-weight: 700; font-size: 0.9rem; color: #FFF;
             text-transform: uppercase; letter-spacing: 2px; text-align: center;
@@ -147,7 +208,7 @@
         .contact-item {
             display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.1);
             padding: 12px 15px; border-radius: 12px; text-decoration: none; color: #FFF;
-            transition: 0.3s; border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border: 1px solid transparent;
         }
         .contact-item:hover {
             background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5);
@@ -157,122 +218,207 @@
             background: #25D366; color: #FFF; width: 40px; height: 40px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center; font-size: 1.5rem;
             box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); flex-shrink: 0;
+            transition: transform 0.3s;
         }
+        .contact-item:hover .contact-icon { transform: scale(1.1) rotate(10deg); }
 
-        /* PANELS & FORMS */
+        /* ================= PANELS & FORMS ================= */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px);
-            border-radius: 24px; padding: 30px; color: var(--text-dark);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px; padding: 35px 30px; color: var(--text-dark);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.5);
+            position: relative; overflow: hidden;
+        }
+        /* Top accent line on panel */
+        .glass-panel::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--bg-top), var(--accent-orange));
         }
         
         .panel-title {
             font-family: var(--f-title); color: var(--accent-orange);
             font-size: 2.2rem; margin: 0 0 5px 0; text-align: center;
-            letter-spacing: 3px; text-shadow: 1px 1px 0px #DAC0A3;
+            letter-spacing: 3px; text-shadow: 2px 2px 0px #F3E5D8;
         }
-        .panel-subtitle { text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 25px; }
+        .panel-subtitle { text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 25px; font-weight: 500; }
 
-        .form-group { margin-bottom: 18px; }
-        .form-label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: #4A3015; }
         .input-wrapper { position: relative; }
         .input-wrapper i.prefix-icon {
             position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-            color: #A09385; font-size: 1.2rem;
+            color: #A09385; font-size: 1.3rem; transition: 0.3s;
         }
-        .form-input, .form-select {
-            width: 100%; padding: 14px 16px 14px 45px; 
-            background: #F8F5F2; border: 1px solid #D1C4B7; border-radius: 12px;
-            font-family: var(--f-body); font-size: 1rem; color: var(--text-dark); outline: none; transition: 0.3s;
+        .form-input {
+            width: 100%; padding: 15px 16px 15px 48px; 
+            background: #F8F5F2; border: 2px solid #EAE0D5; border-radius: 14px;
+            font-family: var(--f-body); font-size: 1rem; color: var(--text-dark); outline: none; transition: all 0.3s ease;
         }
-        .form-input:focus { border-color: var(--accent-orange); background: #FFF; box-shadow: 0 0 0 3px rgba(201, 138, 83, 0.2); }
-        .form-file { padding: 10px; padding-left: 10px; border: 2px dashed #D1C4B7; background: transparent; cursor: pointer; }
+        .form-input:focus { 
+            border-color: var(--accent-orange); background: #FFF; 
+            box-shadow: 0 5px 15px rgba(201, 138, 83, 0.15); 
+        }
+        .form-input:focus + i.prefix-icon, .input-wrapper:focus-within i.prefix-icon { color: var(--accent-orange); }
+        
+        .form-file { padding: 10px; padding-left: 10px; border: 2px dashed #D1C4B7; background: #FAF8F5; cursor: pointer; text-align: center; }
+        .form-file:hover { border-color: var(--accent-orange); background: #FFF; }
 
-        #img-preview-container { margin-top: 10px; text-align: center; display: none; }
-        #img-preview { max-width: 100%; max-height: 150px; border-radius: 8px; border: 2px solid #EAE0D5; object-fit: cover; }
+        #img-preview-container { margin-top: 15px; text-align: center; display: none; animation: slideUpFade 0.3s ease; }
+        #img-preview { max-width: 100%; max-height: 160px; border-radius: 12px; border: 3px solid #EAE0D5; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        .tabs { display: flex; background: #F8F5F2; padding: 5px; border-radius: 14px; margin-bottom: 25px; border: 1px solid #EAE0D5;}
+        .tabs { display: flex; background: #F8F5F2; padding: 6px; border-radius: 16px; margin-bottom: 25px; border: 1px solid #EAE0D5;}
         .tab-btn {
-            flex: 1; padding: 12px; border: none; border-radius: 10px;
-            background: transparent; font-family: var(--f-body); font-weight: 600; color: #888; cursor: pointer; transition: 0.3s;
+            flex: 1; padding: 12px; border: none; border-radius: 12px;
+            background: transparent; font-family: var(--f-body); font-weight: 600; color: #888; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        .tab-btn.active { background: var(--accent-orange); color: #FFF; box-shadow: 0 4px 10px rgba(201, 138, 83, 0.3); }
+        .tab-btn.active { background: var(--accent-orange); color: #FFF; box-shadow: 0 6px 15px rgba(201, 138, 83, 0.35); transform: scale(1.02); }
 
         .btn-solid {
-            width: 100%; padding: 15px; border: none; border-radius: 12px;
+            width: 100%; padding: 16px; border: none; border-radius: 14px;
             background: var(--text-dark); color: #FFF;
-            font-family: var(--f-body); font-weight: 600; font-size: 1.1rem;
-            cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s;
+            font-family: var(--f-body); font-weight: 600; font-size: 1.1rem; letter-spacing: 0.5px;
+            cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative; overflow: hidden;
         }
-        .btn-solid:hover:not(:disabled) { background: #3a220d; transform: translateY(-2px); }
+        .btn-solid::after {
+            content: ''; position: absolute; width: 100%; height: 100%; top: 0; left: -100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.4s ease;
+        }
+        .btn-solid:hover:not(:disabled) { background: #3a220d; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-solid:hover:not(:disabled)::after { left: 100%; }
+        .btn-solid:active:not(:disabled) { transform: translateY(1px); }
         .btn-solid:disabled { opacity: 0.7; cursor: not-allowed; }
 
         .btn-text {
             width: 100%; padding: 15px; background: none; border: none;
-            color: var(--accent-orange); font-family: var(--f-body); font-weight: 600; cursor: pointer; text-decoration: underline;
+            color: var(--accent-orange); font-family: var(--f-body); font-weight: 600; cursor: pointer; 
+            text-decoration: none; transition: 0.3s; display: inline-block; position: relative;
         }
+        .btn-text::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 10px; left: 50%;
+            background-color: var(--accent-orange); transition: all 0.3s ease; transform: translateX(-50%);
+        }
+        .btn-text:hover::after { width: 40px; }
 
-        /* CUSTOM MODAL */
+        /* ================= CUSTOM MODAL ================= */
         .custom-modal {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             z-index: 9999; display: flex; justify-content: center; align-items: center;
-            opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;
+            opacity: 0; visibility: hidden; transition: all 0.4s ease; padding: 20px;
         }
         .custom-modal.show { opacity: 1; visibility: visible; }
         .modal-content {
-            background: #FFF; border-radius: 24px; padding: 30px; text-align: center;
-            max-width: 400px; width: 100%; transform: translateY(20px); transition: 0.3s;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            background: #FFF; border-radius: 28px; padding: 35px 30px; text-align: center;
+            max-width: 400px; width: 100%; transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
-        .custom-modal.show .modal-content { transform: translateY(0); }
-        .modal-icon { font-size: 3.5rem; margin-bottom: 15px; }
-        .modal-icon.success { color: #25D366; }
-        .modal-icon.error { color: #ff4d4d; }
-        .modal-title { font-family: var(--f-title); font-size: 1.8rem; color: var(--text-dark); margin: 0 0 10px 0; }
-        .modal-desc { color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5; white-space: pre-wrap; }
+        .custom-modal.show .modal-content { transform: scale(1) translateY(0); }
+        .modal-icon { font-size: 4rem; margin-bottom: 15px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.2s; opacity: 0; transform: scale(0); }
+        @keyframes popIn { to { opacity: 1; transform: scale(1); } }
+        
+        .modal-icon.success { color: #25D366; filter: drop-shadow(0 5px 15px rgba(37, 211, 102, 0.3)); }
+        .modal-icon.error { color: #ff4d4d; filter: drop-shadow(0 5px 15px rgba(255, 77, 77, 0.3)); }
+        .modal-title { font-family: var(--f-title); font-size: 2rem; color: var(--text-dark); margin: 0 0 10px 0; }
+        .modal-desc { color: #666; font-size: 0.95rem; margin-bottom: 30px; line-height: 1.6; white-space: pre-wrap; font-weight: 500;}
 
-        /* TICKET DASHBOARD */
+        /* ================= TICKET DASHBOARD ================= */
         .ticket-card {
-            background: #FFF; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            text-align: center; position: relative;
+            background: #FFF; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            text-align: center; position: relative; transform-origin: top center;
+            animation: dropIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
+        @keyframes dropIn { from { opacity: 0; transform: translateY(-40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        
         .ticket-head {
             background: linear-gradient(135deg, var(--bg-top), var(--accent-orange)); 
-            padding: 25px 20px; text-align: center; color: #FFF; position: relative;
+            padding: 30px 20px; text-align: center; color: #FFF; position: relative;
         }
         .ticket-head::after {
             content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 20px;
             background: radial-gradient(circle, transparent 10px, #FFF 11px) repeat-x; background-size: 24px 24px;
         }
-        .u-name { font-family: var(--f-title); font-size: 2rem; margin: 0; line-height: 1.1; color: var(--accent-orange); }
+        .u-name { font-family: var(--f-title); font-size: 2.2rem; margin: 0; line-height: 1.1; color: var(--accent-orange); text-shadow: 1px 1px 0px #F3E5D8;}
         
-        /* WARNA KATEGORI TIKET LEBIH GELAP BIAR JELAS (TIDAK PUTIH) */
         .u-role { 
-            display: inline-block; background: #F8F5F2; padding: 5px 15px; border-radius: 20px; 
-            font-weight: 800; font-size: 0.85rem; margin-top: 10px; border: 1px solid #E5D5C5; 
-            color: #5A3A1A !important; 
+            display: inline-block; background: #F8F5F2; padding: 6px 18px; border-radius: 20px; 
+            font-weight: 800; font-size: 0.85rem; margin-top: 12px; border: 1px solid #E5D5C5; 
+            color: #5A3A1A !important; letter-spacing: 1px; text-transform: uppercase;
         }
         
-        .qr-box { margin: 0 auto; background: #FFF; border: 2px solid #F8F5F2; border-radius: 16px; display: inline-block; padding: 15px;}
+        /* QR Code Layout */
+        .qr-wrapper { margin-top: 25px; position: relative; display: inline-block; }
+        .qr-box { 
+            margin: 0 auto; background: #FFF; border: 3px solid #F8F5F2; border-radius: 20px; 
+            display: flex; justify-content: center; align-items: center; padding: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: all 0.4s ease;
+        }
         
-        /* PANITIA DOORPRIZE UI */
+        .qr-placeholder-wrap {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            transition: all 0.4s ease; z-index: 2;
+        }
+        .qr-placeholder-blur { filter: blur(8px); opacity: 0.3; transform: scale(0.95); }
+        
+        .btn-qr-reveal {
+            background: var(--accent-orange); width: auto; padding: 12px 25px; 
+            box-shadow: 0 15px 30px rgba(201,138,83,0.4); border: 2px solid #FFF; border-radius: 30px;
+            color: #FFF; font-weight: 700; font-family: var(--f-body); cursor: pointer;
+            display: flex; align-items: center; gap: 8px; transition: 0.3s; z-index: 3; position: relative;
+        }
+        .btn-qr-reveal:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 20px 35px rgba(201,138,83,0.5); }
+
+        .qr-real-wrap { opacity: 0; transform: scale(0.8); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .qr-real-wrap.show { opacity: 1; transform: scale(1); z-index: 1; position: relative; }
+        .qr-placeholder-wrap.hide { opacity: 0; transform: scale(1.1); pointer-events: none; visibility: hidden; }
+
+        /* ================= DASHBOARD PANITIA ================= */
         .doorprize-display {
-            background: var(--text-dark); color: #FFF; font-family: var(--f-title); font-size: 3rem;
-            border-radius: 16px; padding: 30px 10px; text-align: center; margin-bottom: 10px;
-            box-shadow: inset 0 5px 15px rgba(0,0,0,0.5); letter-spacing: 3px;
+            background: var(--text-dark); color: #FFF; font-family: var(--f-title); font-size: 3.5rem;
+            border-radius: 20px; padding: 30px 10px; text-align: center; margin-bottom: 10px;
+            box-shadow: inset 0 10px 20px rgba(0,0,0,0.6), 0 10px 20px rgba(0,0,0,0.1); 
+            letter-spacing: 5px; position: relative; overflow: hidden; transition: 0.3s;
         }
+        .doorprize-display.spinning { 
+            color: var(--accent-orange); text-shadow: 0 0 20px var(--accent-glow); 
+            transform: scale(1.02);
+        }
+
+        .btn-outline-white {
+            margin-top: 25px; width: 100%; padding: 15px; border: 2px solid rgba(255,255,255,0.4); 
+            background: rgba(255,255,255,0.05); color: #fff; border-radius: 30px; cursor: pointer; 
+            font-family: var(--f-body); font-weight: 600; transition: 0.3s; backdrop-filter: blur(5px);
+        }
+        .btn-outline-white:hover { background: rgba(255,255,255,0.2); border-color: #FFF; transform: translateY(-2px); }
 
         .hidden { display: none !important; }
 
+        /* Animasi Confetti/Winner */
+        @keyframes popWinner { 0% { transform: scale(0.8); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+        .winner-text { animation: popWinner 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; color: #2E7D32 !important; }
+
         @media (max-width: 500px) {
             .app-container { margin: 20px 15px; }
+            .glass-panel { padding: 30px 20px; }
+            .u-name { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+    <div class="loader-spinner"></div>
+    <div class="loader-text">GLOFEST 2.0</div>
+</div>
+
+<!-- BACKGROUND ELEMENTS -->
 <div class="dot-pattern"></div>
+<div class="ambient-orb orb-1"></div>
+<div class="ambient-orb orb-2"></div>
 <div class="bg-ornament ornament-left"></div>
 <div class="bg-ornament ornament-right"></div>
 
@@ -290,15 +436,15 @@
 
     <!-- 1. LANDING PAGE -->
     <div id="landing-page" class="page-section active">
-        <div class="logo-wrapper">
-            <!-- LOGO ANGKATAN DIPERKECIL LAGI JADI 50px -->
-            <img src="logo.png" alt="Logo Angkatan" style="width: 50px; height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px;" onerror="this.alt='Gambar logo.png belum tersedia'">
+        <div class="logo-wrapper stagger-item">
+            <!-- LOGO ANGKATAN -->
+            <img src="logo.png" alt="Logo Angkatan" style="width: 50px; height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.alt='Gambar logo.png belum tersedia'">
 
             <!-- LOGO UTAMA -->
-            <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 500px; height: auto; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); margin-bottom: 15px;" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
+            <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 500px; height: auto; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4)); margin-bottom: 15px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05) translateY(-5px)'" onmouseout="this.style.transform='scale(1) translateY(0)'" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
         </div>
 
-        <div class="pill-btn" onclick="navTo('register-section')">
+        <div class="pill-btn stagger-item" onclick="navTo('register-section')">
             <div class="pill-icon"><i class="ph-note-pencil-bold"></i></div>
             <div class="pill-text">
                 <div class="pill-text-title">Daftar Sekarang</div>
@@ -306,7 +452,7 @@
             </div>
         </div>
 
-        <div class="pill-btn" onclick="navTo('login-section')">
+        <div class="pill-btn stagger-item" onclick="navTo('login-section')">
             <div class="pill-icon"><i class="ph-ticket-bold"></i></div>
             <div class="pill-text">
                 <div class="pill-text-title">Akses Tiket</div>
@@ -314,7 +460,7 @@
             </div>
         </div>
 
-        <div class="contact-area">
+        <div class="contact-area stagger-item">
             <div class="contact-header">
                 <i class="ph-headset-fill" style="margin-right: 5px;"></i> Pusat Bantuan
             </div>
@@ -366,14 +512,14 @@
                 <div id="field-bukti" class="form-group hidden">
                     <label class="form-label">Bukti Pembayaran (Rp 170.000)</label>
                     <input type="file" id="reg-bukti" class="form-input form-file" accept="image/png, image/jpeg, image/jpg">
-                    <small style="font-size: 0.75rem; color: #666;">*Format JPG/PNG maks 3MB</small>
+                    <small style="font-size: 0.75rem; color: #888; display: block; margin-top: 5px; text-align: center;">*Format JPG/PNG maks 3MB</small>
                     <div id="img-preview-container">
                         <img id="img-preview" src="#" alt="Preview Bukti">
                     </div>
                 </div>
 
                 <button type="submit" class="btn-solid" id="btn-submit-reg">Kirim Permohonan <i class="ph-paper-plane-right-bold"></i></button>
-                <button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali</button>
+                <div style="text-align: center;"><button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali ke Beranda</button></div>
             </form>
         </div>
     </div>
@@ -385,18 +531,18 @@
             <p class="panel-subtitle">Masukkan Kode Unik Anda</p>
             
             <form id="login-form">
-                <div class="form-group">
-                    <label class="form-label">Kode Tiket</label>
+                <div class="form-group" style="margin-bottom: 30px;">
+                    <label class="form-label" style="text-align: center;">Kode Tiket</label>
                     <div class="input-wrapper">
                         <i class="ph-ticket-fill prefix-icon"></i>
-                        <input type="text" class="form-input" id="login-kode" placeholder="Contoh: GLO-123" required style="text-transform: uppercase; font-weight: 700; letter-spacing: 2px; text-align: center; padding-left: 16px;">
+                        <input type="text" class="form-input" id="login-kode" placeholder="Contoh: GLO-123" required style="text-transform: uppercase; font-weight: 800; font-size: 1.2rem; letter-spacing: 3px; text-align: center; padding-left: 16px;">
                     </div>
                 </div>
                 
-                <div id="login-error" style="color:red; margin-bottom: 15px; font-weight:600; font-size: 0.9rem; text-align:center;"></div>
+                <div id="login-error" style="color:#D32F2F; margin-bottom: 15px; font-weight:600; font-size: 0.9rem; text-align:center; min-height: 20px;"></div>
                 
                 <button type="submit" class="btn-solid" id="btn-submit-login">Tampilkan Tiket <i class="ph-qr-code-bold"></i></button>
-                <button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali</button>
+                <div style="text-align: center;"><button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali ke Beranda</button></div>
             </form>
         </div>
     </div>
@@ -405,80 +551,82 @@
     <div id="dashboard-peserta" class="page-section">
         <div class="ticket-card">
             <div class="ticket-head">
-                <h2 style="font-family: var(--f-title); font-size: 1.8rem; margin: 0; letter-spacing: 1px;">GLOFEST 2.0</h2>
-                <div style="font-size: 0.75rem; letter-spacing: 2px; opacity: 0.9; margin-top: 5px;">TIKET MASUK</div>
+                <h2 style="font-family: var(--f-title); font-size: 1.8rem; margin: 0; letter-spacing: 2px;">GLOFEST 2.0</h2>
+                <div style="font-size: 0.75rem; letter-spacing: 3px; opacity: 0.9; margin-top: 5px;">TIKET MASUK EKSKLUSIF</div>
             </div>
             
-            <div style="padding: 30px 20px;">
+            <div style="padding: 35px 25px;">
                 <h1 class="u-name" id="u-nama">...</h1>
                 <div class="u-role" id="u-kategori">...</div>
                 
-                <div style="margin-top: 25px; background: #F8F5F2; border-radius: 12px; padding: 15px; border: 1px solid #EAE0D5;">
-                    <div style="font-size: 0.8rem; font-weight: 600; color: #888; text-transform: uppercase; margin-bottom: 5px;">NOMOR UNDIAN</div>
-                    <div style="font-size: 2.2rem; font-family: var(--f-title); color: var(--accent-orange); letter-spacing: 3px;" id="u-undian">...</div>
+                <div style="margin-top: 30px; background: #F8F5F2; border-radius: 16px; padding: 20px; border: 1px solid #EAE0D5; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
+                    <div style="font-size: 0.8rem; font-weight: 700; color: #A09385; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;">NOMOR UNDIAN DOORPRIZE</div>
+                    <div style="font-size: 2.5rem; font-family: var(--f-title); color: var(--accent-orange); letter-spacing: 4px; text-shadow: 1px 1px 0px #FFF;" id="u-undian">...</div>
                 </div>
 
-                <!-- CONTAINER QR CODE DENGAN PLACEHOLDER -->
-                <div style="margin-top: 20px; position: relative; display: inline-block;">
-                    <!-- Placeholder QR yang di-blur -->
-                    <div id="qr-placeholder" class="qr-box" style="filter: blur(6px); opacity: 0.4; width: 160px; height: 160px; display: flex; justify-content: center; align-items: center;">
-                        <i class="ph-qr-code" style="font-size: 100px; color: var(--text-dark);"></i>
-                    </div>
-                    
-                    <!-- Overlay Tombol -->
-                    <div id="qr-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 160px; display: flex; justify-content: center; align-items: center;">
-                        <button class="btn-solid" id="btn-show-qr" onclick="generateTicketQR()" style="background: var(--accent-orange); width: auto; padding: 10px 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 2px solid #FFF;"><i class="ph-qr-code"></i> Tampilkan</button>
+                <!-- CONTAINER QR CODE ANIMASI -->
+                <div class="qr-wrapper">
+                    <!-- Area Placeholder (Blur) & Tombol Overlay -->
+                    <div id="qr-placeholder-wrap" class="qr-placeholder-wrap">
+                        <div class="qr-box qr-placeholder-blur" style="width: 170px; height: 170px; position: absolute;">
+                            <i class="ph-qr-code" style="font-size: 100px; color: var(--text-dark);"></i>
+                        </div>
+                        <button class="btn-qr-reveal" id="btn-show-qr" onclick="generateTicketQR()">
+                            <i class="ph-qr-code" style="font-size: 1.2rem;"></i> Tampilkan QR
+                        </button>
                     </div>
 
                     <!-- Tempat QR Code Asli -->
-                    <div class="qr-box hidden" id="qrcode" style="width: 160px; height: 160px; display: flex; justify-content: center; align-items: center;"></div>
+                    <div id="qr-real-wrap" class="qr-real-wrap">
+                        <div class="qr-box" id="qrcode" style="width: 170px; height: 170px;"></div>
+                    </div>
                 </div>
                 
-                <div id="qr-timer" style="font-size: 0.85rem; font-weight: 700; color: #D32F2F; margin-top: 10px;" class="hidden"></div>
+                <div id="qr-timer" style="font-size: 0.85rem; font-weight: 700; color: #D32F2F; margin-top: 15px; transition: 0.3s;" class="hidden"></div>
             </div>
         </div>
         
-        <button class="btn-outline-white" onclick="doLogout()" style="margin-top: 20px; width: 100%; padding: 12px; border: 2px solid rgba(255,255,255,0.5); background: transparent; color: #fff; border-radius: 30px; cursor: pointer; font-family: var(--f-body); font-weight: 600;">Keluar</button>
+        <button class="btn-outline-white" onclick="doLogout()"><i class="ph-sign-out-bold" style="margin-right: 8px;"></i> Keluar Akun</button>
     </div>
 
     <!-- 5. DASHBOARD PANITIA (SCANNER & DOORPRIZE) -->
     <div id="dashboard-panitia" class="page-section">
         <div class="glass-panel">
-            <h2 class="panel-title" style="font-size: 1.8rem;">PANITIA</h2>
+            <h2 class="panel-title" style="font-size: 1.8rem;">SISTEM PANITIA</h2>
             
             <div class="tabs" style="margin-top: 15px;">
-                <button type="button" class="tab-btn active" id="tab-scan" onclick="switchPanitia('scan')">Scanner QR</button>
-                <button type="button" class="tab-btn" id="tab-acak" onclick="switchPanitia('acak')">Doorprize</button>
+                <button type="button" class="tab-btn active" id="tab-scan" onclick="switchPanitia('scan')"><i class="ph-scan-bold"></i> Scanner</button>
+                <button type="button" class="tab-btn" id="tab-acak" onclick="switchPanitia('acak')"><i class="ph-gift-bold"></i> Doorprize</button>
             </div>
 
             <!-- Bagian Scanner -->
             <div id="panitia-scan-area">
-                <div style="border: 4px solid #F8F5F2; border-radius: 16px; padding: 5px; margin-bottom: 20px; overflow:hidden;">
+                <div style="border: 4px solid #F8F5F2; border-radius: 20px; padding: 5px; margin-bottom: 20px; overflow:hidden; background: #000;">
                     <div id="reader"></div>
                 </div>
-                <div id="scan-result" style="display:none; padding: 20px; border-radius: 12px; background: #F8F5F2; text-align: center;">
-                    <h3 id="res-title" style="margin:0; font-family: var(--f-title); color: var(--accent-orange); font-size: 1.6rem;">...</h3>
-                    <p id="res-body" style="font-weight: 700; margin-top: 8px;">...</p>
-                    <button class="btn-solid" id="btn-reset-scan" style="margin-top: 15px;">Scan Lagi <i class="ph-arrows-clockwise-bold"></i></button>
+                <div id="scan-result" style="display:none; padding: 25px 20px; border-radius: 16px; background: #F8F5F2; text-align: center; border: 2px solid #EAE0D5; animation: slideUpFade 0.3s ease;">
+                    <h3 id="res-title" style="margin:0; font-family: var(--f-title); color: var(--accent-orange); font-size: 1.6rem; letter-spacing: 1px;">...</h3>
+                    <p id="res-body" style="font-weight: 700; margin-top: 10px; font-size: 1.1rem; color: var(--text-dark);">...</p>
+                    <button class="btn-solid" id="btn-reset-scan" style="margin-top: 20px;">Scan Tiket Lain <i class="ph-arrows-clockwise-bold"></i></button>
                 </div>
             </div>
 
             <!-- Bagian Doorprize -->
             <div id="panitia-acak-area" class="hidden">
-                <p style="text-align: center; font-size: 0.9rem; color:#666; margin-bottom: 10px;">Acak pemenang dari daftar peserta (100% Adil)</p>
+                <p style="text-align: center; font-size: 0.9rem; color:#666; margin-bottom: 15px; font-weight: 500;">Acak pemenang dari daftar peserta hadir (100% Adil)</p>
                 <div class="doorprize-display" id="undian-display">00000</div>
-                <div style="text-align: center; font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 20px; min-height: 28px;" id="undian-name">???</div>
+                <div style="text-align: center; font-size: 1.3rem; font-weight: 800; color: var(--text-dark); margin-bottom: 25px; min-height: 35px; text-transform: uppercase;" id="undian-name">???</div>
                 
-                <button class="btn-solid" id="btn-trigger-acak" onclick="toggleUndian()" style="background: var(--accent-orange); font-size: 1.2rem; padding: 18px;">ACAK SEKARANG</button>
+                <button class="btn-solid" id="btn-trigger-acak" onclick="toggleUndian()" style="background: var(--accent-orange); font-size: 1.2rem; padding: 18px; box-shadow: 0 10px 25px rgba(201,138,83,0.4);">Mulai Acak <i class="ph-play-circle-bold"></i></button>
             </div>
 
-            <button class="btn-text" onclick="doLogout()">Keluar Sistem</button>
+            <div style="text-align: center; margin-top: 15px;"><button class="btn-text" onclick="doLogout()">Keluar Sistem</button></div>
         </div>
     </div>
 </div>
 
 <div class="copyright-text">
-    Copyrighted Tim Kreatif Angkatan 12
+    Copyrighted Tim Kreatif Angkatan 12 &copy; 2026
 </div>
 
 <script>
@@ -488,6 +636,15 @@
     let currentUser = null;
     let html5QrcodeScanner = null;
     let qrTimerInterval = null;
+
+    // --- LOADING SCREEN LOGIC ---
+    window.addEventListener('load', () => {
+        // Berikan sedikit delay agar animasi loader terlihat keren
+        setTimeout(() => {
+            const loader = document.getElementById('loading-screen');
+            loader.classList.add('hidden');
+        }, 800);
+    });
 
     // --- MODAL LOGIC ---
     function showModal(title, message, isSuccess = true, callback = null) {
@@ -513,13 +670,17 @@
     // --- NAVIGATION ---
     function navTo(id) {
         document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-        setTimeout(() => { if(document.getElementById(id)) document.getElementById(id).classList.add('active'); }, 50);
+        
+        // Timeout kecil untuk memastikan CSS engine me-reset animasi
+        setTimeout(() => { 
+            if(document.getElementById(id)) document.getElementById(id).classList.add('active'); 
+        }, 50);
+        
         document.getElementById('login-error').innerText = "";
         
         if(id !== 'dashboard-panitia' && html5QrcodeScanner) { 
             try { html5QrcodeScanner.clear(); } catch(e) {} 
         }
-        // Matikan timer QR kalau pindah halaman
         expireQR();
     }
 
@@ -573,7 +734,7 @@
         } catch (error) { throw new Error("Gagal koneksi ke server. Cek internetmu."); }
     }
 
-    // --- REGISTRASI (GENERATE KODE TAPI STATUS PENDING) ---
+    // --- REGISTRASI ---
     document.getElementById('reg-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btn-submit-reg');
@@ -594,7 +755,7 @@
             const payload = {
                 action: 'register',
                 nama: document.getElementById('reg-nama').value,
-                wa: document.getElementById('reg-wa').value, // Opsional
+                wa: document.getElementById('reg-wa').value,
                 kategori: isAlumni ? 'Alumni' : 'Siswa SMASIF',
                 fileData: fileData, fileName: fileName
             };
@@ -635,11 +796,9 @@
 
     // --- DASHBOARD PESERTA & QR LOGIC ---
     function resetQRUI(btnText, btnColor) {
-        document.getElementById('qrcode').classList.add('hidden');
+        document.getElementById('qr-real-wrap').classList.remove('show');
+        document.getElementById('qr-placeholder-wrap').classList.remove('hide');
         document.getElementById('qr-timer').classList.add('hidden');
-        
-        document.getElementById('qr-placeholder').classList.remove('hidden');
-        document.getElementById('qr-overlay').classList.remove('hidden');
         
         const btnQr = document.getElementById('btn-show-qr');
         btnQr.innerHTML = `<i class="ph-arrows-clockwise-bold"></i> ${btnText}`;
@@ -648,15 +807,13 @@
 
     function expireQR() {
         clearInterval(qrTimerInterval);
-        // Cek kalau lagi di tab peserta dan QR lagi nyala, maka matikan
         if (document.getElementById('dashboard-peserta').classList.contains('active') && currentUser) {
             resetQRUI("Ulang QR (Kadaluarsa)", "#D32F2F"); // Merah
         }
     }
 
-    // Deteksi kalau user keluar/pindah tab aplikasi
     document.addEventListener("visibilitychange", () => {
-        if (document.hidden && currentUser && !document.getElementById('qrcode').classList.contains('hidden')) {
+        if (document.hidden && currentUser && document.getElementById('qr-real-wrap').classList.contains('show')) {
             expireQR();
         }
     });
@@ -667,29 +824,33 @@
         document.getElementById('u-kategori').innerText = currentUser.kategori;
         document.getElementById('u-undian').innerText = currentUser.undian || "-";
         
-        // Setup awal UI QR
-        resetQRUI("Tampilkan", "var(--accent-orange)");
+        resetQRUI("Tampilkan QR", "var(--accent-orange)");
     }
 
     function generateTicketQR() {
-        document.getElementById('qr-placeholder').classList.add('hidden');
-        document.getElementById('qr-overlay').classList.add('hidden');
-        
+        const placeholderWrap = document.getElementById('qr-placeholder-wrap');
+        const realWrap = document.getElementById('qr-real-wrap');
         const box = document.getElementById('qrcode');
         const timerText = document.getElementById('qr-timer');
         
-        box.classList.remove('hidden');
-        timerText.classList.remove('hidden');
+        // Animasi pergantian
+        placeholderWrap.classList.add('hide');
+        
+        // Generate QR code
         box.innerHTML = "";
-
-        // Waktu kadaluarsa = 10 menit
         const expTime = Date.now() + (10 * 60 * 1000); 
         const payload = { kode: currentUser.kode, uid: currentUser.uid, exp: expTime };
 
         new QRCode(box, { 
             text: JSON.stringify(payload), 
-            width: 140, height: 140, colorDark: "#5A3A1A", colorLight: "#ffffff" 
+            width: 170, height: 170, colorDark: "#5A3A1A", colorLight: "#ffffff" 
         });
+
+        // Tampilkan Real QR setelah jeda sedikit agar mulus
+        setTimeout(() => {
+            realWrap.classList.add('show');
+            timerText.classList.remove('hidden');
+        }, 150);
 
         clearInterval(qrTimerInterval);
         qrTimerInterval = setInterval(() => {
@@ -699,7 +860,7 @@
             } else {
                 const m = Math.floor(diff / 60000);
                 const s = Math.floor((diff % 60000) / 1000);
-                timerText.innerText = `QR Berlaku: ${m}:${s < 10 ? '0'+s : s}`;
+                timerText.innerText = `Kode Valid: ${m}:${s < 10 ? '0'+s : s}`;
             }
         }, 1000);
     }
@@ -728,9 +889,9 @@
 
     function initPanitia() {
         navTo('dashboard-panitia');
-        switchPanitia('scan'); // Default tab
+        switchPanitia('scan');
         if(!html5QrcodeScanner) {
-            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
             html5QrcodeScanner.render(handleScanQR);
         }
     }
@@ -752,11 +913,11 @@
 
             const result = await apiCall({ action: 'scan', kode: data.kode });
             if(result.status === 'success') {
-                title.innerHTML = "✅ TIKET VALID"; title.style.color = "#2E7D32"; 
-                body.innerHTML = `${result.data.nama}<br><span style="color:#666; font-size:0.9rem;">${result.data.kategori}</span>`;
+                title.innerHTML = "<i class='ph-check-circle-fill'></i> TIKET VALID"; title.style.color = "#2E7D32"; 
+                body.innerHTML = `${result.data.nama}<br><span style="color:#666; font-size:0.95rem; font-weight: 500;">${result.data.kategori}</span>`;
             } else { throw new Error(result.message); }
         } catch (err) {
-            title.innerHTML = "❌ DITOLAK"; title.style.color = "#D32F2F"; 
+            title.innerHTML = "<i class='ph-warning-circle-fill'></i> DITOLAK"; title.style.color = "#D32F2F"; 
             body.innerText = err.message || "QR Code Rusak/Palsu!";
         }
     }
@@ -766,15 +927,17 @@
         html5QrcodeScanner.resume();
     };
 
-    // LOGIC UNDIAN 100% ADIL
+    // LOGIC UNDIAN
     async function loadDataUndian() {
         const btn = document.getElementById('btn-trigger-acak');
         btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Loading Data...'; btn.disabled = true;
+        document.getElementById('undian-name').classList.remove('winner-text');
+        
         try {
             const res = await apiCall({action: 'get_undian'});
             if(res.status === 'success') undianData = res.data;
         } catch(e) { alert("Gagal ambil data peserta."); }
-        finally { btn.innerHTML = 'ACAK SEKARANG'; btn.disabled = false; }
+        finally { btn.innerHTML = 'Mulai Acak <i class="ph-play-circle-bold"></i>'; btn.disabled = false; }
     }
 
     function toggleUndian() {
@@ -786,42 +949,53 @@
             showModal("Kosong", "Belum ada data peserta yang di-ACC/terdaftar.", false); return;
         }
 
-        if(btn.innerText === "ACAK SEKARANG") {
-            btn.innerText = "BERHENTI (STOP)";
-            btn.style.background = "#D32F2F"; // Merah saat muter
+        if(btn.innerText.includes("Mulai Acak") || btn.innerText.includes("ACAK LAGI")) {
+            // State: Mulai muter
+            btn.innerHTML = 'BERHENTI (STOP) <i class="ph-stop-circle-bold"></i>';
+            btn.style.background = "#D32F2F"; // Merah
+            display.classList.add('spinning');
+            nameDisplay.classList.remove('winner-text');
+            nameDisplay.style.color = "var(--text-dark)";
             
             spinInterval = setInterval(() => {
                 const rand = Math.floor(Math.random() * undianData.length);
                 display.innerText = undianData[rand].undian;
-                nameDisplay.innerText = "...";
-            }, 60); // Kecepatan muter
+                nameDisplay.innerText = "MENGACAK...";
+            }, 60);
         } else {
+            // State: Stop muter & Tampilkan pemenang
             clearInterval(spinInterval);
-            btn.innerText = "ACAK SEKARANG";
+            btn.innerHTML = 'ACAK LAGI <i class="ph-arrows-clockwise-bold"></i>';
             btn.style.background = "var(--accent-orange)";
+            display.classList.remove('spinning');
             
-            // 100% ADIL: Pilih pemenang murni dari Math.random index keseluruhan
             const winnerIndex = Math.floor(Math.random() * undianData.length);
             const winner = undianData[winnerIndex];
             
             display.innerText = winner.undian;
+            
+            // Tambahkan animasi pop untuk nama pemenang
             nameDisplay.innerText = winner.nama + " 🎉";
+            nameDisplay.classList.add('winner-text');
         }
     }
 
     function doLogout() { 
         currentUser = null; expireQR(); clearInterval(spinInterval);
-        document.getElementById('login-form').reset(); navTo('landing-page'); 
+        document.getElementById('login-form').reset(); 
+        
+        // Reset QR UI
+        resetQRUI("Tampilkan QR", "var(--accent-orange)");
+        
+        navTo('landing-page'); 
     }
 
-    // MOCK API (Hanya untuk testing visual sebelum dipasang Apps Script)
+    // MOCK API
     function mockApi(p) {
         return new Promise(r => setTimeout(() => {
-            // Generate GLO-XXX dengan pasti 3 angka (100 - 999)
             if(p.action === 'register') r({status:'success', nama:p.nama, kode:'GLO-' + Math.floor(100 + Math.random() * 900)});
             
-            // Login tanpa "LUCK-", hanya 5 angka (10000 - 99999)
-            if(p.action === 'login') r({status:'success', data:{nama:'Rafa Mock', kategori:'Siswa SMASIF', kode:p.kode, undian: Math.floor(10000 + Math.random() * 90000).toString(), uid:'123'}});
+            if(p.action === 'login') r({status:'success', data:{nama:'Rafa (Mock)', kategori:'Siswa SMASIF', kode:p.kode, undian: Math.floor(10000 + Math.random() * 90000).toString(), uid:'123'}});
             
             if(p.action === 'scan') {
                 if(Math.random() > 0.3) r({status:'success', data:{nama:'Tamu Undangan', kategori:'Alumni'}});
