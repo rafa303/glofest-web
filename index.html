@@ -247,11 +247,11 @@
         }
         .u-name { font-family: var(--f-title); font-size: 2rem; margin: 0; line-height: 1.1; color: var(--accent-orange); }
         
-        /* WARNA KATEGORI TIKET LEBIH GELAP BIAR JELAS */
+        /* WARNA KATEGORI TIKET LEBIH GELAP BIAR JELAS (TIDAK PUTIH) */
         .u-role { 
             display: inline-block; background: #F8F5F2; padding: 5px 15px; border-radius: 20px; 
-            font-weight: 700; font-size: 0.85rem; margin-top: 10px; border: 1px solid #E5D5C5; 
-            color: var(--text-dark); 
+            font-weight: 800; font-size: 0.85rem; margin-top: 10px; border: 1px solid #E5D5C5; 
+            color: #5A3A1A !important; 
         }
         
         .qr-box { margin: 0 auto; background: #FFF; border: 2px solid #F8F5F2; border-radius: 16px; display: inline-block; padding: 15px;}
@@ -414,8 +414,8 @@
                 <div class="u-role" id="u-kategori">...</div>
                 
                 <div style="margin-top: 25px; background: #F8F5F2; border-radius: 12px; padding: 15px; border: 1px solid #EAE0D5;">
-                    <div style="font-size: 0.8rem; font-weight: 600; color: #888; text-transform: uppercase; margin-bottom: 5px;">KODE UNDIAN</div>
-                    <div style="font-size: 1.8rem; font-family: var(--f-title); color: var(--accent-orange); letter-spacing: 2px;" id="u-undian">...</div>
+                    <div style="font-size: 0.8rem; font-weight: 600; color: #888; text-transform: uppercase; margin-bottom: 5px;">NOMOR UNDIAN</div>
+                    <div style="font-size: 2.2rem; font-family: var(--f-title); color: var(--accent-orange); letter-spacing: 3px;" id="u-undian">...</div>
                 </div>
 
                 <!-- CONTAINER QR CODE DENGAN PLACEHOLDER -->
@@ -766,7 +766,7 @@
         html5QrcodeScanner.resume();
     };
 
-    // LOGIC UNDIAN
+    // LOGIC UNDIAN 100% ADIL
     async function loadDataUndian() {
         const btn = document.getElementById('btn-trigger-acak');
         btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Loading Data...'; btn.disabled = true;
@@ -800,8 +800,10 @@
             btn.innerText = "ACAK SEKARANG";
             btn.style.background = "var(--accent-orange)";
             
-            // Pilih pemenang final (100% dari Math.random algoritma lokal)
-            const winner = undianData[Math.floor(Math.random() * undianData.length)];
+            // 100% ADIL: Pilih pemenang murni dari Math.random index keseluruhan
+            const winnerIndex = Math.floor(Math.random() * undianData.length);
+            const winner = undianData[winnerIndex];
+            
             display.innerText = winner.undian;
             nameDisplay.innerText = winner.nama + " 🎉";
         }
@@ -815,13 +817,17 @@
     // MOCK API (Hanya untuk testing visual sebelum dipasang Apps Script)
     function mockApi(p) {
         return new Promise(r => setTimeout(() => {
-            if(p.action === 'register') r({status:'success', nama:p.nama, kode:'GLO-'+Math.floor(Math.random()*1000)});
-            if(p.action === 'login') r({status:'success', data:{nama:'Rafa Mock', kategori:'Siswa SMASIF', kode:p.kode, undian:'LUCK-12345', uid:'123'}});
+            // Generate GLO-XXX dengan pasti 3 angka (100 - 999)
+            if(p.action === 'register') r({status:'success', nama:p.nama, kode:'GLO-' + Math.floor(100 + Math.random() * 900)});
+            
+            // Login tanpa "LUCK-", hanya 5 angka (10000 - 99999)
+            if(p.action === 'login') r({status:'success', data:{nama:'Rafa Mock', kategori:'Siswa SMASIF', kode:p.kode, undian: Math.floor(10000 + Math.random() * 90000).toString(), uid:'123'}});
+            
             if(p.action === 'scan') {
                 if(Math.random() > 0.3) r({status:'success', data:{nama:'Tamu Undangan', kategori:'Alumni'}});
                 else r({status:'error', message:'Tiket sudah di-scan sebelumnya!'}); 
             }
-            if(p.action === 'get_undian') r({status:'success', data:[{nama:'Aufa', undian:'LUCK-00001'}, {nama:'Waldan', undian:'LUCK-00002'}, {nama:'Rafa', undian:'LUCK-00003'}]});
+            if(p.action === 'get_undian') r({status:'success', data:[{nama:'Aufa', undian:'23145'}, {nama:'Waldan', undian:'84732'}, {nama:'Rafa', undian:'58392'}]});
         }, 800));
     }
 </script>
