@@ -56,7 +56,7 @@
         /* ================= LOADING SCREEN ================= */
         #loading-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #8A5A33; /* Warna gelap agar kontras */
+            background: #8A5A33; 
             z-index: 999999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.6s cubic-bezier(0.8, 0, 0.2, 1), visibility 0.6s;
@@ -90,7 +90,6 @@
             background-size: 14px 14px;
         }
 
-        /* Ambient Orbs */
         .ambient-orb {
             position: fixed; border-radius: 50%; filter: blur(60px); opacity: 0.5;
             pointer-events: none; z-index: 0; animation: floatOrb 12s ease-in-out infinite alternate;
@@ -153,6 +152,7 @@
         .page-section.active .stagger-item:nth-child(2) { animation: slideUpFade 0.6s ease forwards 0.2s; }
         .page-section.active .stagger-item:nth-child(3) { animation: slideUpFade 0.6s ease forwards 0.3s; }
         .page-section.active .stagger-item:nth-child(4) { animation: slideUpFade 0.6s ease forwards 0.4s; }
+        .page-section.active .stagger-item:nth-child(5) { animation: slideUpFade 0.6s ease forwards 0.5s; }
 
         @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 
@@ -195,7 +195,7 @@
         .contact-area {
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
-            margin-top: 20px; display: flex; flex-direction: column; gap: 12px;
+            margin-top: 10px; display: flex; flex-direction: column; gap: 12px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: 0.3s;
         }
         .contact-area:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.6); }
@@ -229,7 +229,6 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.5);
             position: relative; overflow: hidden;
         }
-        /* Top accent line on panel */
         .glass-panel::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
             background: linear-gradient(90deg, var(--bg-top), var(--accent-orange));
@@ -321,6 +320,7 @@
         
         .modal-icon.success { color: #25D366; filter: drop-shadow(0 5px 15px rgba(37, 211, 102, 0.3)); }
         .modal-icon.error { color: #ff4d4d; filter: drop-shadow(0 5px 15px rgba(255, 77, 77, 0.3)); }
+        .modal-icon.warning { color: #F57C00; filter: drop-shadow(0 5px 15px rgba(245, 124, 0, 0.3)); }
         .modal-title { font-family: var(--f-title); font-size: 2rem; color: var(--text-dark); margin: 0 0 10px 0; }
         .modal-desc { color: #666; font-size: 0.95rem; margin-bottom: 30px; line-height: 1.6; white-space: pre-wrap; font-weight: 500;}
 
@@ -452,6 +452,14 @@
             </div>
         </div>
 
+        <div class="pill-btn stagger-item" onclick="navTo('check-section')">
+            <div class="pill-icon"><i class="ph-magnifying-glass-bold"></i></div>
+            <div class="pill-text">
+                <div class="pill-text-title">Cek Tiket</div>
+                <div class="pill-text-sub">Pantau Status Persetujuan</div>
+            </div>
+        </div>
+
         <div class="pill-btn stagger-item" onclick="navTo('login-section')">
             <div class="pill-icon"><i class="ph-ticket-bold"></i></div>
             <div class="pill-text">
@@ -524,7 +532,32 @@
         </div>
     </div>
 
-    <!-- 3. LOGIN PAGE -->
+    <!-- 3. CHECK STATUS PAGE -->
+    <div id="check-section" class="page-section">
+        <div class="glass-panel">
+            <h2 class="panel-title">CEK TIKET</h2>
+            <p class="panel-subtitle">Pantau status persetujuan panitia</p>
+            
+            <form id="check-form">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label" style="text-align: center;">Kode Pendaftaran</label>
+                    <div class="input-wrapper">
+                        <i class="ph-magnifying-glass-bold prefix-icon"></i>
+                        <input type="text" class="form-input" id="check-kode" placeholder="Contoh: GLO-123" required style="text-transform: uppercase; font-weight: 800; font-size: 1.1rem; letter-spacing: 2px; text-align: center; padding-left: 16px;">
+                    </div>
+                </div>
+                
+                <div id="check-result" style="margin-bottom: 20px; font-weight: 600; font-size: 0.95rem; text-align: center; min-height: 20px; padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.03);">
+                    Masukkan kodemu di atas.
+                </div>
+                
+                <button type="submit" class="btn-solid" id="btn-submit-check">Cek Sekarang <i class="ph-magnifying-glass-bold"></i></button>
+                <div style="text-align: center;"><button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali ke Beranda</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. LOGIN PAGE -->
     <div id="login-section" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title">AKSES TIKET</h2>
@@ -547,7 +580,7 @@
         </div>
     </div>
 
-    <!-- 4. DASHBOARD PESERTA -->
+    <!-- 5. DASHBOARD PESERTA -->
     <div id="dashboard-peserta" class="page-section">
         <div class="ticket-card">
             <div class="ticket-head">
@@ -589,7 +622,7 @@
         <button class="btn-outline-white" onclick="doLogout()"><i class="ph-sign-out-bold" style="margin-right: 8px;"></i> Keluar Akun</button>
     </div>
 
-    <!-- 5. DASHBOARD PANITIA (SCANNER & DOORPRIZE) -->
+    <!-- 6. DASHBOARD PANITIA (SCANNER & DOORPRIZE) -->
     <div id="dashboard-panitia" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title" style="font-size: 1.8rem;">SISTEM PANITIA</h2>
@@ -631,7 +664,7 @@
 
 <script>
     // === MASUKKAN URL DEPLOY WEB APP DI SINI ===
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwotzi1G5HNJTnG-lUN6OPVquBlQj_OjhA5-vbfpI7zLGMcBdKP2uUL6Zn1i_tHdvZS/exec"; 
+    const GOOGLE_SCRIPT_URL = ""; 
 
     let currentUser = null;
     let html5QrcodeScanner = null;
@@ -639,7 +672,6 @@
 
     // --- LOADING SCREEN LOGIC ---
     window.addEventListener('load', () => {
-        // Berikan sedikit delay agar animasi loader terlihat keren
         setTimeout(() => {
             const loader = document.getElementById('loading-screen');
             loader.classList.add('hidden');
@@ -647,14 +679,16 @@
     });
 
     // --- MODAL LOGIC ---
-    function showModal(title, message, isSuccess = true, callback = null) {
+    function showModal(title, message, isSuccess = true, callback = null, isWarning = false) {
         const modal = document.getElementById('app-modal');
         const icon = document.getElementById('modal-icon');
         
         document.getElementById('modal-title').innerText = title;
         document.getElementById('modal-desc').innerText = message;
         
-        if(isSuccess) {
+        if(isWarning) {
+            icon.className = "modal-icon warning"; icon.innerHTML = '<i class="ph-warning-fill"></i>';
+        } else if(isSuccess) {
             icon.className = "modal-icon success"; icon.innerHTML = '<i class="ph-check-circle-fill"></i>';
         } else {
             icon.className = "modal-icon error"; icon.innerHTML = '<i class="ph-x-circle-fill"></i>';
@@ -669,14 +703,26 @@
 
     // --- NAVIGATION ---
     function navTo(id) {
+        // Cek Local Storage sebelum membuka Register
+        if(id === 'register-section') {
+            const savedCode = localStorage.getItem('glofest_my_code');
+            if(savedCode) {
+                showModal("Perhatian", `Perangkat ini sudah terdaftar dengan kode: ${savedCode}\nSilakan pantau status tiketmu.`, false, () => {
+                    document.getElementById('check-kode').value = savedCode;
+                    navTo('check-section');
+                }, true);
+                return; // Stop navigation to register
+            }
+        }
+
         document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
         
-        // Timeout kecil untuk memastikan CSS engine me-reset animasi
         setTimeout(() => { 
             if(document.getElementById(id)) document.getElementById(id).classList.add('active'); 
         }, 50);
         
         document.getElementById('login-error').innerText = "";
+        document.getElementById('check-result').innerHTML = "Masukkan kodemu di atas.";
         
         if(id !== 'dashboard-panitia' && html5QrcodeScanner) { 
             try { html5QrcodeScanner.clear(); } catch(e) {} 
@@ -762,14 +808,49 @@
 
             const result = await apiCall(payload);
             if(result.status === 'success') {
-                const msg = `Halo ${result.nama},\n\nKODE TIKETMU: 👉 ${result.kode} 👈\n\nSIMPAN KODE INI! Tapi ingat, akunmu baru bisa dipakai Login setelah di-ACC oleh admin ya.`;
-                showModal("Berhasil Daftar!", msg, true, () => {
-                    navTo('landing-page'); e.target.reset();
+                // SIMPAN KODE DI LOCAL STORAGE AGAR TIDAK DAFTAR LAGI
+                localStorage.setItem('glofest_my_code', result.kode);
+
+                const msg = `Halo ${result.nama},\n\nKODE PENDAFTARAN: 👉 ${result.kode} 👈\n\nSIMPAN KODE INI! Akunmu sedang dalam antrean. Pantau secara berkala di menu 'Cek Tiket'.`;
+                showModal("Pendaftaran Sukses!", msg, true, () => {
+                    document.getElementById('check-kode').value = result.kode; // Auto fill cek
+                    navTo('check-section'); 
+                    e.target.reset();
                     document.getElementById('img-preview-container').style.display = "none";
                 });
             } else { throw new Error(result.message); }
         } catch (err) { showModal("Gagal", err.message, false); 
         } finally { btn.innerHTML = 'Kirim Permohonan <i class="ph-paper-plane-right-bold"></i>'; btn.disabled = false; }
+    });
+
+    // --- CEK TIKET / STATUS ---
+    document.getElementById('check-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btn-submit-check');
+        btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengecek...'; btn.disabled = true;
+        const resDiv = document.getElementById('check-result');
+        resDiv.innerHTML = "";
+
+        try {
+            const kode = document.getElementById('check-kode').value.toUpperCase();
+            const result = await apiCall({ action: 'check_status', kode: kode });
+
+            if (result.status === 'success') {
+                if (result.data.status === 'pending') {
+                    resDiv.innerHTML = `<span style="color: #F57C00;"><i class="ph-clock-bold"></i> Tiket <strong style="color:var(--text-dark);">${kode}</strong> sedang dalam antrean (Belum di-ACC).</span>`;
+                } else if (result.data.status === 'approved') {
+                    resDiv.innerHTML = `<span style="color: #2E7D32;"><i class="ph-check-circle-bold"></i> Tiket <strong style="color:var(--text-dark);">${kode}</strong> sudah di-ACC! Silakan Masuk via Akses Tiket.</span>`;
+                } else if (result.data.status === 'rejected') {
+                    resDiv.innerHTML = `<span style="color: #D32F2F;"><i class="ph-x-circle-bold"></i> Tiket <strong style="color:var(--text-dark);">${kode}</strong> ditolak. Silakan hubungi panitia.</span>`;
+                }
+            } else {
+                resDiv.innerHTML = `<span style="color: #D32F2F;"><i class="ph-warning-circle-bold"></i> ${result.message}</span>`;
+            }
+        } catch (err) {
+            resDiv.innerHTML = `<span style="color: #D32F2F;">${err.message}</span>`;
+        } finally {
+            btn.innerHTML = 'Cek Sekarang <i class="ph-magnifying-glass-bold"></i>'; btn.disabled = false;
+        }
     });
 
     // --- LOGIN ---
@@ -892,7 +973,7 @@
         switchPanitia('scan');
         if(!html5QrcodeScanner) {
             html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
-            html5QrcodeScanner.render(handleScanQR);
+            html5QrcodeScanner.render(handleScanQR, (err) => { console.warn("Scanner error:", err); });
         }
     }
 
@@ -990,12 +1071,30 @@
         navTo('landing-page'); 
     }
 
-    // MOCK API
+    // MOCK API (Simulasi Database)
     function mockApi(p) {
         return new Promise(r => setTimeout(() => {
             if(p.action === 'register') r({status:'success', nama:p.nama, kode:'GLO-' + Math.floor(100 + Math.random() * 900)});
             
-            if(p.action === 'login') r({status:'success', data:{nama:'Rafa (Mock)', kategori:'Siswa SMASIF', kode:p.kode, undian: Math.floor(10000 + Math.random() * 90000).toString(), uid:'123'}});
+            // Simulasi cek tiket: Kalau digit terakhir genap = di-ACC, ganjil = pending
+            if(p.action === 'check_status') {
+                const lastChar = p.kode.slice(-1);
+                if (isNaN(lastChar)) {
+                   r({status: 'error', message: 'Format kode tidak valid/belum terdaftar.'});
+                } else {
+                   const isApproved = parseInt(lastChar) % 2 === 0;
+                   r({status: 'success', data: { status: isApproved ? 'approved' : 'pending' }});
+                }
+            }
+
+            if(p.action === 'login') {
+                const lastChar = p.kode.slice(-1);
+                if(!isNaN(lastChar) && parseInt(lastChar) % 2 !== 0) {
+                    r({status: 'error', message: 'Tiketmu masih dalam antrean (Pending). Silakan Cek Status.'});
+                } else {
+                    r({status:'success', data:{nama:'Rafa (Mock)', kategori:'Siswa SMASIF', kode:p.kode, undian: Math.floor(10000 + Math.random() * 90000).toString(), uid:'123'}});
+                }
+            }
             
             if(p.action === 'scan') {
                 if(Math.random() > 0.3) r({status:'success', data:{nama:'Tamu Undangan', kategori:'Alumni'}});
