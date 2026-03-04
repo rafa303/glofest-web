@@ -35,8 +35,15 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        /* HILANGKAN SLIDING BAR SCROLLBAR */
+        /* HILANGKAN SLIDING BAR SCROLLBAR & FIX OVERSCROLL BUG */
         ::-webkit-scrollbar { display: none; }
+        
+        html {
+            /* Menghindari background putih saat rubber-band scroll di iOS/Android */
+            background-color: var(--bg-top);
+            overscroll-behavior-y: none; 
+        }
+
         body {
             -ms-overflow-style: none; 
             scrollbar-width: none; 
@@ -64,7 +71,7 @@
         #loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         
         .loader-spinner {
-            width: 60px; height: 60px;
+            width: clamp(40px, 10vw, 60px); height: clamp(40px, 10vw, 60px);
             border: 4px solid rgba(255,255,255,0.2);
             border-top: 4px solid var(--accent-orange);
             border-radius: 50%;
@@ -72,7 +79,7 @@
             margin-bottom: 20px;
         }
         .loader-text {
-            font-family: var(--f-title); font-size: 2rem;
+            font-family: var(--f-title); font-size: clamp(1.5rem, 5vw, 2rem);
             color: #FFF; letter-spacing: 3px;
             text-shadow: 0 0 15px var(--accent-glow);
             animation: pulseOpacity 1.5s infinite alternate;
@@ -113,12 +120,12 @@
             50% { transform: translateY(-15px) rotate(2deg); }
         }
         .ornament-left {
-            bottom: -20px; left: -50px; width: 300px; height: 600px;
+            bottom: -20px; left: -50px; width: clamp(150px, 30vw, 300px); height: 600px;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path fill="%23000" d="M30 200V80L40 20h20l10 60v120z"/></svg>');
             background-position: bottom left;
         }
         .ornament-right {
-            bottom: 30px; right: -50px; width: 350px; height: 400px;
+            bottom: 30px; right: -50px; width: clamp(180px, 35vw, 350px); height: 400px;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150"><path fill="%23000" d="M10 150l90-100 90 100zM80 50h40v100H80z"/></svg>');
             background-position: bottom right;
             animation-delay: -4s;
@@ -126,7 +133,7 @@
 
         /* ================= LAYOUT ================= */
         .app-container {
-            width: 100%; max-width: 500px; margin: 40px 20px;
+            width: 92%; max-width: 500px; margin: clamp(20px, 5vh, 40px) auto;
             position: relative; z-index: 10; display: flex; flex-direction: column;
             flex-grow: 1; justify-content: center;
             transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -158,14 +165,15 @@
 
         @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 
-        .logo-wrapper { text-align: center; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center;}
+        .logo-wrapper { text-align: center; margin-bottom: clamp(15px, 4vw, 25px); display: flex; flex-direction: column; align-items: center;}
 
         /* ================= BUTTONS & COMPONENTS ================= */
         .pill-btn {
             display: flex; align-items: center;
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--glass-border); border-radius: 60px;
-            padding: 8px 25px 8px 8px; margin-bottom: 15px;
+            padding: clamp(6px, 2vw, 8px) clamp(15px, 4vw, 25px) clamp(6px, 2vw, 8px) clamp(6px, 2vw, 8px); 
+            margin-bottom: 15px;
             cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15), inset 0 0 0 transparent; width: 100%;
             position: relative; overflow: hidden;
@@ -184,19 +192,19 @@
 
         .pill-icon {
             background: #FFFFFF; color: var(--accent-orange);
-            border-radius: 50%; width: 55px; height: 55px;
-            display: flex; justify-content: center; align-items: center; font-size: 1.8rem;
-            margin-right: 20px; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 50%; width: clamp(45px, 12vw, 55px); height: clamp(45px, 12vw, 55px);
+            display: flex; justify-content: center; align-items: center; font-size: clamp(1.4rem, 4vw, 1.8rem);
+            margin-right: clamp(12px, 3vw, 20px); flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .pill-btn:hover .pill-icon { transform: rotate(-10deg) scale(1.1); }
-        .pill-text-title { font-size: 1.3rem; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 6px; }
-        .pill-text-sub { font-size: 0.8rem; font-weight: 400; opacity: 0.9; }
+        .pill-text-title { font-size: clamp(1.1rem, 3.5vw, 1.3rem); font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 6px; }
+        .pill-text-sub { font-size: clamp(0.7rem, 2.5vw, 0.8rem); font-weight: 400; opacity: 0.9; }
 
         /* CONTACT AREA */
         .contact-area {
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: clamp(15px, 4vw, 20px);
             margin-top: 10px; display: flex; flex-direction: column; gap: 12px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: 0.3s;
         }
@@ -227,7 +235,9 @@
         /* ================= PANELS & FORMS ================= */
         .glass-panel {
             background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px; padding: 35px 30px; color: var(--text-dark);
+            border-radius: clamp(16px, 5vw, 24px); 
+            padding: clamp(20px, 6vw, 35px) clamp(15px, 5vw, 30px); 
+            color: var(--text-dark);
             box-shadow: 0 25px 50px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.5);
             position: relative; overflow: hidden;
         }
@@ -238,12 +248,12 @@
         
         .panel-title {
             font-family: var(--f-title); color: var(--accent-orange);
-            font-size: 2.2rem; margin: 0 0 5px 0; text-align: center;
+            font-size: clamp(1.8rem, 6vw, 2.2rem); margin: 0 0 5px 0; text-align: center;
             letter-spacing: 3px; text-shadow: 2px 2px 0px #F3E5D8;
         }
-        .panel-subtitle { text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 25px; font-weight: 500; }
+        .panel-subtitle { text-align: center; font-size: clamp(0.8rem, 3vw, 0.9rem); color: #666; margin-bottom: 25px; font-weight: 500; }
 
-        .form-group { margin-bottom: 20px; }
+        .form-group { margin-bottom: clamp(15px, 4vw, 20px); }
         .form-label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: #4A3015; }
         .input-wrapper { position: relative; }
         .input-wrapper i.prefix-icon {
@@ -253,7 +263,7 @@
         .form-input {
             width: 100%; padding: 15px 16px 15px 48px; 
             background: #F8F5F2; border: 2px solid #EAE0D5; border-radius: 14px;
-            font-family: var(--f-body); font-size: 1rem; color: var(--text-dark); outline: none; transition: all 0.3s ease;
+            font-family: var(--f-body); font-size: clamp(0.9rem, 3.5vw, 1rem); color: var(--text-dark); outline: none; transition: all 0.3s ease;
         }
         .form-input:focus { 
             border-color: var(--accent-orange); background: #FFF; 
@@ -261,7 +271,7 @@
         }
         .form-input:focus + i.prefix-icon, .input-wrapper:focus-within i.prefix-icon { color: var(--accent-orange); }
         
-        .form-file { padding: 10px; padding-left: 10px; border: 2px dashed #D1C4B7; background: #FAF8F5; cursor: pointer; text-align: center; }
+        .form-file { padding: 10px; padding-left: 10px; border: 2px dashed #D1C4B7; background: #FAF8F5; cursor: pointer; text-align: center; font-size: clamp(0.8rem, 3vw, 1rem); }
         .form-file:hover { border-color: var(--accent-orange); background: #FFF; }
 
         #img-preview-container { margin-top: 15px; text-align: center; display: none; animation: slideUpFade 0.3s ease; }
@@ -269,15 +279,16 @@
 
         .tabs { display: flex; background: #F8F5F2; padding: 6px; border-radius: 16px; margin-bottom: 25px; border: 1px solid #EAE0D5;}
         .tab-btn {
-            flex: 1; padding: 12px; border: none; border-radius: 12px;
+            flex: 1; padding: clamp(8px, 3vw, 12px); border: none; border-radius: 12px;
             background: transparent; font-family: var(--f-body); font-weight: 600; color: #888; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: clamp(0.8rem, 3vw, 1rem);
         }
         .tab-btn.active { background: var(--accent-orange); color: #FFF; box-shadow: 0 6px 15px rgba(201, 138, 83, 0.35); transform: scale(1.02); }
 
         .btn-solid {
-            width: 100%; padding: 16px; border: none; border-radius: 14px;
+            width: 100%; padding: clamp(14px, 4vw, 16px); border: none; border-radius: 14px;
             background: var(--text-dark); color: #FFF;
-            font-family: var(--f-body); font-weight: 600; font-size: 1.1rem; letter-spacing: 0.5px;
+            font-family: var(--f-body); font-weight: 600; font-size: clamp(1rem, 4vw, 1.1rem); letter-spacing: 0.5px;
             cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; 
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative; overflow: hidden;
@@ -288,7 +299,7 @@
             transition: all 0.4s ease;
         }
         .btn-solid:hover:not(:disabled) { background: #3a220d; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .btn-solid:hover:not(:disabled)::after { left: 100%; }
+        .btn-solid:hover:not(:disabled):after { left: 100%; }
         .btn-solid:active:not(:disabled) { transform: translateY(1px); }
         .btn-solid:disabled { opacity: 0.7; cursor: not-allowed; }
 
@@ -296,6 +307,7 @@
             width: 100%; padding: 15px; background: none; border: none;
             color: var(--accent-orange); font-family: var(--f-body); font-weight: 600; cursor: pointer; 
             text-decoration: none; transition: 0.3s; display: inline-block; position: relative;
+            font-size: clamp(0.85rem, 3vw, 1rem);
         }
         .btn-text::after {
             content: ''; position: absolute; width: 0; height: 2px; bottom: 10px; left: 50%;
@@ -303,16 +315,28 @@
         }
         .btn-text:hover::after { width: 40px; }
 
-        /* ================= GALLERY & LIGHTBOX ================= */
+        /* ================= GALLERY, SKELETON & LIGHTBOX ================= */
         .gallery-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: clamp(8px, 2vw, 12px);
             margin-top: 20px; max-height: 60vh; overflow-y: auto; padding: 5px;
         }
         .gallery-item {
             width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; cursor: pointer;
             border: 2px solid #EAE0D5; transition: transform 0.3s, border-color 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background-color: #F8F5F2; /* Placeholder color before skeleton kicks in */
         }
         .gallery-item:hover { transform: scale(1.05); border-color: var(--accent-orange); box-shadow: 0 8px 15px rgba(201,138,83,0.3); }
+
+        /* SKELETON LOADER UNTUK UX GALERI */
+        .skeleton {
+            background: linear-gradient(90deg, #EAE0D5 25%, #F8F5F2 50%, #EAE0D5 75%);
+            background-size: 200% 100%;
+            animation: skeletonLoading 1.5s infinite;
+        }
+        @keyframes skeletonLoading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
 
         #lightbox {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -322,7 +346,7 @@
         }
         #lightbox.show { opacity: 1; visibility: visible; }
         .lightbox-close {
-            position: absolute; top: 20px; right: 25px; color: #FFF; font-size: 2.5rem; cursor: pointer;
+            position: absolute; top: clamp(15px, 4vw, 20px); right: clamp(15px, 4vw, 25px); color: #FFF; font-size: clamp(2rem, 6vw, 2.5rem); cursor: pointer;
             transition: 0.3s; z-index: 10;
         }
         .lightbox-close:hover { color: var(--accent-orange); transform: scale(1.1) rotate(90deg); }
@@ -332,7 +356,7 @@
             transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         #lightbox.show .lightbox-img { transform: scale(1) translateY(0); }
-        .lightbox-actions { margin-top: 25px; display: flex; gap: 15px; }
+        .lightbox-actions { margin-top: 25px; display: flex; gap: 15px; width: 100%; justify-content: center; max-width: 400px;}
 
         /* ================= CUSTOM MODAL ================= */
         .custom-modal {
@@ -343,23 +367,23 @@
         }
         .custom-modal.show { opacity: 1; visibility: visible; }
         .modal-content {
-            background: #FFF; border-radius: 28px; padding: 35px 30px; text-align: center;
+            background: #FFF; border-radius: 28px; padding: clamp(25px, 6vw, 35px) clamp(20px, 5vw, 30px); text-align: center;
             max-width: 400px; width: 100%; transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
         .custom-modal.show .modal-content { transform: scale(1) translateY(0); }
-        .modal-icon { font-size: 4rem; margin-bottom: 15px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.2s; opacity: 0; transform: scale(0); }
+        .modal-icon { font-size: clamp(3rem, 8vw, 4rem); margin-bottom: 15px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.2s; opacity: 0; transform: scale(0); }
         @keyframes popIn { to { opacity: 1; transform: scale(1); } }
         
         .modal-icon.success { color: #25D366; filter: drop-shadow(0 5px 15px rgba(37, 211, 102, 0.3)); }
         .modal-icon.error { color: #ff4d4d; filter: drop-shadow(0 5px 15px rgba(255, 77, 77, 0.3)); }
         .modal-icon.warning { color: #F57C00; filter: drop-shadow(0 5px 15px rgba(245, 124, 0, 0.3)); }
-        .modal-title { font-family: var(--f-title); font-size: 2rem; color: var(--text-dark); margin: 0 0 10px 0; }
-        .modal-desc { color: #666; font-size: 0.95rem; margin-bottom: 30px; line-height: 1.6; white-space: pre-wrap; font-weight: 500;}
+        .modal-title { font-family: var(--f-title); font-size: clamp(1.6rem, 5vw, 2rem); color: var(--text-dark); margin: 0 0 10px 0; }
+        .modal-desc { color: #666; font-size: clamp(0.85rem, 3.5vw, 0.95rem); margin-bottom: 30px; line-height: 1.6; white-space: pre-wrap; font-weight: 500;}
 
         /* ================= TICKET DASHBOARD ================= */
         .ticket-card {
-            background: #FFF; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            background: #FFF; border-radius: clamp(20px, 6vw, 28px); overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
             text-align: center; position: relative; transform-origin: top center;
             animation: dropIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
@@ -367,17 +391,17 @@
         
         .ticket-head {
             background: linear-gradient(135deg, var(--bg-top), var(--accent-orange)); 
-            padding: 30px 20px; text-align: center; color: #FFF; position: relative;
+            padding: clamp(20px, 5vw, 30px) 20px; text-align: center; color: #FFF; position: relative;
         }
         .ticket-head::after {
             content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 20px;
             background: radial-gradient(circle, transparent 10px, #FFF 11px) repeat-x; background-size: 24px 24px;
         }
-        .u-name { font-family: var(--f-title); font-size: 2.2rem; margin: 0; line-height: 1.1; color: var(--accent-orange); text-shadow: 1px 1px 0px #F3E5D8;}
+        .u-name { font-family: var(--f-title); font-size: clamp(1.8rem, 6vw, 2.2rem); margin: 0; line-height: 1.1; color: var(--accent-orange); text-shadow: 1px 1px 0px #F3E5D8;}
         
         .u-role { 
             display: inline-block; background: #F8F5F2; padding: 6px 18px; border-radius: 20px; 
-            font-weight: 800; font-size: 0.85rem; margin-top: 12px; border: 1px solid #E5D5C5; 
+            font-weight: 800; font-size: clamp(0.75rem, 2.5vw, 0.85rem); margin-top: 12px; border: 1px solid #E5D5C5; 
             color: #5A3A1A !important; letter-spacing: 1px; text-transform: uppercase;
         }
         
@@ -401,6 +425,7 @@
             box-shadow: 0 15px 30px rgba(201,138,83,0.4); border: 2px solid #FFF; border-radius: 30px;
             color: #FFF; font-weight: 700; font-family: var(--f-body); cursor: pointer;
             display: flex; align-items: center; gap: 8px; transition: 0.3s; z-index: 3; position: relative;
+            font-size: clamp(0.85rem, 3vw, 1rem);
         }
         .btn-qr-reveal:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 20px 35px rgba(201,138,83,0.5); }
 
@@ -409,12 +434,15 @@
         .qr-placeholder-wrap.hide { opacity: 0; transform: scale(1.1); pointer-events: none; visibility: hidden; }
 
         .hidden { display: none !important; }
-
-        @media (max-width: 500px) {
-            .app-container { margin: 20px 15px; }
-            .glass-panel { padding: 30px 20px; }
-            .u-name { font-size: 1.8rem; }
+        
+        /* Utiliti tombol logout khusus di dalam tiket */
+        .btn-outline-white {
+            width: 100%; padding: clamp(12px, 3.5vw, 15px); border-radius: 14px;
+            font-family: var(--f-body); font-weight: 600; font-size: clamp(0.9rem, 3.5vw, 1rem);
+            cursor: pointer; transition: 0.3s; border: 2px solid;
+            display: flex; justify-content: center; align-items: center;
         }
+        .btn-outline-white:hover { background: #FFF !important; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -438,16 +466,20 @@
         <div id="modal-icon" class="modal-icon success"><i class="ph-check-circle-fill"></i></div>
         <h3 id="modal-title" class="modal-title">Berhasil!</h3>
         <p id="modal-desc" class="modal-desc">Pesan di sini</p>
-        <button class="btn-solid" onclick="closeModal()" id="modal-btn">Tutup</button>
+        <button class="btn-solid" onclick="UI.closeModal()" id="modal-btn">Tutup</button>
     </div>
 </div>
 
 <!-- LIGHTBOX DOKUMENTASI -->
 <div id="lightbox">
-    <i class="ph-x-bold lightbox-close" onclick="closeLightbox()"></i>
+    <i class="ph-x-bold lightbox-close" onclick="UI.closeLightbox()"></i>
     <img id="lightbox-image" src="" class="lightbox-img" alt="Dokumentasi GLOFEST">
     <div class="lightbox-actions">
-        <button class="btn-solid" id="btn-download-lb" style="background: var(--accent-orange); color: #FFF; box-shadow: 0 10px 25px rgba(201,138,83,0.4);" onclick="downloadCurrentLightboxImage()">
+        <!-- Fallback message for mobile users explicitly embedded -->
+        <p style="color: rgba(255,255,255,0.7); font-size: 0.75rem; text-align: center; position: absolute; bottom: 80px; left:0; width:100%; padding: 0 20px;">
+            Jika gagal mengunduh, foto akan terbuka di tab baru. Silakan tahan gambar (Hold) lalu pilih "Simpan".
+        </p>
+        <button class="btn-solid" id="btn-download-lb" style="background: var(--accent-orange); color: #FFF; box-shadow: 0 10px 25px rgba(201,138,83,0.4);" onclick="API.downloadCurrentLightboxImage()">
             <i class="ph-download-simple-bold"></i> Unduh Foto
         </button>
     </div>
@@ -458,14 +490,11 @@
     <!-- 1. LANDING PAGE -->
     <div id="landing-page" class="page-section active">
         <div class="logo-wrapper stagger-item">
-            <!-- LOGO ANGKATAN -->
-            <img src="logo.png" alt="Logo Angkatan" style="width: 50px; height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.alt='Gambar logo.png belum tersedia'">
-
-            <!-- LOGO UTAMA -->
+            <img src="logo.png" alt="Logo Angkatan" style="width: clamp(40px, 10vw, 50px); height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.alt='Gambar logo.png belum tersedia'">
             <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 500px; height: auto; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4)); margin-bottom: 15px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05) translateY(-5px)'" onmouseout="this.style.transform='scale(1) translateY(0)'" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
         </div>
 
-        <div class="pill-btn stagger-item" onclick="navTo('register-section')">
+        <div class="pill-btn stagger-item" onclick="UI.navTo('register-section')">
             <div class="pill-icon"><i class="ph-note-pencil-bold"></i></div>
             <div class="pill-text">
                 <div class="pill-text-title">Registrasi Ulang</div>
@@ -473,7 +502,7 @@
             </div>
         </div>
 
-        <div class="pill-btn stagger-item" onclick="navTo('check-section')">
+        <div class="pill-btn stagger-item" onclick="UI.navTo('check-section')">
             <div class="pill-icon"><i class="ph-magnifying-glass-bold"></i></div>
             <div class="pill-text">
                 <div class="pill-text-title">Cek Tiket</div>
@@ -481,7 +510,7 @@
             </div>
         </div>
 
-        <div class="pill-btn stagger-item" onclick="navTo('login-section')">
+        <div class="pill-btn stagger-item" onclick="UI.navTo('login-section')">
             <div class="pill-icon"><i class="ph-ticket-bold"></i></div>
             <div class="pill-text">
                 <div class="pill-text-title">Akses Tiket</div>
@@ -489,10 +518,10 @@
             </div>
         </div>
 
-        <div class="pill-btn stagger-item" onclick="navTo('dokumentasi-section')">
+        <div class="pill-btn stagger-item" onclick="UI.navTo('dokumentasi-section')">
             <div class="pill-icon"><i class="ph-camera-bold"></i></div>
             <div class="pill-text">
-                <div class="pill-text-title">Dokumentasi</i></div>
+                <div class="pill-text-title">Dokumentasi</div>
                 <div class="pill-text-sub">Galeri Foto & Memori GLOFEST</div>
             </div>
         </div>
@@ -525,8 +554,8 @@
             <p class="panel-subtitle">Isi form untuk pendaftaran GLOFEST</p>
             
             <div class="tabs">
-                <button type="button" class="tab-btn active" id="tab-non" onclick="toggleTab('non')">Siswa SMASIF</button>
-                <button type="button" class="tab-btn" id="tab-alumni" onclick="toggleTab('alumni')">Alumni SMP</button>
+                <button type="button" class="tab-btn active" id="tab-non" onclick="UI.toggleTab('non')">Siswa SMASIF</button>
+                <button type="button" class="tab-btn" id="tab-alumni" onclick="UI.toggleTab('alumni')">Alumni SMP</button>
             </div>
 
             <form id="reg-form">
@@ -549,14 +578,14 @@
                 <div id="field-bukti" class="form-group hidden">
                     <label class="form-label">Bukti Pembayaran (Rp 170.000)</label>
                     <input type="file" id="reg-bukti" class="form-input form-file" accept="image/png, image/jpeg, image/jpg">
-                    <small style="font-size: 0.75rem; color: #888; display: block; margin-top: 5px; text-align: center;">*Format JPG/PNG maks 3MB</small>
+                    <small style="font-size: 0.75rem; color: #888; display: block; margin-top: 5px; text-align: center;">*Format JPG/PNG maks 1.5MB</small>
                     <div id="img-preview-container">
                         <img id="img-preview" src="#" alt="Preview Bukti">
                     </div>
                 </div>
 
                 <button type="submit" class="btn-solid" id="btn-submit-reg">Kirim Permohonan <i class="ph-paper-plane-right-bold"></i></button>
-                <div style="text-align: center;"><button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali ke Beranda</button></div>
+                <div style="text-align: center;"><button type="button" class="btn-text" onclick="UI.navTo('landing-page')">Kembali ke Beranda</button></div>
             </form>
         </div>
     </div>
@@ -572,16 +601,16 @@
                     <label class="form-label" style="text-align: center;">Nama Lengkap</label>
                     <div class="input-wrapper">
                         <i class="ph-user-bold prefix-icon"></i>
-                        <input type="text" class="form-input" id="check-nama" placeholder="Contoh: Rafa" required style="font-weight: 800; font-size: 1.1rem; text-align: center; padding-left: 16px;">
+                        <input type="text" class="form-input" id="check-nama" placeholder="Contoh: Rafa" required style="font-weight: 800; font-size: clamp(1rem, 4vw, 1.1rem); text-align: center; padding-left: 16px;">
                     </div>
                 </div>
                 
-                <div id="check-result" style="margin-bottom: 20px; font-weight: 600; font-size: 0.95rem; text-align: center; min-height: 20px; padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.03);">
+                <div id="check-result" style="margin-bottom: 20px; font-weight: 600; font-size: clamp(0.85rem, 3.5vw, 0.95rem); text-align: center; min-height: 20px; padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.03);">
                     Masukkan nama daftarmu di atas.
                 </div>
                 
                 <button type="submit" class="btn-solid" id="btn-submit-check">Cek Sekarang <i class="ph-magnifying-glass-bold"></i></button>
-                <div style="text-align: center;"><button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali ke Beranda</button></div>
+                <div style="text-align: center;"><button type="button" class="btn-text" onclick="UI.navTo('landing-page')">Kembali ke Beranda</button></div>
             </form>
         </div>
     </div>
@@ -597,14 +626,14 @@
                     <label class="form-label" style="text-align: center;">Kode Tiket</label>
                     <div class="input-wrapper">
                         <i class="ph-ticket-fill prefix-icon"></i>
-                        <input type="text" class="form-input" id="login-kode" placeholder="Contoh: GLO-123" required style="text-transform: uppercase; font-weight: 800; font-size: 1.2rem; letter-spacing: 3px; text-align: center; padding-left: 16px;">
+                        <input type="text" class="form-input" id="login-kode" placeholder="Contoh: GLO-123" required style="text-transform: uppercase; font-weight: 800; font-size: clamp(1rem, 4vw, 1.2rem); letter-spacing: 3px; text-align: center; padding-left: 16px;">
                     </div>
                 </div>
                 
                 <div id="login-error" style="color:#D32F2F; margin-bottom: 15px; font-weight:600; font-size: 0.9rem; text-align:center; min-height: 20px;"></div>
                 
                 <button type="submit" class="btn-solid" id="btn-submit-login">Tampilkan Tiket <i class="ph-qr-code-bold"></i></button>
-                <div style="text-align: center;"><button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali ke Beranda</button></div>
+                <div style="text-align: center;"><button type="button" class="btn-text" onclick="UI.navTo('landing-page')">Kembali ke Beranda</button></div>
             </form>
         </div>
     </div>
@@ -617,7 +646,7 @@
                 <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 220px; height: auto; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2)); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05) translateY(-3px)'" onmouseout="this.style.transform='scale(1) translateY(0)'" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
             </div>
             
-            <h2 class="panel-title" style="font-size: 1.8rem;">DOKUMENTASI</h2>
+            <h2 class="panel-title" style="font-size: clamp(1.5rem, 5vw, 1.8rem);">DOKUMENTASI</h2>
             <p class="panel-subtitle">Galeri Kenangan GLOFEST 2.0</p>
             
             <div id="gallery-loading" style="text-align: center; color: var(--accent-orange); font-weight: 600; margin: 20px 0;">
@@ -625,10 +654,10 @@
             </div>
 
             <div id="gallery-grid" class="gallery-grid">
-                <!-- Foto-foto dari Google Drive akan muncul di sini -->
+                <!-- Foto-foto dari Google Drive akan muncul di sini dengan skeleton loader -->
             </div>
             
-            <div style="text-align: center; margin-top: 15px;"><button type="button" class="btn-text" onclick="navTo('landing-page')">Kembali ke Beranda</button></div>
+            <div style="text-align: center; margin-top: 15px;"><button type="button" class="btn-text" onclick="UI.navTo('landing-page')">Kembali ke Beranda</button></div>
         </div>
     </div>
 
@@ -636,52 +665,51 @@
     <div id="dashboard-peserta" class="page-section">
         <div class="ticket-card">
             <div class="ticket-head">
-                <h2 style="font-family: var(--f-title); font-size: 1.8rem; margin: 0; letter-spacing: 2px;">GLOFEST 2.0</h2>
+                <h2 style="font-family: var(--f-title); font-size: clamp(1.5rem, 5vw, 1.8rem); margin: 0; letter-spacing: 2px;">GLOFEST 2.0</h2>
                 <div style="font-size: 0.75rem; letter-spacing: 3px; opacity: 0.9; margin-top: 5px;">TIKET MASUK EKSKLUSIF</div>
             </div>
             
-            <div style="padding: 35px 25px;">
+            <div style="padding: clamp(20px, 6vw, 35px) clamp(15px, 5vw, 25px);">
                 <h1 class="u-name" id="u-nama">...</h1>
                 <div class="u-role" id="u-kategori">...</div>
                 
                 <div style="margin-top: 30px; background: #F8F5F2; border-radius: 16px; padding: 20px; border: 1px solid #EAE0D5; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
                     <div style="font-size: 0.8rem; font-weight: 700; color: #A09385; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;">NOMOR UNDIAN DOORPRIZE</div>
-                    <div style="font-size: 2.5rem; font-family: var(--f-title); color: var(--accent-orange); letter-spacing: 4px; text-shadow: 1px 1px 0px #FFF;" id="u-undian">...</div>
+                    <div style="font-size: clamp(2rem, 8vw, 2.5rem); font-family: var(--f-title); color: var(--accent-orange); letter-spacing: 4px; text-shadow: 1px 1px 0px #FFF;" id="u-undian">...</div>
                 </div>
 
                 <!-- CONTAINER QR CODE ANIMASI -->
                 <div class="qr-wrapper">
-                    <!-- Area Placeholder (Blur) & Tombol Overlay -->
                     <div id="qr-placeholder-wrap" class="qr-placeholder-wrap">
                         <div class="qr-box qr-placeholder-blur" style="width: 170px; height: 170px; position: absolute;">
                             <i class="ph-qr-code" style="font-size: 100px; color: var(--text-dark);"></i>
                         </div>
-                        <button class="btn-qr-reveal" id="btn-show-qr" onclick="generateTicketQR()">
+                        <button class="btn-qr-reveal" id="btn-show-qr" onclick="Auth.generateTicketQR()">
                             <i class="ph-qr-code" style="font-size: 1.2rem;"></i> Tampilkan QR
                         </button>
                     </div>
 
-                    <!-- Tempat QR Code Asli -->
                     <div id="qr-real-wrap" class="qr-real-wrap">
                         <div class="qr-box" id="qrcode" style="width: 170px; height: 170px;"></div>
                     </div>
                 </div>
                 
                 <div id="qr-timer" style="font-size: 0.85rem; font-weight: 700; color: #D32F2F; margin-top: 15px; transition: 0.3s;" class="hidden"></div>
+                <div style="font-size: 0.65rem; color: #888; margin-top: 5px;">*Validasi QR dilakukan saat scanning panitia.</div>
             </div>
         </div>
         
-        <button class="btn-outline-white" style="margin-top: 15px; color: var(--text-dark); background: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.9);" onclick="doLogout()"><i class="ph-sign-out-bold" style="margin-right: 8px;"></i> Keluar Akun</button>
+        <button class="btn-outline-white" style="margin-top: 15px; color: var(--text-dark); background: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.9);" onclick="Auth.doLogout()"><i class="ph-sign-out-bold" style="margin-right: 8px;"></i> Keluar Akun</button>
     </div>
 
     <!-- 7. DASHBOARD PANITIA (SCANNER & DOORPRIZE) -->
     <div id="dashboard-panitia" class="page-section">
         <div class="glass-panel">
-            <h2 class="panel-title" style="font-size: 1.8rem;">SISTEM PANITIA</h2>
+            <h2 class="panel-title" style="font-size: clamp(1.5rem, 5vw, 1.8rem);">SISTEM PANITIA</h2>
             
             <div class="tabs" style="margin-top: 15px;">
-                <button type="button" class="tab-btn active" id="tab-scan" onclick="switchPanitia('scan')"><i class="ph-scan-bold"></i> Scanner</button>
-                <button type="button" class="tab-btn" id="tab-acak" onclick="switchPanitia('acak')"><i class="ph-download-bold"></i> Doorprize</button>
+                <button type="button" class="tab-btn active" id="tab-scan" onclick="Scanner.switchMenu('scan')"><i class="ph-scan-bold"></i> Scanner</button>
+                <button type="button" class="tab-btn" id="tab-acak" onclick="Scanner.switchMenu('acak')"><i class="ph-download-bold"></i> Doorprize</button>
             </div>
 
             <!-- Bagian Scanner -->
@@ -690,22 +718,22 @@
                     <div id="reader"></div>
                 </div>
                 <div id="scan-result" style="display:none; padding: 25px 20px; border-radius: 16px; background: #F8F5F2; text-align: center; border: 2px solid #EAE0D5; animation: slideUpFade 0.3s ease;">
-                    <h3 id="res-title" style="margin:0; font-family: var(--f-title); color: var(--accent-orange); font-size: 1.6rem; letter-spacing: 1px;">...</h3>
-                    <p id="res-body" style="font-weight: 700; margin-top: 10px; font-size: 1.1rem; color: var(--text-dark);">...</p>
-                    <button class="btn-solid" id="btn-reset-scan" style="margin-top: 20px;">Scan Tiket Lain <i class="ph-arrows-clockwise-bold"></i></button>
+                    <h3 id="res-title" style="margin:0; font-family: var(--f-title); color: var(--accent-orange); font-size: clamp(1.3rem, 4vw, 1.6rem); letter-spacing: 1px;">...</h3>
+                    <p id="res-body" style="font-weight: 700; margin-top: 10px; font-size: clamp(0.9rem, 3.5vw, 1.1rem); color: var(--text-dark);">...</p>
+                    <button class="btn-solid" id="btn-reset-scan" style="margin-top: 20px;" onclick="Scanner.resetScanUI()">Scan Tiket Lain <i class="ph-arrows-clockwise-bold"></i></button>
                 </div>
             </div>
 
             <!-- Bagian Doorprize Ekspor -->
             <div id="panitia-acak-area" class="hidden">
-                <p style="text-align: center; font-size: 0.95rem; color:#666; margin-bottom: 25px; font-weight: 500; line-height: 1.5;">Ekspor seluruh kode doorprize milik peserta yang telah di-ACC ke dalam format text (.txt).</p>
+                <p style="text-align: center; font-size: clamp(0.85rem, 3.5vw, 0.95rem); color:#666; margin-bottom: 25px; font-weight: 500; line-height: 1.5;">Ekspor seluruh kode doorprize milik peserta yang telah di-ACC ke dalam format text (.txt).</p>
                 
-                <button class="btn-solid" id="btn-export-doorprize" onclick="exportDoorprize()" style="background: var(--accent-orange); font-size: 1.1rem; padding: 18px; box-shadow: 0 10px 25px rgba(201,138,83,0.4);">
+                <button class="btn-solid" id="btn-export-doorprize" onclick="API.exportDoorprize()" style="background: var(--accent-orange); font-size: 1.1rem; padding: 18px; box-shadow: 0 10px 25px rgba(201,138,83,0.4);">
                     <i class="ph-download-simple-bold"></i> Download Data (.txt)
                 </button>
             </div>
 
-            <div style="text-align: center; margin-top: 15px;"><button class="btn-text" onclick="doLogout()">Keluar Sistem</button></div>
+            <div style="text-align: center; margin-top: 15px;"><button class="btn-text" onclick="Auth.doLogout()">Keluar Sistem</button></div>
         </div>
     </div>
 </div>
@@ -715,489 +743,508 @@
 </div>
 
 <script>
-    // === MASUKKAN URL DEPLOY WEB APP DI SINI ===
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoDNzavMliQBuBncntHdOYHC-wxSPgE6JjG9kZKLdqYJJmCpOuaMnxoICTaDJns5b_gA/exec"; 
+    /**
+     * =========================================================================
+     * GLOFEST 2.0 APPLICATION ARCHITECTURE
+     * Organized in Object Modules (similar to Lua Tables/ModuleScripts)
+     * Because Single-File mandate prohibits external .js files.
+     * =========================================================================
+     */
 
-    let currentUser = null;
-    let html5QrcodeScanner = null;
-    let qrTimerInterval = null;
-    let currentLightboxImgUrl = "";
-
-    // --- LOADING SCREEN LOGIC ---
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const loader = document.getElementById('loading-screen');
-            loader.classList.add('hidden');
-        }, 800);
-    });
-
-    // --- MODAL LOGIC ---
-    function showModal(title, message, isSuccess = true, callback = null, isWarning = false) {
-        const modal = document.getElementById('app-modal');
-        const icon = document.getElementById('modal-icon');
-        
-        document.getElementById('modal-title').innerText = title;
-        document.getElementById('modal-desc').innerText = message;
-        
-        if(isWarning) {
-            icon.className = "modal-icon warning"; icon.innerHTML = '<i class="ph-warning-fill"></i>';
-        } else if(isSuccess) {
-            icon.className = "modal-icon success"; icon.innerHTML = '<i class="ph-check-circle-fill"></i>';
-        } else {
-            icon.className = "modal-icon error"; icon.innerHTML = '<i class="ph-x-circle-fill"></i>';
-        }
-        
-        modal.classList.add('show');
-        document.getElementById('modal-btn').onclick = () => {
-            closeModal(); if(callback) callback();
-        };
-    }
-    function closeModal() { document.getElementById('app-modal').classList.remove('show'); }
-
-    // --- NAVIGATION ---
-    function navTo(id) {
-        // Cek Local Storage sebelum membuka Register
-        if(id === 'register-section') {
-            const savedName = localStorage.getItem('glofest_my_name');
-            if(savedName) {
-                showModal("Perhatian", `Perangkat ini sudah terdaftar atas nama: ${savedName}\nSilakan pantau status tiketmu.`, false, () => {
-                    document.getElementById('check-nama').value = savedName;
-                    navTo('check-section');
-                }, true);
-                return; // Stop navigation to register
-            }
-        }
-
-        document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-        
-        // Memperlebar kontainer saat masuk halaman dokumentasi
-        const mainContainer = document.getElementById('main-container');
-        if (id === 'dokumentasi-section') {
-            mainContainer.style.maxWidth = '800px';
-        } else {
-            mainContainer.style.maxWidth = '500px';
-        }
-
-        setTimeout(() => { 
-            if(document.getElementById(id)) document.getElementById(id).classList.add('active'); 
-            
-            // Auto-load gallery if navigating to dokumentasi
-            if(id === 'dokumentasi-section') {
-                loadGallery();
-            }
-        }, 50);
-        
-        document.getElementById('login-error').innerText = "";
-        document.getElementById('check-result').innerHTML = "Masukkan nama daftarmu di atas.";
-        
-        if(id !== 'dashboard-panitia' && html5QrcodeScanner) { 
-            try { html5QrcodeScanner.clear(); } catch(e) {} 
-        }
-        expireQR();
-    }
-
-    // --- UI INTERACTIONS ---
-    function toggleTab(type) {
-        const alumniBtn = document.getElementById('tab-alumni');
-        const nonBtn = document.getElementById('tab-non');
-        const fieldBukti = document.getElementById('field-bukti');
-
-        if(type === 'alumni') {
-            alumniBtn.classList.add('active'); nonBtn.classList.remove('active');
-            fieldBukti.classList.remove('hidden'); document.getElementById('reg-bukti').setAttribute('required', '');
-        } else {
-            nonBtn.classList.add('active'); alumniBtn.classList.remove('active');
-            fieldBukti.classList.add('hidden'); document.getElementById('reg-bukti').removeAttribute('required');
-        }
-    }
-
-    document.getElementById('reg-bukti').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const previewContainer = document.getElementById('img-preview-container');
-        const previewImage = document.getElementById('img-preview');
-        
-        if(file) {
-            if(file.size > 3 * 1024 * 1024) {
-                showModal("File Kebesaran", "Maksimal ukuran foto adalah 3MB ya.", false);
-                this.value = ''; previewContainer.style.display = "none"; return;
-            }
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImage.src = e.target.result;
-                previewContainer.style.display = "block";
-            }
-            reader.readAsDataURL(file);
-        } else { previewContainer.style.display = "none"; }
-    });
-
-    const fileToBase64 = file => new Promise((resolve, reject) => {
-        const reader = new FileReader(); reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = error => reject(error);
-    });
-
-    // --- LIVE API CALL ---
-    async function apiCall(payload) {
-        if (!GOOGLE_SCRIPT_URL) throw new Error("URL Google Apps Script belum disetting (Masih kosong)!");
-        try {
-            const res = await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST', body: JSON.stringify(payload)
-            });
-            return await res.json();
-        } catch (error) { 
-            throw new Error("Gagal koneksi ke server. Cek internetmu atau pastikan link deployment benar."); 
-        }
-    }
-
-    // --- REGISTRASI ---
-    document.getElementById('reg-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btn-submit-reg');
-        btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Memproses...'; btn.disabled = true;
-
-        try {
-            const isAlumni = document.getElementById('tab-alumni').classList.contains('active');
-            let fileData = ""; let fileName = "";
-            
-            if (isAlumni) {
-                const fileInput = document.getElementById('reg-bukti');
-                if (fileInput.files.length > 0) {
-                    fileData = await fileToBase64(fileInput.files[0]);
-                    fileName = `BUKTI_${Date.now()}_${fileInput.files[0].name}`;
-                }
-            }
-
-            const inputNama = document.getElementById('reg-nama').value.trim();
-            const payload = {
-                action: 'register',
-                nama: inputNama,
-                ig: document.getElementById('reg-ig').value, // Diganti jadi IG
-                kategori: isAlumni ? 'Alumni' : 'Siswa SMASIF',
-                fileData: fileData, fileName: fileName
-            };
-
-            const result = await apiCall(payload);
-            if(result.status === 'success') {
-                // SIMPAN NAMA DI LOCAL STORAGE AGAR TIDAK DAFTAR LAGI
-                localStorage.setItem('glofest_my_name', inputNama);
-
-                const msg = `Halo ${result.nama},\n\nTerima kasih sudah mendaftar!\n\nAkunmu sedang dalam antrean validasi panitia. Pantau secara berkala di menu 'Cek Tiket' menggunakan namamu.`;
-                showModal("Pendaftaran Sukses!", msg, true, () => {
-                    document.getElementById('check-nama').value = inputNama; // Auto fill cek
-                    navTo('check-section'); 
-                    e.target.reset();
-                    document.getElementById('img-preview-container').style.display = "none";
-                });
-            } else { 
-                // Misal nama sudah digunakan, backend kembalikan {status: 'error', message: '...'}
-                throw new Error(result.message); 
-            }
-        } catch (err) { 
-            showModal("Gagal Pendaftaran", err.message, false); 
-        } finally { 
-            btn.innerHTML = 'Kirim Permohonan <i class="ph-paper-plane-right-bold"></i>'; btn.disabled = false; 
-        }
-    });
-
-    // --- CEK TIKET / STATUS (BY NAMA) ---
-    document.getElementById('check-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btn-submit-check');
-        btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengecek...'; btn.disabled = true;
-        const resDiv = document.getElementById('check-result');
-        resDiv.innerHTML = "";
-
-        try {
-            const nama = document.getElementById('check-nama').value.trim();
-            const result = await apiCall({ action: 'check_status', nama: nama });
-
-            if (result.status === 'success') {
-                if (result.data.status === 'pending') {
-                    resDiv.innerHTML = `<div style="color: #F57C00; display:flex; flex-direction:column; gap:5px;"><i class="ph-clock-bold" style="font-size: 2rem;"></i><span>Status: <strong>Menunggu Persetujuan</strong></span><span style="font-size:0.85rem; color:#666;">Tiket atas nama ${nama} belum di-ACC panitia.</span></div>`;
-                } else if (result.data.status === 'approved') {
-                    resDiv.innerHTML = `<div style="color: #2E7D32; display:flex; flex-direction:column; gap:5px;"><i class="ph-check-circle-bold" style="font-size: 2rem;"></i><span>Status: <strong>Disetujui!</strong></span><span style="font-size:0.85rem; color:#666;">Silakan masuk via menu Akses Tiket menggunakan kode:</span><div style="background:#FFF; border:2px dashed #2E7D32; padding:10px; margin-top:5px; border-radius:10px; font-size:1.4rem; color:var(--text-dark); letter-spacing:2px;">${result.data.kode}</div></div>`;
-                } else if (result.data.status === 'rejected') {
-                    resDiv.innerHTML = `<div style="color: #D32F2F; display:flex; flex-direction:column; gap:5px;"><i class="ph-x-circle-bold" style="font-size: 2rem;"></i><span>Status: <strong>Ditolak</strong></span><span style="font-size:0.85rem; color:#666;">Pendaftaran ${nama} ditolak. Silakan hubungi panitia.</span></div>`;
-                }
-            } else {
-                resDiv.innerHTML = `<span style="color: #D32F2F;"><i class="ph-warning-circle-bold"></i> ${result.message}</span>`;
-            }
-        } catch (err) {
-            resDiv.innerHTML = `<span style="color: #D32F2F;">${err.message}</span>`;
-        } finally {
-            btn.innerHTML = 'Cek Sekarang <i class="ph-magnifying-glass-bold"></i>'; btn.disabled = false;
-        }
-    });
-
-    // --- LOGIN ---
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btn-submit-login');
-        btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengecek...'; btn.disabled = true;
-        const errDiv = document.getElementById('login-error');
-        errDiv.innerText = "";
-        
-        try {
-            const kode = document.getElementById('login-kode').value.toUpperCase();
-            if(kode === "PANITIA-GLO083") {
-                 currentUser = { role: 'panitia' }; initPanitia(); return;
-            }
-
-            const result = await apiCall({ action: 'login', kode: kode });
-            if(result.status === 'success') {
-                currentUser = result.data; initPeserta();
-            } else { errDiv.innerText = result.message; }
-        } catch (err) { errDiv.innerText = err.message; } 
-        finally { btn.innerHTML = 'Tampilkan Tiket <i class="ph-qr-code-bold"></i>'; btn.disabled = false; }
-    });
-
-    // --- GALLERY / DOKUMENTASI LOGIC ---
-    async function loadGallery() {
-        const grid = document.getElementById('gallery-grid');
-        const loader = document.getElementById('gallery-loading');
-        
-        grid.innerHTML = "";
-        loader.style.display = "block";
-
-        try {
-            const result = await apiCall({ action: 'get_gallery' });
-            loader.style.display = "none";
-            
-            if (result.status === 'success' && result.data && result.data.length > 0) {
-                result.data.forEach(imgUrl => {
-                    const imgEl = document.createElement('img');
-                    imgEl.src = imgUrl;
-                    imgEl.className = 'gallery-item';
-                    imgEl.loading = 'lazy';
-                    imgEl.onclick = () => openLightbox(imgUrl);
-                    grid.appendChild(imgEl);
-                });
-            } else {
-                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #666; font-size: 0.9rem;">Belum ada dokumentasi yang diunggah.</p>`;
-            }
-        } catch (err) {
-            loader.innerHTML = `<i class="ph-warning-circle-bold" style="color: #D32F2F;"></i><br>Gagal memuat galeri.<br><span style="font-size:0.75rem; color:#888;">${err.message}</span>`;
-        }
-    }
-
-    function openLightbox(url) {
-        currentLightboxImgUrl = url;
-        const lightbox = document.getElementById('lightbox');
-        document.getElementById('lightbox-image').src = url;
-        lightbox.classList.add('show');
-    }
-
-    function closeLightbox() {
-        document.getElementById('lightbox').classList.remove('show');
-        setTimeout(() => { document.getElementById('lightbox-image').src = ""; }, 400);
-    }
-
-    async function downloadCurrentLightboxImage() {
-        if (!currentLightboxImgUrl) return;
-        
-        const btn = document.getElementById('btn-download-lb');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengunduh...';
-        
-        try {
-            // Coba Fetch blob agar bisa di-download langsung dari browser
-            const response = await fetch(currentLightboxImgUrl);
-            const blob = await response.blob();
-            const blobUrl = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = blobUrl;
-            // Buat nama file acak
-            a.download = `GLOFEST_Doc_${Math.floor(Math.random() * 10000)}.jpg`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(blobUrl);
-        } catch (e) {
-            // Fallback: Jika kena CORS dari Google Drive, buka di tab baru
-            window.open(currentLightboxImgUrl, '_blank');
-        } finally {
-            btn.innerHTML = originalText;
-        }
-    }
-
-    // --- DASHBOARD PESERTA & QR LOGIC ---
-    function resetQRUI(btnText, btnColor) {
-        document.getElementById('qr-real-wrap').classList.remove('show');
-        document.getElementById('qr-placeholder-wrap').classList.remove('hide');
-        document.getElementById('qr-timer').classList.add('hidden');
-        
-        const btnQr = document.getElementById('btn-show-qr');
-        btnQr.innerHTML = `<i class="ph-arrows-clockwise-bold"></i> ${btnText}`;
-        btnQr.style.background = btnColor;
-    }
-
-    function expireQR() {
-        clearInterval(qrTimerInterval);
-        if (document.getElementById('dashboard-peserta').classList.contains('active') && currentUser) {
-            resetQRUI("Ulang QR (Kadaluarsa)", "#D32F2F"); // Merah
-        }
-    }
-
-    document.addEventListener("visibilitychange", () => {
-        if (document.hidden && currentUser && document.getElementById('qr-real-wrap').classList.contains('show')) {
-            expireQR();
-        }
-    });
-
-    function initPeserta() {
-        navTo('dashboard-peserta');
-        document.getElementById('u-nama').innerText = currentUser.nama;
-        document.getElementById('u-kategori').innerText = currentUser.kategori;
-        document.getElementById('u-undian').innerText = currentUser.undian || "-";
-        
-        resetQRUI("Tampilkan QR", "var(--accent-orange)");
-    }
-
-    function generateTicketQR() {
-        const placeholderWrap = document.getElementById('qr-placeholder-wrap');
-        const realWrap = document.getElementById('qr-real-wrap');
-        const box = document.getElementById('qrcode');
-        const timerText = document.getElementById('qr-timer');
-        
-        // Animasi pergantian
-        placeholderWrap.classList.add('hide');
-        
-        // Generate QR code
-        box.innerHTML = "";
-        const expTime = Date.now() + (10 * 60 * 1000); 
-        const payload = { kode: currentUser.kode, uid: currentUser.uid, exp: expTime };
-
-        new QRCode(box, { 
-            text: JSON.stringify(payload), 
-            width: 170, height: 170, colorDark: "#5A3A1A", colorLight: "#ffffff" 
-        });
-
-        // Tampilkan Real QR setelah jeda sedikit agar mulus
-        setTimeout(() => {
-            realWrap.classList.add('show');
-            timerText.classList.remove('hidden');
-        }, 150);
-
-        clearInterval(qrTimerInterval);
-        qrTimerInterval = setInterval(() => {
-            const diff = expTime - Date.now();
-            if(diff <= 0) {
-                expireQR();
-            } else {
-                const m = Math.floor(diff / 60000);
-                const s = Math.floor((diff % 60000) / 1000);
-                timerText.innerText = `Kode Valid: ${m}:${s < 10 ? '0'+s : s}`;
-            }
-        }, 1000);
-    }
-
-    // --- DASHBOARD PANITIA (SCANNER & EXPORT DOORPRIZE) ---
-    function switchPanitia(tipe) {
-        document.getElementById('tab-scan').classList.remove('active');
-        document.getElementById('tab-acak').classList.remove('active');
-        document.getElementById('panitia-scan-area').classList.add('hidden');
-        document.getElementById('panitia-acak-area').classList.add('hidden');
-
-        if(tipe === 'scan') {
-            document.getElementById('tab-scan').classList.add('active');
-            document.getElementById('panitia-scan-area').classList.remove('hidden');
-            if(html5QrcodeScanner && html5QrcodeScanner.getState() !== 2) html5QrcodeScanner.resume();
-        } else {
-            document.getElementById('tab-acak').classList.add('active');
-            document.getElementById('panitia-acak-area').classList.remove('hidden');
-            if(html5QrcodeScanner) html5QrcodeScanner.pause();
-        }
-    }
-
-    function initPanitia() {
-        navTo('dashboard-panitia');
-        switchPanitia('scan');
-        if(!html5QrcodeScanner) {
-            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
-            html5QrcodeScanner.render(handleScanQR, (err) => { console.warn("Scanner error:", err); });
-        }
-    }
-
-    async function handleScanQR(decoded) {
-        html5QrcodeScanner.pause(); 
-        const resDiv = document.getElementById('scan-result');
-        const title = document.getElementById('res-title');
-        const body = document.getElementById('res-body');
-        
-        resDiv.style.display = 'block';
-        title.innerHTML = "<i class='ph-spinner ph-spin'></i> Cek Database..."; title.style.color = "var(--text-dark)";
-        body.innerText = "Mohon tunggu...";
-
-        try {
-            const data = JSON.parse(decoded);
-            if(!data.kode || !data.exp) throw new Error("Format QR Tidak Dikenal.");
-            if(Date.now() > data.exp) throw new Error("QR Expired! Suruh tamu klik 'Ulang QR'.");
-
-            const result = await apiCall({ action: 'scan', kode: data.kode });
-            if(result.status === 'success') {
-                title.innerHTML = "<i class='ph-check-circle-fill'></i> TIKET VALID"; title.style.color = "#2E7D32"; 
-                body.innerHTML = `${result.data.nama}<br><span style="color:#666; font-size:0.95rem; font-weight: 500;">${result.data.kategori}</span>`;
-            } else { throw new Error(result.message); }
-        } catch (err) {
-            title.innerHTML = "<i class='ph-warning-circle-fill'></i> DITOLAK"; title.style.color = "#D32F2F"; 
-            body.innerText = err.message || "QR Code Rusak/Palsu!";
-        }
-    }
-
-    document.getElementById('btn-reset-scan').onclick = () => {
-        document.getElementById('scan-result').style.display = 'none';
-        html5QrcodeScanner.resume();
+    // --- GLOBAL STATE ---
+    const CONFIG = {
+        // === MASUKKAN URL DEPLOY WEB APP DI SINI ===
+        GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyoDNzavMliQBuBncntHdOYHC-wxSPgE6JjG9kZKLdqYJJmCpOuaMnxoICTaDJns5b_gA/exec",
+        MAX_FILE_SIZE: 1.5 * 1024 * 1024 // Diturunkan ke 1.5MB agar aman saat Base64 convert
     };
 
-    // LOGIC EKSPOR DOORPRIZE TXT
-    async function exportDoorprize() {
-        const btn = document.getElementById('btn-export-doorprize');
-        btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Memproses Unduhan...'; 
-        btn.disabled = true;
-        
-        try {
-            const res = await apiCall({action: 'get_undian'});
-            if(res.status === 'success' && res.data && res.data.length > 0) {
-                let txtContent = "=== DATA DOORPRIZE GLOFEST 2.0 ===\r\n\r\n";
+    let currentUser = null;
+    let qrTimerInterval = null;
+    let currentLightboxImgUrl = "";
+    let html5QrcodeScanner = null;
+
+    // =========================================================================
+    // 1. MODULE: UI CONTROLLER (Mengatur Navigasi & Tampilan Visual)
+    // =========================================================================
+    const UI = {
+        initLoadingScreen: () => {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    const loader = document.getElementById('loading-screen');
+                    loader.classList.add('hidden');
+                }, 800);
+            });
+        },
+
+        showModal: (title, message, isSuccess = true, callback = null, isWarning = false) => {
+            const modal = document.getElementById('app-modal');
+            const icon = document.getElementById('modal-icon');
+            
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = message;
+            
+            if(isWarning) {
+                icon.className = "modal-icon warning"; icon.innerHTML = '<i class="ph-warning-fill"></i>';
+            } else if(isSuccess) {
+                icon.className = "modal-icon success"; icon.innerHTML = '<i class="ph-check-circle-fill"></i>';
+            } else {
+                icon.className = "modal-icon error"; icon.innerHTML = '<i class="ph-x-circle-fill"></i>';
+            }
+            
+            modal.classList.add('show');
+            document.getElementById('modal-btn').onclick = () => {
+                UI.closeModal(); if(callback) callback();
+            };
+        },
+
+        closeModal: () => { document.getElementById('app-modal').classList.remove('show'); },
+
+        navTo: (id) => {
+            // Cek Local Storage sebelum membuka Register
+            if(id === 'register-section') {
+                const savedName = localStorage.getItem('glofest_my_name');
+                if(savedName) {
+                    UI.showModal("Perhatian", `Perangkat ini sudah terdaftar atas nama: ${savedName}\nSilakan pantau status tiketmu.`, false, () => {
+                        document.getElementById('check-nama').value = savedName;
+                        UI.navTo('check-section');
+                    }, true);
+                    return; 
+                }
+            }
+
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            
+            // Layout Adjustments based on page
+            const mainContainer = document.getElementById('main-container');
+            if (id === 'dokumentasi-section') {
+                mainContainer.style.maxWidth = '800px';
+            } else {
+                mainContainer.style.maxWidth = '500px';
+            }
+
+            setTimeout(() => { 
+                if(document.getElementById(id)) document.getElementById(id).classList.add('active'); 
+                if(id === 'dokumentasi-section') API.loadGallery();
+            }, 50);
+            
+            document.getElementById('login-error').innerText = "";
+            document.getElementById('check-result').innerHTML = "Masukkan nama daftarmu di atas.";
+            
+            if(id !== 'dashboard-panitia' && html5QrcodeScanner) { 
+                try { html5QrcodeScanner.clear(); } catch(e) {} 
+            }
+            Auth.expireQR();
+        },
+
+        toggleTab: (type) => {
+            const alumniBtn = document.getElementById('tab-alumni');
+            const nonBtn = document.getElementById('tab-non');
+            const fieldBukti = document.getElementById('field-bukti');
+
+            if(type === 'alumni') {
+                alumniBtn.classList.add('active'); nonBtn.classList.remove('active');
+                fieldBukti.classList.remove('hidden'); document.getElementById('reg-bukti').setAttribute('required', '');
+            } else {
+                nonBtn.classList.add('active'); alumniBtn.classList.remove('active');
+                fieldBukti.classList.add('hidden'); document.getElementById('reg-bukti').removeAttribute('required');
+            }
+        },
+
+        setupFileInput: () => {
+            document.getElementById('reg-bukti').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                const previewContainer = document.getElementById('img-preview-container');
+                const previewImage = document.getElementById('img-preview');
                 
-                res.data.forEach(item => {
-                    // Format: 12345 - Rafa
-                    txtContent += `${item.undian} - ${item.nama}\r\n`;
+                if(file) {
+                    if(file.size > CONFIG.MAX_FILE_SIZE) {
+                        UI.showModal("Ukuran File Besar", "Maksimal foto adalah 1.5MB agar aman di-upload.", false);
+                        this.value = ''; previewContainer.style.display = "none"; return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        previewContainer.style.display = "block";
+                    }
+                    reader.readAsDataURL(file);
+                } else { previewContainer.style.display = "none"; }
+            });
+        },
+
+        openLightbox: (url) => {
+            currentLightboxImgUrl = url;
+            const lightbox = document.getElementById('lightbox');
+            document.getElementById('lightbox-image').src = url;
+            lightbox.classList.add('show');
+        },
+
+        closeLightbox: () => {
+            document.getElementById('lightbox').classList.remove('show');
+            setTimeout(() => { document.getElementById('lightbox-image').src = ""; }, 400);
+        }
+    };
+
+    // =========================================================================
+    // 2. MODULE: API SERVICE (Koneksi ke Google Apps Script)
+    // =========================================================================
+    const API = {
+        fetchData: async (payload) => {
+            if (!CONFIG.GOOGLE_SCRIPT_URL) throw new Error("URL Server belum disetting.");
+            try {
+                const res = await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+                    method: 'POST', body: JSON.stringify(payload)
                 });
+                return await res.json();
+            } catch (error) { 
+                throw new Error("Gagal koneksi ke server. Cek internetmu."); 
+            }
+        },
+
+        fileToBase64: (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader(); reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        }),
+
+        loadGallery: async () => {
+            const grid = document.getElementById('gallery-grid');
+            const loader = document.getElementById('gallery-loading');
+            
+            grid.innerHTML = "";
+            loader.style.display = "block";
+
+            try {
+                const result = await API.fetchData({ action: 'get_gallery' });
+                loader.style.display = "none";
                 
-                // Proses pembuatan file Blob TXT
-                const blob = new Blob([txtContent], { type: 'text/plain' });
+                if (result.status === 'success' && result.data && result.data.length > 0) {
+                    result.data.forEach(imgUrl => {
+                        const imgEl = document.createElement('img');
+                        // Terapkan SKELETON LOADING UX
+                        imgEl.className = 'gallery-item skeleton';
+                        imgEl.src = imgUrl;
+                        imgEl.loading = 'lazy';
+                        
+                        imgEl.onload = () => imgEl.classList.remove('skeleton'); // Hilangkan efek saat sukses load
+                        imgEl.onerror = () => { imgEl.classList.remove('skeleton'); imgEl.alt = "Gambar rusak"; };
+                        
+                        imgEl.onclick = () => UI.openLightbox(imgUrl);
+                        grid.appendChild(imgEl);
+                    });
+                } else {
+                    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #666; font-size: 0.9rem;">Belum ada dokumentasi yang diunggah.</p>`;
+                }
+            } catch (err) {
+                loader.innerHTML = `<i class="ph-warning-circle-bold" style="color: #D32F2F;"></i><br>Gagal memuat galeri.<br><span style="font-size:0.75rem; color:#888;">${err.message}</span>`;
+            }
+        },
+
+        downloadCurrentLightboxImage: async () => {
+            if (!currentLightboxImgUrl) return;
+            
+            const btn = document.getElementById('btn-download-lb');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengunduh...';
+            
+            try {
+                const response = await fetch(currentLightboxImgUrl);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                
                 const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = `Data_Doorprize_GLOFEST_${new Date().toISOString().split('T')[0]}.txt`;
-                
+                a.href = blobUrl;
+                a.download = `GLOFEST_Doc_${Math.floor(Math.random() * 10000)}.jpg`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                URL.revokeObjectURL(a.href);
-
-                showModal("Ekspor Sukses", "File teks daftar doorprize berhasil diunduh ke perangkatmu.", true);
-            } else {
-                showModal("Data Kosong", "Belum ada satupun data peserta yang di-ACC atau tidak ada data doorprize yang tersedia.", false); 
+                URL.revokeObjectURL(blobUrl);
+            } catch (e) {
+                // Fallback UX Perbaikan: Tetap buka di tab baru sebagai fallback bila kena CORS block
+                window.open(currentLightboxImgUrl, '_blank');
+            } finally {
+                btn.innerHTML = originalText;
             }
-        } catch(e) { 
-            showModal("Ekspor Gagal", "Terjadi kesalahan saat menarik data. Pastikan koneksi dan backend Apps Script aman.", false); 
-        } finally { 
-            btn.innerHTML = '<i class="ph-download-simple-bold"></i> Download Data (.txt)'; 
-            btn.disabled = false; 
-        }
-    }
+        },
 
-    function doLogout() { 
-        currentUser = null; expireQR();
-        document.getElementById('login-form').reset(); 
-        
-        // Reset QR UI
-        resetQRUI("Tampilkan QR", "var(--accent-orange)");
-        
-        navTo('landing-page'); 
-    }
+        exportDoorprize: async () => {
+            const btn = document.getElementById('btn-export-doorprize');
+            btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Memproses...'; 
+            btn.disabled = true;
+            
+            try {
+                const res = await API.fetchData({action: 'get_undian'});
+                if(res.status === 'success' && res.data && res.data.length > 0) {
+                    let txtContent = "=== DATA DOORPRIZE GLOFEST 2.0 ===\r\n\r\n";
+                    res.data.forEach(item => {
+                        txtContent += `${item.undian} - ${item.nama}\r\n`;
+                    });
+                    
+                    const blob = new Blob([txtContent], { type: 'text/plain' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `Data_Doorprize_GLOFEST_${new Date().toISOString().split('T')[0]}.txt`;
+                    
+                    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                    URL.revokeObjectURL(a.href);
+
+                    UI.showModal("Ekspor Sukses", "File teks daftar doorprize berhasil diunduh.", true);
+                } else {
+                    UI.showModal("Data Kosong", "Belum ada satupun data peserta yang di-ACC.", false); 
+                }
+            } catch(e) { 
+                UI.showModal("Ekspor Gagal", "Terjadi kesalahan koneksi.", false); 
+            } finally { 
+                btn.innerHTML = '<i class="ph-download-simple-bold"></i> Download Data (.txt)'; 
+                btn.disabled = false; 
+            }
+        }
+    };
+
+    // =========================================================================
+    // 3. MODULE: AUTHENTICATION & REGISTRATION
+    // =========================================================================
+    const Auth = {
+        bindForms: () => {
+            // REGISTRASI SUBMIT
+            document.getElementById('reg-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-submit-reg');
+                btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Memproses...'; btn.disabled = true;
+
+                try {
+                    const isAlumni = document.getElementById('tab-alumni').classList.contains('active');
+                    let fileData = ""; let fileName = "";
+                    
+                    if (isAlumni) {
+                        const fileInput = document.getElementById('reg-bukti');
+                        if (fileInput.files.length > 0) {
+                            fileData = await API.fileToBase64(fileInput.files[0]);
+                            fileName = `BUKTI_${Date.now()}_${fileInput.files[0].name}`;
+                        }
+                    }
+
+                    const inputNama = document.getElementById('reg-nama').value.trim();
+                    const payload = {
+                        action: 'register',
+                        nama: inputNama,
+                        ig: document.getElementById('reg-ig').value,
+                        kategori: isAlumni ? 'Alumni' : 'Siswa SMASIF',
+                        fileData: fileData, fileName: fileName
+                    };
+
+                    const result = await API.fetchData(payload);
+                    if(result.status === 'success') {
+                        localStorage.setItem('glofest_my_name', inputNama);
+                        const msg = `Halo ${result.nama},\n\nTerima kasih sudah mendaftar!\n\nAkunmu sedang dalam antrean validasi panitia. Pantau secara berkala di menu 'Cek Tiket' menggunakan namamu.`;
+                        UI.showModal("Pendaftaran Sukses!", msg, true, () => {
+                            document.getElementById('check-nama').value = inputNama; 
+                            UI.navTo('check-section'); 
+                            e.target.reset();
+                            document.getElementById('img-preview-container').style.display = "none";
+                        });
+                    } else { throw new Error(result.message); }
+                } catch (err) { UI.showModal("Gagal", err.message, false); } 
+                finally { btn.innerHTML = 'Kirim Permohonan <i class="ph-paper-plane-right-bold"></i>'; btn.disabled = false; }
+            });
+
+            // CHECK STATUS SUBMIT
+            document.getElementById('check-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-submit-check');
+                btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengecek...'; btn.disabled = true;
+                const resDiv = document.getElementById('check-result');
+                resDiv.innerHTML = "";
+
+                try {
+                    const nama = document.getElementById('check-nama').value.trim();
+                    const result = await API.fetchData({ action: 'check_status', nama: nama });
+
+                    if (result.status === 'success') {
+                        if (result.data.status === 'pending') {
+                            resDiv.innerHTML = `<div style="color: #F57C00; display:flex; flex-direction:column; gap:5px;"><i class="ph-clock-bold" style="font-size: 2rem;"></i><span>Status: <strong>Menunggu Persetujuan</strong></span><span style="font-size:0.85rem; color:#666;">Tiket atas nama ${nama} belum di-ACC panitia.</span></div>`;
+                        } else if (result.data.status === 'approved') {
+                            resDiv.innerHTML = `<div style="color: #2E7D32; display:flex; flex-direction:column; gap:5px;"><i class="ph-check-circle-bold" style="font-size: 2rem;"></i><span>Status: <strong>Disetujui!</strong></span><span style="font-size:0.85rem; color:#666;">Silakan masuk via menu Akses Tiket menggunakan kode:</span><div style="background:#FFF; border:2px dashed #2E7D32; padding:10px; margin-top:5px; border-radius:10px; font-size:1.4rem; color:var(--text-dark); letter-spacing:2px;">${result.data.kode}</div></div>`;
+                        } else if (result.data.status === 'rejected') {
+                            resDiv.innerHTML = `<div style="color: #D32F2F; display:flex; flex-direction:column; gap:5px;"><i class="ph-x-circle-bold" style="font-size: 2rem;"></i><span>Status: <strong>Ditolak</strong></span><span style="font-size:0.85rem; color:#666;">Pendaftaran ${nama} ditolak. Silakan hubungi panitia.</span></div>`;
+                        }
+                    } else { resDiv.innerHTML = `<span style="color: #D32F2F;"><i class="ph-warning-circle-bold"></i> ${result.message}</span>`; }
+                } catch (err) { resDiv.innerHTML = `<span style="color: #D32F2F;">${err.message}</span>`; } 
+                finally { btn.innerHTML = 'Cek Sekarang <i class="ph-magnifying-glass-bold"></i>'; btn.disabled = false; }
+            });
+
+            // LOGIN SUBMIT (HARDCODED PASSWORD PANITIA TELAH DIHAPUS - MURNI DARI BACKEND)
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-submit-login');
+                btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengecek...'; btn.disabled = true;
+                const errDiv = document.getElementById('login-error');
+                errDiv.innerText = "";
+                
+                try {
+                    const kode = document.getElementById('login-kode').value.toUpperCase();
+                    const result = await API.fetchData({ action: 'login', kode: kode });
+                    
+                    if(result.status === 'success') {
+                        currentUser = result.data; 
+                        
+                        // Validasi role panitia berasal dari Google Apps Script
+                        if(currentUser.role === 'panitia') {
+                            Scanner.initPanitia();
+                        } else {
+                            Auth.initPeserta();
+                        }
+                    } else { errDiv.innerText = result.message; }
+                } catch (err) { errDiv.innerText = err.message; } 
+                finally { btn.innerHTML = 'Tampilkan Tiket <i class="ph-qr-code-bold"></i>'; btn.disabled = false; }
+            });
+        },
+
+        resetQRUI: (btnText, btnColor) => {
+            document.getElementById('qr-real-wrap').classList.remove('show');
+            document.getElementById('qr-placeholder-wrap').classList.remove('hide');
+            document.getElementById('qr-timer').classList.add('hidden');
+            
+            const btnQr = document.getElementById('btn-show-qr');
+            btnQr.innerHTML = `<i class="ph-arrows-clockwise-bold"></i> ${btnText}`;
+            btnQr.style.background = btnColor;
+        },
+
+        expireQR: () => {
+            clearInterval(qrTimerInterval);
+            if (document.getElementById('dashboard-peserta').classList.contains('active') && currentUser) {
+                Auth.resetQRUI("Ulang QR (Kadaluarsa)", "#D32F2F");
+            }
+        },
+
+        initPeserta: () => {
+            UI.navTo('dashboard-peserta');
+            document.getElementById('u-nama').innerText = currentUser.nama;
+            document.getElementById('u-kategori').innerText = currentUser.kategori;
+            document.getElementById('u-undian').innerText = currentUser.undian || "-";
+            Auth.resetQRUI("Tampilkan QR", "var(--accent-orange)");
+        },
+
+        generateTicketQR: () => {
+            const placeholderWrap = document.getElementById('qr-placeholder-wrap');
+            const realWrap = document.getElementById('qr-real-wrap');
+            const box = document.getElementById('qrcode');
+            const timerText = document.getElementById('qr-timer');
+            
+            placeholderWrap.classList.add('hide');
+            box.innerHTML = "";
+            
+            // Generate QR Token (Valid for 10 Mins)
+            const expTime = Date.now() + (10 * 60 * 1000); 
+            const payload = { kode: currentUser.kode, uid: currentUser.uid, exp: expTime };
+
+            new QRCode(box, { 
+                text: JSON.stringify(payload), 
+                width: 170, height: 170, colorDark: "#5A3A1A", colorLight: "#ffffff" 
+            });
+
+            setTimeout(() => {
+                realWrap.classList.add('show');
+                timerText.classList.remove('hidden');
+            }, 150);
+
+            clearInterval(qrTimerInterval);
+            qrTimerInterval = setInterval(() => {
+                const diff = expTime - Date.now();
+                if(diff <= 0) { Auth.expireQR(); } 
+                else {
+                    const m = Math.floor(diff / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
+                    timerText.innerText = `Kode Valid: ${m}:${s < 10 ? '0'+s : s}`;
+                }
+            }, 1000);
+        },
+
+        doLogout: () => { 
+            currentUser = null; Auth.expireQR();
+            document.getElementById('login-form').reset(); 
+            Auth.resetQRUI("Tampilkan QR", "var(--accent-orange)");
+            UI.navTo('landing-page'); 
+        }
+    };
+
+    // =========================================================================
+    // 4. MODULE: PANITIA SCANNER (Sistem Panitia)
+    // =========================================================================
+    const Scanner = {
+        switchMenu: (tipe) => {
+            document.getElementById('tab-scan').classList.remove('active');
+            document.getElementById('tab-acak').classList.remove('active');
+            document.getElementById('panitia-scan-area').classList.add('hidden');
+            document.getElementById('panitia-acak-area').classList.add('hidden');
+
+            if(tipe === 'scan') {
+                document.getElementById('tab-scan').classList.add('active');
+                document.getElementById('panitia-scan-area').classList.remove('hidden');
+                if(html5QrcodeScanner && html5QrcodeScanner.getState() !== 2) html5QrcodeScanner.resume();
+            } else {
+                document.getElementById('tab-acak').classList.add('active');
+                document.getElementById('panitia-acak-area').classList.remove('hidden');
+                if(html5QrcodeScanner) html5QrcodeScanner.pause();
+            }
+        },
+
+        initPanitia: () => {
+            UI.navTo('dashboard-panitia');
+            Scanner.switchMenu('scan');
+            if(!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
+                html5QrcodeScanner.render(Scanner.handleScanData, (err) => { console.warn("Scanner idle/error", err); });
+            }
+        },
+
+        handleScanData: async (decoded) => {
+            html5QrcodeScanner.pause(); 
+            const resDiv = document.getElementById('scan-result');
+            const title = document.getElementById('res-title');
+            const body = document.getElementById('res-body');
+            
+            resDiv.style.display = 'block';
+            title.innerHTML = "<i class='ph-spinner ph-spin'></i> Cek Database..."; title.style.color = "var(--text-dark)";
+            body.innerText = "Mohon tunggu...";
+
+            try {
+                const data = JSON.parse(decoded);
+                if(!data.kode || !data.exp) throw new Error("Format QR Tidak Dikenal.");
+                
+                // Client-side expiration check. (Real true verification must be in GAS backend).
+                if(Date.now() > data.exp) throw new Error("QR Expired! Minta peserta tekan 'Ulang QR'.");
+
+                const result = await API.fetchData({ action: 'scan', kode: data.kode });
+                if(result.status === 'success') {
+                    title.innerHTML = "<i class='ph-check-circle-fill'></i> TIKET VALID"; title.style.color = "#2E7D32"; 
+                    body.innerHTML = `${result.data.nama}<br><span style="color:#666; font-size:0.95rem; font-weight: 500;">${result.data.kategori}</span>`;
+                } else { throw new Error(result.message); }
+            } catch (err) {
+                title.innerHTML = "<i class='ph-warning-circle-fill'></i> DITOLAK"; title.style.color = "#D32F2F"; 
+                body.innerText = err.message || "QR Code Rusak/Palsu!";
+            }
+        },
+
+        resetScanUI: () => {
+            document.getElementById('scan-result').style.display = 'none';
+            html5QrcodeScanner.resume();
+        }
+    };
+
+    // =========================================================================
+    // STARTUP ROUTINE (Mirip `init()` di Lua)
+    // =========================================================================
+    UI.initLoadingScreen();
+    UI.setupFileInput();
+    Auth.bindForms();
+
+    // Event Listener tambahan
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden && currentUser && document.getElementById('qr-real-wrap').classList.contains('show')) {
+            Auth.expireQR();
+        }
+    });
+
 </script>
 </body>
 </html>
