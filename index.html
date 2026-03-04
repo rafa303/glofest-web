@@ -38,25 +38,19 @@
         /* HILANGKAN SLIDING BAR SCROLLBAR & FIX OVERSCROLL BUG */
         ::-webkit-scrollbar { display: none; }
         
-        html, body {
+        html {
             /* Menghindari background putih saat rubber-band scroll di iOS/Android */
             background-color: var(--bg-top);
-            margin: 0; padding: 0;
-        }
-
-        /* Trik jitu untuk background gradient fixed di mobile tanpa bug putih */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
-            z-index: -1;
+            overscroll-behavior-y: none; 
         }
 
         body {
             -ms-overflow-style: none; 
             scrollbar-width: none; 
+            margin: 0; padding: 0;
             font-family: var(--f-body);
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+            background-attachment: fixed;
             color: var(--text-light);
             min-height: 100vh;
             display: flex;
@@ -168,38 +162,10 @@
         .page-section.active .stagger-item:nth-child(4) { animation: slideUpFade 0.6s ease forwards 0.4s; }
         .page-section.active .stagger-item:nth-child(5) { animation: slideUpFade 0.6s ease forwards 0.5s; }
         .page-section.active .stagger-item:nth-child(6) { animation: slideUpFade 0.6s ease forwards 0.6s; }
-        .page-section.active .stagger-item:nth-child(7) { animation: slideUpFade 0.6s ease forwards 0.7s; }
-        .page-section.active .stagger-item:nth-child(8) { animation: slideUpFade 0.6s ease forwards 0.8s; }
 
         @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 
-        .logo-wrapper { text-align: center; margin-bottom: 10px; display: flex; flex-direction: column; align-items: center;}
-
-        /* --- INTRO TEXT & COUNTDOWN (NEW) --- */
-        .intro-box {
-            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border); border-radius: 20px;
-            padding: 15px 20px; margin-bottom: 20px; text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .intro-text {
-            font-size: clamp(0.85rem, 3.5vw, 0.95rem); color: #FFF; line-height: 1.6;
-            margin: 0; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .countdown-container {
-            display: flex; justify-content: center; gap: clamp(8px, 2vw, 15px); margin-bottom: 25px;
-        }
-        .cd-box {
-            background: rgba(255,255,255,0.95); color: var(--text-dark);
-            border-radius: 12px; padding: clamp(8px, 2vw, 12px) 5px; 
-            min-width: clamp(55px, 15vw, 70px); text-align: center;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.15); border: 2px solid #EAE0D5;
-            transition: transform 0.3s;
-        }
-        .cd-box:hover { transform: translateY(-3px); border-color: var(--accent-orange); }
-        .cd-num { font-family: var(--f-title); font-size: clamp(1.4rem, 5vw, 1.8rem); color: var(--accent-orange); line-height: 1; margin-bottom: 2px; text-shadow: 1px 1px 0px #F3E5D8;}
-        .cd-label { font-size: clamp(0.6rem, 2vw, 0.7rem); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #8A5A33;}
+        .logo-wrapper { text-align: center; margin-bottom: clamp(15px, 4vw, 25px); display: flex; flex-direction: column; align-items: center;}
 
         /* ================= BUTTONS & COMPONENTS ================= */
         .pill-btn {
@@ -467,12 +433,6 @@
         .qr-real-wrap.show { opacity: 1; transform: scale(1); z-index: 1; position: relative; }
         .qr-placeholder-wrap.hide { opacity: 0; transform: scale(1.1); pointer-events: none; visibility: hidden; }
 
-        /* --- MAP CONTAINER --- */
-        .map-wrap {
-            margin-top: 15px; border-radius: 16px; overflow: hidden; border: 3px solid #F8F5F2;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-        }
-
         .hidden { display: none !important; }
         
         /* Utiliti tombol logout khusus di dalam tiket */
@@ -515,6 +475,7 @@
     <i class="ph-x-bold lightbox-close" onclick="UI.closeLightbox()"></i>
     <img id="lightbox-image" src="" class="lightbox-img" alt="Dokumentasi GLOFEST">
     <div class="lightbox-actions">
+        <!-- Fallback message for mobile users explicitly embedded -->
         <p style="color: rgba(255,255,255,0.7); font-size: 0.75rem; text-align: center; position: absolute; bottom: 80px; left:0; width:100%; padding: 0 20px;">
             Jika gagal mengunduh, foto akan terbuka di tab baru. Silakan tahan gambar (Hold) lalu pilih "Simpan".
         </p>
@@ -531,33 +492,6 @@
         <div class="logo-wrapper stagger-item">
             <img src="logo.png" alt="Logo Angkatan" style="width: clamp(40px, 10vw, 50px); height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.alt='Gambar logo.png belum tersedia'">
             <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 500px; height: auto; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4)); margin-bottom: 15px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05) translateY(-5px)'" onmouseout="this.style.transform='scale(1) translateY(0)'" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
-        </div>
-
-        <!-- TEKS PENDAHULUAN -->
-        <div class="intro-box stagger-item">
-            <p class="intro-text">
-                <strong>GLOFEST 2.0</strong> adalah ajang kreasi dan selebrasi akbar persembahan Tim Kreatif Angkatan 12. Menggabungkan unsur seni, kreativitas, dan silaturahmi dalam satu panggung festival yang tak terlupakan!
-            </p>
-        </div>
-
-        <!-- COUNTDOWN TIMER -->
-        <div class="countdown-container stagger-item" id="countdown-wrapper">
-            <div class="cd-box">
-                <div class="cd-num" id="cd-days">00</div>
-                <div class="cd-label">Hari</div>
-            </div>
-            <div class="cd-box">
-                <div class="cd-num" id="cd-hours">00</div>
-                <div class="cd-label">Jam</div>
-            </div>
-            <div class="cd-box">
-                <div class="cd-num" id="cd-mins">00</div>
-                <div class="cd-label">Menit</div>
-            </div>
-            <div class="cd-box">
-                <div class="cd-num" id="cd-secs">00</div>
-                <div class="cd-label">Detik</div>
-            </div>
         </div>
 
         <div class="pill-btn stagger-item" onclick="UI.navTo('register-section')">
@@ -761,20 +695,7 @@
                 </div>
                 
                 <div id="qr-timer" style="font-size: 0.85rem; font-weight: 700; color: #D32F2F; margin-top: 15px; transition: 0.3s;" class="hidden"></div>
-                <div style="font-size: 0.65rem; color: #888; margin-top: 5px; margin-bottom: 15px;">*Validasi QR dilakukan saat scanning panitia.</div>
-
-                <!-- GOOGLE MAPS LOKASI ACARA -->
-                <div style="margin-top: 30px; text-align: left; padding-top: 20px; border-top: 2px dashed #EAE0D5;">
-                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
-                        <i class="ph-map-pin-fill" style="color: var(--accent-orange); font-size: 1.2rem;"></i> Lokasi Acara
-                    </div>
-                    <p style="font-size: 0.75rem; color: #666; margin-top: 0; font-weight: 500;">Surabaya Suites Hotel, Jl. Pemuda No.33-37, Embong Kaliasin.</p>
-                    <div class="map-wrap">
-                        <!-- Embed Google Maps Surabaya Suites Hotel -->
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.692015886617!2d112.7470123!3d-7.2746367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fbd1cb8d488f%3A0x6b4fb6c1f13b52!2sSurabaya%20Suites%20Hotel!5e0!3m2!1sid!2sid!4v1714500000000!5m2!1sid!2sid" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-
+                <div style="font-size: 0.65rem; color: #888; margin-top: 5px;">*Validasi QR dilakukan saat scanning panitia.</div>
             </div>
         </div>
         
@@ -833,17 +754,14 @@
     // --- GLOBAL STATE ---
     const CONFIG = {
         // === MASUKKAN URL DEPLOY WEB APP DI SINI ===
-        GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyoDNzavMliQBuBncntHdOYHC-wxSPgE6JjG9kZKLdqYJJmCpOuaMnxoICTaDJns5b_gA/exec",
-        MAX_FILE_SIZE: 1.5 * 1024 * 1024, // Diturunkan ke 1.5MB agar aman saat Base64 convert
-        // Ganti tanggal acara di bawah ini (Format: "Bulan Tanggal, Tahun Jam:Menit:Detik")
-        EVENT_DATE: "June 20, 2026 08:00:00" 
+        GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyWc3h2npkMeVXci4ruQShLkcutmDKlP7XHKY23P78xdUwKE30pHDWI3FDfEVE4PXcYFg/exec",
+        MAX_FILE_SIZE: 1.5 * 1024 * 1024 // Diturunkan ke 1.5MB agar aman saat Base64 convert
     };
 
     let currentUser = null;
     let qrTimerInterval = null;
     let currentLightboxImgUrl = "";
     let html5QrcodeScanner = null;
-    let countdownInterval = null;
 
     // =========================================================================
     // 1. MODULE: UI CONTROLLER (Mengatur Navigasi & Tampilan Visual)
@@ -854,36 +772,8 @@
                 setTimeout(() => {
                     const loader = document.getElementById('loading-screen');
                     loader.classList.add('hidden');
-                    UI.startCountdown(); // Mulai timer saat loading kelar
                 }, 800);
             });
-        },
-
-        startCountdown: () => {
-            const targetDate = new Date(CONFIG.EVENT_DATE).getTime();
-            
-            countdownInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                if (distance < 0) {
-                    clearInterval(countdownInterval);
-                    document.getElementById("countdown-wrapper").innerHTML = "<div class='intro-box' style='background: var(--accent-orange); border:none;'><p class='intro-text' style='font-family: var(--f-title); font-size: 1.5rem; color: #FFF;'>ACARA SEDANG BERLANGSUNG!</p></div>";
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                if(document.getElementById('cd-days')) {
-                    document.getElementById('cd-days').innerText = days < 10 ? '0'+days : days;
-                    document.getElementById('cd-hours').innerText = hours < 10 ? '0'+hours : hours;
-                    document.getElementById('cd-mins').innerText = minutes < 10 ? '0'+minutes : minutes;
-                    document.getElementById('cd-secs').innerText = seconds < 10 ? '0'+seconds : seconds;
-                }
-            }, 1000);
         },
 
         showModal: (title, message, isSuccess = true, callback = null, isWarning = false) => {
