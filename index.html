@@ -162,6 +162,8 @@
         .page-section.active .stagger-item:nth-child(4) { animation: slideUpFade 0.6s ease forwards 0.4s; }
         .page-section.active .stagger-item:nth-child(5) { animation: slideUpFade 0.6s ease forwards 0.5s; }
         .page-section.active .stagger-item:nth-child(6) { animation: slideUpFade 0.6s ease forwards 0.6s; }
+        .page-section.active .stagger-item:nth-child(7) { animation: slideUpFade 0.6s ease forwards 0.7s; }
+        .page-section.active .stagger-item:nth-child(8) { animation: slideUpFade 0.6s ease forwards 0.8s; }
 
         @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 
@@ -358,7 +360,7 @@
         #lightbox.show .lightbox-img { transform: scale(1) translateY(0); }
         .lightbox-actions { margin-top: 25px; display: flex; gap: 15px; width: 100%; justify-content: center; max-width: 400px;}
 
-        /* ================= CUSTOM MODAL ================= */
+        /* ================= CUSTOM MODAL & TUTORIAL ================= */
         .custom-modal {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -380,6 +382,11 @@
         .modal-icon.warning { color: #F57C00; filter: drop-shadow(0 5px 15px rgba(245, 124, 0, 0.3)); }
         .modal-title { font-family: var(--f-title); font-size: clamp(1.6rem, 5vw, 2rem); color: var(--text-dark); margin: 0 0 10px 0; }
         .modal-desc { color: #666; font-size: clamp(0.85rem, 3.5vw, 0.95rem); margin-bottom: 30px; line-height: 1.6; white-space: pre-wrap; font-weight: 500;}
+
+        /* Styling spesifik area scroll dalam tutorial */
+        .tutorial-scroll::-webkit-scrollbar { width: 6px; }
+        .tutorial-scroll::-webkit-scrollbar-track { background: #F8F5F2; border-radius: 10px; }
+        .tutorial-scroll::-webkit-scrollbar-thumb { background: #D5B18A; border-radius: 10px; }
 
         /* ================= TICKET DASHBOARD ================= */
         .ticket-card {
@@ -470,6 +477,36 @@
     </div>
 </div>
 
+<!-- TUTORIAL MODAL POPUP -->
+<div id="tutorial-modal" class="custom-modal">
+    <div class="modal-content" style="max-width: 450px; text-align: left; padding: clamp(20px, 5vw, 30px);">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div class="modal-icon success" style="margin-bottom: 10px; animation: none; opacity: 1; transform: scale(1);"><i class="ph-info-fill" style="color: var(--accent-orange);"></i></div>
+            <h3 class="modal-title" style="font-size: clamp(1.4rem, 4vw, 1.8rem);">Selamat Datang di GLOFEST 2.0! 🎉</h3>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 5px; font-weight: 500;">Portal resmi distribusi tiket & dokumentasi digital.</p>
+        </div>
+        
+        <div style="max-height: 50vh; overflow-y: auto; padding-right: 10px; margin-bottom: 20px;" class="tutorial-scroll">
+            <h4 style="color: var(--accent-orange); margin: 0 0 8px 0; font-family: var(--f-body); font-size: 0.95rem;"><i class="ph-clipboard-text-fill"></i> Syarat Registrasi</h4>
+            <ul style="margin: 0 0 20px 0; padding-left: 20px; font-size: 0.85rem; color: #555; line-height: 1.6;">
+                <li><b>Siswa SMASIF:</b> Wajib isi nama lengkap & username IG.</li>
+                <li><b>Alumni SMP:</b> Wajib isi nama lengkap, username IG, dan <b>unggah bukti transfer</b> (Rp 170.000).</li>
+            </ul>
+
+            <h4 style="color: var(--accent-orange); margin: 0 0 8px 0; font-family: var(--f-body); font-size: 0.95rem;"><i class="ph-rocket-launch-fill"></i> Tata Cara Penggunaan</h4>
+            <ol style="margin: 0; padding-left: 20px; font-size: 0.85rem; color: #555; line-height: 1.6;">
+                <li><b>Daftar:</b> Buka menu <b>Registrasi Ulang</b> dan isi formulir.</li>
+                <li><b>Pantau:</b> Cek status persetujuan di menu <b>Cek Tiket</b>.</li>
+                <li><b>Akses:</b> Jika di-ACC, dapatkan <b>Kode Tiket</b> unikmu.</li>
+                <li><b>Buka Tiket:</b> Masukkan kodemu di menu <b>Akses Tiket</b>.</li>
+                <li><b>Hari H:</b> Tampilkan <b>QR Code</b> tiket untuk di-scan panitia.</li>
+            </ol>
+        </div>
+
+        <button class="btn-solid" onclick="UI.closeTutorial()">Mengerti, Lanjutkan! <i class="ph-arrow-right-bold"></i></button>
+    </div>
+</div>
+
 <!-- LIGHTBOX DOKUMENTASI -->
 <div id="lightbox">
     <i class="ph-x-bold lightbox-close" onclick="UI.closeLightbox()"></i>
@@ -492,6 +529,15 @@
         <div class="logo-wrapper stagger-item">
             <img src="logo.png" alt="Logo Angkatan" style="width: clamp(40px, 10vw, 50px); height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.alt='Gambar logo.png belum tersedia'">
             <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 500px; height: auto; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4)); margin-bottom: 15px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05) translateY(-5px)'" onmouseout="this.style.transform='scale(1) translateY(0)'" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
+        </div>
+
+        <!-- TOMBOL TUTORIAL (BARU) -->
+        <div class="pill-btn stagger-item" onclick="UI.showTutorial()">
+            <div class="pill-icon"><i class="ph-info-bold"></i></div>
+            <div class="pill-text">
+                <div class="pill-text-title">Panduan & Tutorial</div>
+                <div class="pill-text-sub">Cara Daftar & Akses Tiket</div>
+            </div>
         </div>
 
         <div class="pill-btn stagger-item" onclick="UI.navTo('register-section')">
@@ -772,6 +818,11 @@
                 setTimeout(() => {
                     const loader = document.getElementById('loading-screen');
                     loader.classList.add('hidden');
+                    
+                    // Deteksi pengguna baru untuk Tutorial Onboarding
+                    if (!localStorage.getItem('glofest_tutorial_seen')) {
+                        setTimeout(() => { UI.showTutorial(); }, 500);
+                    }
                 }, 800);
             });
         },
@@ -798,6 +849,15 @@
         },
 
         closeModal: () => { document.getElementById('app-modal').classList.remove('show'); },
+        
+        showTutorial: () => {
+            document.getElementById('tutorial-modal').classList.add('show');
+            localStorage.setItem('glofest_tutorial_seen', 'true');
+        },
+
+        closeTutorial: () => {
+            document.getElementById('tutorial-modal').classList.remove('show');
+        },
 
         navTo: (id) => {
             // Cek Local Storage sebelum membuka Register
@@ -1072,7 +1132,7 @@
                 finally { btn.innerHTML = 'Cek Sekarang <i class="ph-magnifying-glass-bold"></i>'; btn.disabled = false; }
             });
 
-            // LOGIN SUBMIT (HARDCODED PASSWORD PANITIA TELAH DIHAPUS - MURNI DARI BACKEND)
+            // LOGIN SUBMIT
             document.getElementById('login-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const btn = document.getElementById('btn-submit-login');
