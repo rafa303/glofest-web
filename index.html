@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GLOFEST 2.0 - Glotera Festival</title>
 
-    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Shrikhand&display=swap" rel="stylesheet">
 
-    <!-- LIBRARIES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://unpkg.com/phosphor-icons"></script>
@@ -289,7 +287,7 @@
 
         .btn-solid {
             width: 100%; padding: clamp(14px, 4vw, 16px); border: none; border-radius: 14px;
-            background: var(--text-dark); color: #FFF;
+            background: var(--text-dark); color: #FFF; text-decoration: none;
             font-family: var(--f-body); font-weight: 600; font-size: clamp(1rem, 4vw, 1.1rem); letter-spacing: 0.5px;
             cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; 
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -329,7 +327,6 @@
         }
         .gallery-item:hover { transform: scale(1.05); border-color: var(--accent-orange); box-shadow: 0 8px 15px rgba(201,138,83,0.3); }
 
-        /* SKELETON LOADER UNTUK UX GALERI */
         .skeleton {
             background: linear-gradient(90deg, #EAE0D5 25%, #F8F5F2 50%, #EAE0D5 75%);
             background-size: 200% 100%;
@@ -383,7 +380,6 @@
         .modal-title { font-family: var(--f-title); font-size: clamp(1.6rem, 5vw, 2rem); color: var(--text-dark); margin: 0 0 10px 0; }
         .modal-desc { color: #666; font-size: clamp(0.85rem, 3.5vw, 0.95rem); margin-bottom: 30px; line-height: 1.6; white-space: pre-wrap; font-weight: 500;}
 
-        /* Styling spesifik area scroll dalam tutorial */
         .tutorial-scroll::-webkit-scrollbar { width: 6px; }
         .tutorial-scroll::-webkit-scrollbar-track { background: #F8F5F2; border-radius: 10px; }
         .tutorial-scroll::-webkit-scrollbar-thumb { background: #D5B18A; border-radius: 10px; }
@@ -454,20 +450,17 @@
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
 <div id="loading-screen">
     <div class="loader-spinner"></div>
     <div class="loader-text">GLOFEST 2.0</div>
 </div>
 
-<!-- BACKGROUND ELEMENTS -->
 <div class="dot-pattern"></div>
 <div class="ambient-orb orb-1"></div>
 <div class="ambient-orb orb-2"></div>
 <div class="bg-ornament ornament-left"></div>
 <div class="bg-ornament ornament-right"></div>
 
-<!-- CUSTOM MODAL POPUP -->
 <div id="app-modal" class="custom-modal">
     <div class="modal-content">
         <div id="modal-icon" class="modal-icon success"><i class="ph-check-circle-fill"></i></div>
@@ -477,7 +470,6 @@
     </div>
 </div>
 
-<!-- TUTORIAL MODAL POPUP -->
 <div id="tutorial-modal" class="custom-modal">
     <div class="modal-content" style="max-width: 450px; text-align: left; padding: clamp(20px, 5vw, 30px);">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -507,12 +499,10 @@
     </div>
 </div>
 
-<!-- LIGHTBOX DOKUMENTASI -->
 <div id="lightbox">
     <i class="ph-x-bold lightbox-close" onclick="UI.closeLightbox()"></i>
     <img id="lightbox-image" src="" class="lightbox-img" alt="Dokumentasi GLOFEST">
     <div class="lightbox-actions">
-        <!-- Fallback message for mobile users explicitly embedded -->
         <p style="color: rgba(255,255,255,0.7); font-size: 0.75rem; text-align: center; position: absolute; bottom: 80px; left:0; width:100%; padding: 0 20px;">
             Jika gagal mengunduh, foto akan terbuka di tab baru. Silakan tahan gambar (Hold) lalu pilih "Simpan".
         </p>
@@ -524,14 +514,12 @@
 
 <div class="app-container" id="main-container">
 
-    <!-- 1. LANDING PAGE -->
     <div id="landing-page" class="page-section active">
         <div class="logo-wrapper stagger-item">
             <img src="logo.png" alt="Logo Angkatan" style="width: clamp(40px, 10vw, 50px); height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.alt='Gambar logo.png belum tersedia'">
             <img src="mainlogo.png" alt="GLOFEST 2.0" style="width: 100%; max-width: 500px; height: auto; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4)); margin-bottom: 15px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05) translateY(-5px)'" onmouseout="this.style.transform='scale(1) translateY(0)'" onerror="this.alt='Gambar mainlogo.png belum tersedia'">
         </div>
 
-        <!-- TOMBOL TUTORIAL (BARU) -->
         <div class="pill-btn stagger-item" onclick="UI.showTutorial()">
             <div class="pill-icon"><i class="ph-info-bold"></i></div>
             <div class="pill-text">
@@ -593,7 +581,6 @@
         </div>
     </div>
 
-    <!-- 2. REGISTER PAGE -->
     <div id="register-section" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title">REGISTRASI</h2>
@@ -636,7 +623,6 @@
         </div>
     </div>
 
-    <!-- 3. CHECK STATUS PAGE -->
     <div id="check-section" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title">CEK TIKET</h2>
@@ -661,7 +647,6 @@
         </div>
     </div>
 
-    <!-- 4. LOGIN PAGE -->
     <div id="login-section" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title">AKSES TIKET</h2>
@@ -684,7 +669,6 @@
         </div>
     </div>
 
-    <!-- 5. DOKUMENTASI PAGE -->
     <div id="dokumentasi-section" class="page-section">
         <div class="glass-panel" style="padding: 25px 20px;">
             <div class="logo-wrapper" style="margin-bottom: 20px;">
@@ -700,14 +684,12 @@
             </div>
 
             <div id="gallery-grid" class="gallery-grid">
-                <!-- Foto-foto dari Google Drive akan muncul di sini dengan skeleton loader -->
-            </div>
+                </div>
             
             <div style="text-align: center; margin-top: 15px;"><button type="button" class="btn-text" onclick="UI.navTo('landing-page')">Kembali ke Beranda</button></div>
         </div>
     </div>
 
-    <!-- 6. DASHBOARD PESERTA -->
     <div id="dashboard-peserta" class="page-section">
         <div class="ticket-card">
             <div class="ticket-head">
@@ -724,7 +706,6 @@
                     <div style="font-size: clamp(2rem, 8vw, 2.5rem); font-family: var(--f-title); color: var(--accent-orange); letter-spacing: 4px; text-shadow: 1px 1px 0px #FFF;" id="u-undian">...</div>
                 </div>
 
-                <!-- CONTAINER QR CODE ANIMASI -->
                 <div class="qr-wrapper">
                     <div id="qr-placeholder-wrap" class="qr-placeholder-wrap">
                         <div class="qr-box qr-placeholder-blur" style="width: 170px; height: 170px; position: absolute;">
@@ -742,13 +723,16 @@
                 
                 <div id="qr-timer" style="font-size: 0.85rem; font-weight: 700; color: #D32F2F; margin-top: 15px; transition: 0.3s;" class="hidden"></div>
                 <div style="font-size: 0.65rem; color: #888; margin-top: 5px;">*Validasi QR dilakukan saat scanning panitia.</div>
+
+                <button class="btn-solid" style="background: #FFF; color: var(--text-dark); border: 2px solid var(--accent-orange); margin-top: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Surabaya+Suites+Hotel', '_blank')">
+                    <i class="ph-map-pin-bold" style="color: #D32F2F;"></i> Lokasi: Surabaya Suites Hotel
+                </button>
             </div>
         </div>
         
         <button class="btn-outline-white" style="margin-top: 15px; color: var(--text-dark); background: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.9);" onclick="Auth.doLogout()"><i class="ph-sign-out-bold" style="margin-right: 8px;"></i> Keluar Akun</button>
     </div>
 
-    <!-- 7. DASHBOARD PANITIA (SCANNER & DOORPRIZE) -->
     <div id="dashboard-panitia" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title" style="font-size: clamp(1.5rem, 5vw, 1.8rem);">SISTEM PANITIA</h2>
@@ -758,19 +742,18 @@
                 <button type="button" class="tab-btn" id="tab-acak" onclick="Scanner.switchMenu('acak')"><i class="ph-download-bold"></i> Doorprize</button>
             </div>
 
-            <!-- Bagian Scanner -->
-            <div id="panitia-scan-area">
-                <div style="border: 4px solid #F8F5F2; border-radius: 20px; padding: 5px; margin-bottom: 20px; overflow:hidden; background: #000;">
+            <div id="panitia-scan-area" style="position: relative;">
+                <div style="border: 4px solid #F8F5F2; border-radius: 20px; padding: 5px; margin-bottom: 10px; overflow:hidden; background: #000; position: relative;">
                     <div id="reader"></div>
+                    
+                    <div id="scan-result" style="display:none; position:absolute; bottom:15px; left:50%; transform:translateX(-50%); width:90%; padding: 15px; border-radius: 14px; background: rgba(255,255,255,0.95); text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index:10; backdrop-filter: blur(8px); border: 2px solid transparent; transition: 0.3s;">
+                        <h3 id="res-title" style="margin:0; font-family: var(--f-title); font-size: clamp(1.2rem, 3.5vw, 1.4rem); letter-spacing: 1px;">...</h3>
+                        <p id="res-body" style="font-weight: 700; margin-top: 8px; font-size: 0.95rem; margin-bottom:0; color: var(--text-dark);">...</p>
+                    </div>
                 </div>
-                <div id="scan-result" style="display:none; padding: 25px 20px; border-radius: 16px; background: #F8F5F2; text-align: center; border: 2px solid #EAE0D5; animation: slideUpFade 0.3s ease;">
-                    <h3 id="res-title" style="margin:0; font-family: var(--f-title); color: var(--accent-orange); font-size: clamp(1.3rem, 4vw, 1.6rem); letter-spacing: 1px;">...</h3>
-                    <p id="res-body" style="font-weight: 700; margin-top: 10px; font-size: clamp(0.9rem, 3.5vw, 1.1rem); color: var(--text-dark);">...</p>
-                    <button class="btn-solid" id="btn-reset-scan" style="margin-top: 20px;" onclick="Scanner.resetScanUI()">Scan Tiket Lain <i class="ph-arrows-clockwise-bold"></i></button>
-                </div>
+                <p style="text-align:center; font-size:0.8rem; color:#666;"><i class="ph-info-fill" style="color:var(--accent-orange)"></i> Kamera otomatis membaca QR terus menerus tanpa perlu direfresh.</p>
             </div>
 
-            <!-- Bagian Doorprize Ekspor -->
             <div id="panitia-acak-area" class="hidden">
                 <p style="text-align: center; font-size: clamp(0.85rem, 3.5vw, 0.95rem); color:#666; margin-bottom: 25px; font-weight: 500; line-height: 1.5;">Ekspor seluruh kode doorprize milik peserta yang telah di-ACC ke dalam format text (.txt).</p>
                 
@@ -793,7 +776,6 @@
      * =========================================================================
      * GLOFEST 2.0 APPLICATION ARCHITECTURE
      * Organized in Object Modules (similar to Lua Tables/ModuleScripts)
-     * Because Single-File mandate prohibits external .js files.
      * =========================================================================
      */
 
@@ -810,7 +792,7 @@
     let html5QrcodeScanner = null;
 
     // =========================================================================
-    // 1. MODULE: UI CONTROLLER (Mengatur Navigasi & Tampilan Visual)
+    // 1. MODULE: UI CONTROLLER
     // =========================================================================
     const UI = {
         initLoadingScreen: () => {
@@ -819,7 +801,6 @@
                     const loader = document.getElementById('loading-screen');
                     loader.classList.add('hidden');
                     
-                    // Deteksi pengguna baru untuk Tutorial Onboarding
                     if (!localStorage.getItem('glofest_tutorial_seen')) {
                         setTimeout(() => { UI.showTutorial(); }, 500);
                     }
@@ -860,7 +841,6 @@
         },
 
         navTo: (id) => {
-            // Cek Local Storage sebelum membuka Register
             if(id === 'register-section') {
                 const savedName = localStorage.getItem('glofest_my_name');
                 if(savedName) {
@@ -874,7 +854,6 @@
 
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             
-            // Layout Adjustments based on page
             const mainContainer = document.getElementById('main-container');
             if (id === 'dokumentasi-section') {
                 mainContainer.style.maxWidth = '800px';
@@ -890,6 +869,7 @@
             document.getElementById('login-error').innerText = "";
             document.getElementById('check-result').innerHTML = "Masukkan nama daftarmu di atas.";
             
+            // Panitia scanner remains open if switched back, logic handled by Scanner.switchMenu
             if(id !== 'dashboard-panitia' && html5QrcodeScanner) { 
                 try { html5QrcodeScanner.clear(); } catch(e) {} 
             }
@@ -945,7 +925,7 @@
     };
 
     // =========================================================================
-    // 2. MODULE: API SERVICE (Koneksi ke Google Apps Script)
+    // 2. MODULE: API SERVICE
     // =========================================================================
     const API = {
         fetchData: async (payload) => {
@@ -980,12 +960,11 @@
                 if (result.status === 'success' && result.data && result.data.length > 0) {
                     result.data.forEach(imgUrl => {
                         const imgEl = document.createElement('img');
-                        // Terapkan SKELETON LOADING UX
                         imgEl.className = 'gallery-item skeleton';
                         imgEl.src = imgUrl;
                         imgEl.loading = 'lazy';
                         
-                        imgEl.onload = () => imgEl.classList.remove('skeleton'); // Hilangkan efek saat sukses load
+                        imgEl.onload = () => imgEl.classList.remove('skeleton'); 
                         imgEl.onerror = () => { imgEl.classList.remove('skeleton'); imgEl.alt = "Gambar rusak"; };
                         
                         imgEl.onclick = () => UI.openLightbox(imgUrl);
@@ -1019,7 +998,6 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(blobUrl);
             } catch (e) {
-                // Fallback UX Perbaikan: Tetap buka di tab baru sebagai fallback bila kena CORS block
                 window.open(currentLightboxImgUrl, '_blank');
             } finally {
                 btn.innerHTML = originalText;
@@ -1119,16 +1097,25 @@
                     const nama = document.getElementById('check-nama').value.trim();
                     const result = await API.fetchData({ action: 'check_status', nama: nama });
 
+                    // GENERATE TOMBOL WHATSAPP BANTUAN
+                    const waMessage = `Halo Rafa, saya ingin bertanya mengenai status pendaftaran GLOFEST saya. Akun atas nama *${encodeURIComponent(nama)}* belum aktif/bisa diakses. Mohon bantuannya.`;
+                    const waLink = `https://wa.me/6281335895758?text=${waMessage}`;
+                    const waButton = `<a href="${waLink}" target="_blank" class="btn-solid" style="background:#25D366; color:#FFF; margin-top:15px; font-size:0.9rem; padding:12px; border:none; box-shadow: 0 5px 15px rgba(37,211,102,0.3);"><i class="ph-whatsapp-logo-bold"></i> Hubungi Admin (Rafa)</a>`;
+
                     if (result.status === 'success') {
                         if (result.data.status === 'pending') {
-                            resDiv.innerHTML = `<div style="color: #F57C00; display:flex; flex-direction:column; gap:5px;"><i class="ph-clock-bold" style="font-size: 2rem;"></i><span>Status: <strong>Menunggu Persetujuan</strong></span><span style="font-size:0.85rem; color:#666;">Tiket atas nama ${nama} belum di-ACC panitia.</span></div>`;
+                            resDiv.innerHTML = `<div style="color: #F57C00; display:flex; flex-direction:column; gap:5px;"><i class="ph-clock-bold" style="font-size: 2rem;"></i><span>Status: <strong>Menunggu Persetujuan</strong></span><span style="font-size:0.85rem; color:#666;">Tiket atas nama ${nama} belum di-ACC panitia.</span></div>` + waButton;
                         } else if (result.data.status === 'approved') {
                             resDiv.innerHTML = `<div style="color: #2E7D32; display:flex; flex-direction:column; gap:5px;"><i class="ph-check-circle-bold" style="font-size: 2rem;"></i><span>Status: <strong>Disetujui!</strong></span><span style="font-size:0.85rem; color:#666;">Silakan masuk via menu Akses Tiket menggunakan kode:</span><div style="background:#FFF; border:2px dashed #2E7D32; padding:10px; margin-top:5px; border-radius:10px; font-size:1.4rem; color:var(--text-dark); letter-spacing:2px;">${result.data.kode}</div></div>`;
                         } else if (result.data.status === 'rejected') {
-                            resDiv.innerHTML = `<div style="color: #D32F2F; display:flex; flex-direction:column; gap:5px;"><i class="ph-x-circle-bold" style="font-size: 2rem;"></i><span>Status: <strong>Ditolak</strong></span><span style="font-size:0.85rem; color:#666;">Pendaftaran ${nama} ditolak. Silakan hubungi panitia.</span></div>`;
+                            resDiv.innerHTML = `<div style="color: #D32F2F; display:flex; flex-direction:column; gap:5px;"><i class="ph-x-circle-bold" style="font-size: 2rem;"></i><span>Status: <strong>Ditolak</strong></span><span style="font-size:0.85rem; color:#666;">Pendaftaran ${nama} ditolak. Silakan hubungi admin.</span></div>` + waButton;
                         }
-                    } else { resDiv.innerHTML = `<span style="color: #D32F2F;"><i class="ph-warning-circle-bold"></i> ${result.message}</span>`; }
-                } catch (err) { resDiv.innerHTML = `<span style="color: #D32F2F;">${err.message}</span>`; } 
+                    } else { 
+                        resDiv.innerHTML = `<span style="color: #D32F2F; display:flex; flex-direction:column; align-items:center;"><i class="ph-warning-circle-bold" style="font-size: 1.5rem;"></i> ${result.message}</span>` + waButton; 
+                    }
+                } catch (err) { 
+                    resDiv.innerHTML = `<span style="color: #D32F2F;">${err.message}</span>`; 
+                } 
                 finally { btn.innerHTML = 'Cek Sekarang <i class="ph-magnifying-glass-bold"></i>'; btn.disabled = false; }
             });
 
@@ -1147,7 +1134,6 @@
                     if(result.status === 'success') {
                         currentUser = result.data; 
                         
-                        // Validasi role panitia berasal dari Google Apps Script
                         if(currentUser.role === 'panitia') {
                             Scanner.initPanitia();
                         } else {
@@ -1228,9 +1214,12 @@
     };
 
     // =========================================================================
-    // 4. MODULE: PANITIA SCANNER (Sistem Panitia)
+    // 4. MODULE: PANITIA SCANNER
     // =========================================================================
     const Scanner = {
+        lastScannedCode: "",
+        scanDebounceTimer: null,
+
         switchMenu: (tipe) => {
             document.getElementById('tab-scan').classList.remove('active');
             document.getElementById('tab-acak').classList.remove('active');
@@ -1252,53 +1241,60 @@
             UI.navTo('dashboard-panitia');
             Scanner.switchMenu('scan');
             if(!html5QrcodeScanner) {
-                html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
-                html5QrcodeScanner.render(Scanner.handleScanData, (err) => { console.warn("Scanner idle/error", err); });
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 15, qrbox: {width: 250, height: 250} });
+                html5QrcodeScanner.render(Scanner.handleScanData, (err) => { /* Ignore background errors */ });
             }
         },
 
         handleScanData: async (decoded) => {
-            html5QrcodeScanner.pause(); 
+            // DEBOUNCE LOGIC (Mencegah double scan pada QR yang sama)
+            if (Scanner.lastScannedCode === decoded) return;
+            Scanner.lastScannedCode = decoded;
+            
+            clearTimeout(Scanner.scanDebounceTimer);
+            Scanner.scanDebounceTimer = setTimeout(() => { Scanner.lastScannedCode = ""; }, 3000);
+
+            // Tampilkan Overlay Mengecek
             const resDiv = document.getElementById('scan-result');
             const title = document.getElementById('res-title');
             const body = document.getElementById('res-body');
             
             resDiv.style.display = 'block';
-            title.innerHTML = "<i class='ph-spinner ph-spin'></i> Cek Database..."; title.style.color = "var(--text-dark)";
-            body.innerText = "Mohon tunggu...";
+            resDiv.style.borderColor = "transparent";
+            title.innerHTML = "<i class='ph-spinner ph-spin'></i> Mengecek..."; title.style.color = "var(--text-dark)";
+            body.innerText = "Tunggu sebentar...";
 
             try {
                 const data = JSON.parse(decoded);
-                if(!data.kode || !data.exp) throw new Error("Format QR Tidak Dikenal.");
-                
-                // Client-side expiration check. (Real true verification must be in GAS backend).
-                if(Date.now() > data.exp) throw new Error("QR Expired! Minta peserta tekan 'Ulang QR'.");
+                if(!data.kode || !data.exp) throw new Error("Format QR Tidak Dikenal");
+                if(Date.now() > data.exp) throw new Error("QR Expired! Suruh peserta reload QR");
 
                 const result = await API.fetchData({ action: 'scan', kode: data.kode });
                 if(result.status === 'success') {
+                    resDiv.style.borderColor = "#2E7D32";
                     title.innerHTML = "<i class='ph-check-circle-fill'></i> TIKET VALID"; title.style.color = "#2E7D32"; 
-                    body.innerHTML = `${result.data.nama}<br><span style="color:#666; font-size:0.95rem; font-weight: 500;">${result.data.kategori}</span>`;
+                    body.innerHTML = `${result.data.nama}<br><span style="color:#666; font-size:0.85rem; font-weight: 500;">${result.data.kategori}</span>`;
                 } else { throw new Error(result.message); }
             } catch (err) {
+                resDiv.style.borderColor = "#D32F2F";
                 title.innerHTML = "<i class='ph-warning-circle-fill'></i> DITOLAK"; title.style.color = "#D32F2F"; 
                 body.innerText = err.message || "QR Code Rusak/Palsu!";
             }
-        },
 
-        resetScanUI: () => {
-            document.getElementById('scan-result').style.display = 'none';
-            html5QrcodeScanner.resume();
+            // AUTO HIDE NOTIFIKASI DALAM 2.5 DETIK TANPA MENGHENTIKAN KAMERA
+            setTimeout(() => {
+                resDiv.style.display = 'none';
+            }, 2500);
         }
     };
 
     // =========================================================================
-    // STARTUP ROUTINE (Mirip `init()` di Lua)
+    // STARTUP ROUTINE 
     // =========================================================================
     UI.initLoadingScreen();
     UI.setupFileInput();
     Auth.bindForms();
 
-    // Event Listener tambahan
     document.addEventListener("visibilitychange", () => {
         if (document.hidden && currentUser && document.getElementById('qr-real-wrap').classList.contains('show')) {
             Auth.expireQR();
