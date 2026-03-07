@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GLOFEST 2.0 - Glotera Festival</title>
 
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Shrikhand&display=swap" rel="stylesheet">
 
+    <!-- LIBRARIES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://unpkg.com/phosphor-icons"></script>
@@ -33,11 +35,9 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        /* HILANGKAN SLIDING BAR SCROLLBAR & FIX OVERSCROLL BUG */
         ::-webkit-scrollbar { display: none; }
         
         html {
-            /* Menghindari background putih saat rubber-band scroll di iOS/Android */
             background-color: var(--bg-top);
             overscroll-behavior-y: none; 
         }
@@ -107,7 +107,6 @@
             100% { transform: translate(30px, 50px) scale(1.2); }
         }
 
-        /* ORNAMENTS */
         .bg-ornament {
             position: fixed; pointer-events: none; z-index: 1; opacity: 0.12;
             background-size: contain; background-repeat: no-repeat;
@@ -152,7 +151,6 @@
             100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
         }
 
-        /* Staggered Animations for Landing Page */
         .stagger-item { opacity: 0; transform: translateY(20px); }
         .page-section.active .stagger-item:nth-child(1) { animation: slideUpFade 0.6s ease forwards 0.1s; }
         .page-section.active .stagger-item:nth-child(2) { animation: slideUpFade 0.6s ease forwards 0.2s; }
@@ -323,7 +321,7 @@
         .gallery-item {
             width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; cursor: pointer;
             border: 2px solid #EAE0D5; transition: transform 0.3s, border-color 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            background-color: #F8F5F2; /* Placeholder color before skeleton kicks in */
+            background-color: #F8F5F2; 
         }
         .gallery-item:hover { transform: scale(1.05); border-color: var(--accent-orange); box-shadow: 0 8px 15px rgba(201,138,83,0.3); }
 
@@ -438,7 +436,6 @@
 
         .hidden { display: none !important; }
         
-        /* Utiliti tombol logout khusus di dalam tiket */
         .btn-outline-white {
             width: 100%; padding: clamp(12px, 3.5vw, 15px); border-radius: 14px;
             font-family: var(--f-body); font-weight: 600; font-size: clamp(0.9rem, 3.5vw, 1rem);
@@ -446,21 +443,62 @@
             display: flex; justify-content: center; align-items: center;
         }
         .btn-outline-white:hover { background: #FFF !important; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* ================= PANITIA SCANNER TOAST ================= */
+        .toast-container {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(150px);
+            width: 90%; max-width: 350px; border-radius: 16px; padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); z-index: 100;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+            opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid transparent; pointer-events: none;
+        }
+        .toast-container.show {
+            transform: translateX(-50%) translateY(0); opacity: 1;
+        }
+        .toast-title { font-family: var(--f-title); font-size: 1.3rem; margin: 0 0 5px 0; letter-spacing: 1px; }
+        .toast-desc { font-weight: 700; font-size: 0.95rem; margin: 0; color: var(--text-dark); }
+        
+        /* Tema Toast */
+        .toast-success { border-color: #2E7D32; }
+        .toast-success .toast-title { color: #2E7D32; }
+        
+        .toast-error { border-color: #D32F2F; }
+        .toast-error .toast-title { color: #D32F2F; }
+
+        .toast-loading { border-color: var(--accent-orange); }
+        .toast-loading .toast-title { color: var(--accent-orange); }
+
+        /* Flash Effect pada container kamera */
+        .cam-flash { animation: flashCam 0.5s ease-out; }
+        @keyframes flashCam {
+            0% { box-shadow: inset 0 0 0 10px rgba(46, 125, 50, 0.8); }
+            100% { box-shadow: inset 0 0 0 0px rgba(46, 125, 50, 0); }
+        }
+        .cam-flash-error { animation: flashCamErr 0.5s ease-out; }
+        @keyframes flashCamErr {
+            0% { box-shadow: inset 0 0 0 10px rgba(211, 47, 47, 0.8); }
+            100% { box-shadow: inset 0 0 0 0px rgba(211, 47, 47, 0); }
+        }
     </style>
 </head>
 <body>
 
+<!-- LOADING SCREEN -->
 <div id="loading-screen">
     <div class="loader-spinner"></div>
     <div class="loader-text">GLOFEST 2.0</div>
 </div>
 
+<!-- BACKGROUND ELEMENTS -->
 <div class="dot-pattern"></div>
 <div class="ambient-orb orb-1"></div>
 <div class="ambient-orb orb-2"></div>
 <div class="bg-ornament ornament-left"></div>
 <div class="bg-ornament ornament-right"></div>
 
+<!-- CUSTOM MODAL POPUP -->
 <div id="app-modal" class="custom-modal">
     <div class="modal-content">
         <div id="modal-icon" class="modal-icon success"><i class="ph-check-circle-fill"></i></div>
@@ -470,6 +508,7 @@
     </div>
 </div>
 
+<!-- TUTORIAL MODAL POPUP -->
 <div id="tutorial-modal" class="custom-modal">
     <div class="modal-content" style="max-width: 450px; text-align: left; padding: clamp(20px, 5vw, 30px);">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -499,6 +538,7 @@
     </div>
 </div>
 
+<!-- LIGHTBOX DOKUMENTASI -->
 <div id="lightbox">
     <i class="ph-x-bold lightbox-close" onclick="UI.closeLightbox()"></i>
     <img id="lightbox-image" src="" class="lightbox-img" alt="Dokumentasi GLOFEST">
@@ -514,6 +554,7 @@
 
 <div class="app-container" id="main-container">
 
+    <!-- 1. LANDING PAGE -->
     <div id="landing-page" class="page-section active">
         <div class="logo-wrapper stagger-item">
             <img src="logo.png" alt="Logo Angkatan" style="width: clamp(40px, 10vw, 50px); height: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.alt='Gambar logo.png belum tersedia'">
@@ -564,11 +605,11 @@
             <div class="contact-header">
                 <i class="ph-headset-fill" style="margin-right: 5px;"></i> Pusat Bantuan
             </div>
-            <a href="https://wa.me/6285728881234" target="_blank" class="contact-item">
+            <a href="https://wa.me/6281335895758?text=Halo%20Rafa,%20saya%20ingin%20bertanya%20seputar%20GLOFEST." target="_blank" class="contact-item">
                 <div class="contact-icon"><i class="ph-whatsapp-logo-fill"></i></div>
                 <div>
-                    <div style="font-weight: 700; font-size: 0.95rem;">Aufa (Putra)</div>
-                    <div style="font-size: 0.8rem; opacity: 0.9;">+62 857-2888-1234</div>
+                    <div style="font-weight: 700; font-size: 0.95rem;">Rafa (Admin)</div>
+                    <div style="font-size: 0.8rem; opacity: 0.9;">+62 813-3589-5758</div>
                 </div>
             </a>
             <a href="https://wa.me/6282139268696" target="_blank" class="contact-item">
@@ -581,6 +622,7 @@
         </div>
     </div>
 
+    <!-- 2. REGISTER PAGE -->
     <div id="register-section" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title">REGISTRASI</h2>
@@ -623,6 +665,7 @@
         </div>
     </div>
 
+    <!-- 3. CHECK STATUS PAGE -->
     <div id="check-section" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title">CEK TIKET</h2>
@@ -647,6 +690,7 @@
         </div>
     </div>
 
+    <!-- 4. LOGIN PAGE -->
     <div id="login-section" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title">AKSES TIKET</h2>
@@ -669,6 +713,7 @@
         </div>
     </div>
 
+    <!-- 5. DOKUMENTASI PAGE -->
     <div id="dokumentasi-section" class="page-section">
         <div class="glass-panel" style="padding: 25px 20px;">
             <div class="logo-wrapper" style="margin-bottom: 20px;">
@@ -684,12 +729,13 @@
             </div>
 
             <div id="gallery-grid" class="gallery-grid">
-                </div>
+            </div>
             
             <div style="text-align: center; margin-top: 15px;"><button type="button" class="btn-text" onclick="UI.navTo('landing-page')">Kembali ke Beranda</button></div>
         </div>
     </div>
 
+    <!-- 6. DASHBOARD PESERTA -->
     <div id="dashboard-peserta" class="page-section">
         <div class="ticket-card">
             <div class="ticket-head">
@@ -733,6 +779,7 @@
         <button class="btn-outline-white" style="margin-top: 15px; color: var(--text-dark); background: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.9);" onclick="Auth.doLogout()"><i class="ph-sign-out-bold" style="margin-right: 8px;"></i> Keluar Akun</button>
     </div>
 
+    <!-- 7. DASHBOARD PANITIA (SCANNER & DOORPRIZE) -->
     <div id="dashboard-panitia" class="page-section">
         <div class="glass-panel">
             <h2 class="panel-title" style="font-size: clamp(1.5rem, 5vw, 1.8rem);">SISTEM PANITIA</h2>
@@ -742,18 +789,23 @@
                 <button type="button" class="tab-btn" id="tab-acak" onclick="Scanner.switchMenu('acak')"><i class="ph-download-bold"></i> Doorprize</button>
             </div>
 
+            <!-- Bagian Scanner -->
             <div id="panitia-scan-area" style="position: relative;">
-                <div style="border: 4px solid #F8F5F2; border-radius: 20px; padding: 5px; margin-bottom: 10px; overflow:hidden; background: #000; position: relative;">
+                <div id="camera-container" style="border: 4px solid #F8F5F2; border-radius: 20px; padding: 5px; margin-bottom: 10px; overflow:hidden; background: #000; position: relative;">
                     <div id="reader"></div>
                     
-                    <div id="scan-result" style="display:none; position:absolute; bottom:15px; left:50%; transform:translateX(-50%); width:90%; padding: 15px; border-radius: 14px; background: rgba(255,255,255,0.95); text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index:10; backdrop-filter: blur(8px); border: 2px solid transparent; transition: 0.3s;">
-                        <h3 id="res-title" style="margin:0; font-family: var(--f-title); font-size: clamp(1.2rem, 3.5vw, 1.4rem); letter-spacing: 1px;">...</h3>
-                        <p id="res-body" style="font-weight: 700; margin-top: 8px; font-size: 0.95rem; margin-bottom:0; color: var(--text-dark);">...</p>
+                    <!-- Floating Toast Notif (TIDAK MEMBLOKIR KAMERA) -->
+                    <div id="toast-scan" class="toast-container">
+                        <h3 id="toast-title" class="toast-title"><i class="ph-spinner ph-spin"></i> Mengecek...</h3>
+                        <p id="toast-body" class="toast-desc">Memproses QR Code</p>
                     </div>
                 </div>
-                <p style="text-align:center; font-size:0.8rem; color:#666;"><i class="ph-info-fill" style="color:var(--accent-orange)"></i> Kamera otomatis membaca QR terus menerus tanpa perlu direfresh.</p>
+                <p style="text-align:center; font-size:0.8rem; color:#666; font-weight: 500;">
+                    <i class="ph-info-fill" style="color:var(--accent-orange)"></i> Kamera tidak berhenti. Scan terus kode peserta berikutnya.
+                </p>
             </div>
 
+            <!-- Bagian Doorprize Ekspor -->
             <div id="panitia-acak-area" class="hidden">
                 <p style="text-align: center; font-size: clamp(0.85rem, 3.5vw, 0.95rem); color:#666; margin-bottom: 25px; font-weight: 500; line-height: 1.5;">Ekspor seluruh kode doorprize milik peserta yang telah di-ACC ke dalam format text (.txt).</p>
                 
@@ -779,11 +831,10 @@
      * =========================================================================
      */
 
-    // --- GLOBAL STATE ---
     const CONFIG = {
         // === MASUKKAN URL DEPLOY WEB APP DI SINI ===
         GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyWc3h2npkMeVXci4ruQShLkcutmDKlP7XHKY23P78xdUwKE30pHDWI3FDfEVE4PXcYFg/exec",
-        MAX_FILE_SIZE: 1.5 * 1024 * 1024 // Diturunkan ke 1.5MB agar aman saat Base64 convert
+        MAX_FILE_SIZE: 1.5 * 1024 * 1024 
     };
 
     let currentUser = null;
@@ -836,9 +887,7 @@
             localStorage.setItem('glofest_tutorial_seen', 'true');
         },
 
-        closeTutorial: () => {
-            document.getElementById('tutorial-modal').classList.remove('show');
-        },
+        closeTutorial: () => { document.getElementById('tutorial-modal').classList.remove('show'); },
 
         navTo: (id) => {
             if(id === 'register-section') {
@@ -855,11 +904,8 @@
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             
             const mainContainer = document.getElementById('main-container');
-            if (id === 'dokumentasi-section') {
-                mainContainer.style.maxWidth = '800px';
-            } else {
-                mainContainer.style.maxWidth = '500px';
-            }
+            if (id === 'dokumentasi-section') { mainContainer.style.maxWidth = '800px'; } 
+            else { mainContainer.style.maxWidth = '500px'; }
 
             setTimeout(() => { 
                 if(document.getElementById(id)) document.getElementById(id).classList.add('active'); 
@@ -869,7 +915,6 @@
             document.getElementById('login-error').innerText = "";
             document.getElementById('check-result').innerHTML = "Masukkan nama daftarmu di atas.";
             
-            // Panitia scanner remains open if switched back, logic handled by Scanner.switchMenu
             if(id !== 'dashboard-panitia' && html5QrcodeScanner) { 
                 try { html5QrcodeScanner.clear(); } catch(e) {} 
             }
@@ -935,9 +980,7 @@
                     method: 'POST', body: JSON.stringify(payload)
                 });
                 return await res.json();
-            } catch (error) { 
-                throw new Error("Gagal koneksi ke server. Cek internetmu."); 
-            }
+            } catch (error) { throw new Error("Gagal koneksi ke server. Cek internetmu."); }
         },
 
         fileToBase64: (file) => new Promise((resolve, reject) => {
@@ -949,9 +992,7 @@
         loadGallery: async () => {
             const grid = document.getElementById('gallery-grid');
             const loader = document.getElementById('gallery-loading');
-            
-            grid.innerHTML = "";
-            loader.style.display = "block";
+            grid.innerHTML = ""; loader.style.display = "block";
 
             try {
                 const result = await API.fetchData({ action: 'get_gallery' });
@@ -961,12 +1002,10 @@
                     result.data.forEach(imgUrl => {
                         const imgEl = document.createElement('img');
                         imgEl.className = 'gallery-item skeleton';
-                        imgEl.src = imgUrl;
-                        imgEl.loading = 'lazy';
+                        imgEl.src = imgUrl; imgEl.loading = 'lazy';
                         
                         imgEl.onload = () => imgEl.classList.remove('skeleton'); 
                         imgEl.onerror = () => { imgEl.classList.remove('skeleton'); imgEl.alt = "Gambar rusak"; };
-                        
                         imgEl.onclick = () => UI.openLightbox(imgUrl);
                         grid.appendChild(imgEl);
                     });
@@ -980,7 +1019,6 @@
 
         downloadCurrentLightboxImage: async () => {
             if (!currentLightboxImgUrl) return;
-            
             const btn = document.getElementById('btn-download-lb');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Mengunduh...';
@@ -993,29 +1031,21 @@
                 const a = document.createElement('a');
                 a.href = blobUrl;
                 a.download = `GLOFEST_Doc_${Math.floor(Math.random() * 10000)}.jpg`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
                 URL.revokeObjectURL(blobUrl);
-            } catch (e) {
-                window.open(currentLightboxImgUrl, '_blank');
-            } finally {
-                btn.innerHTML = originalText;
-            }
+            } catch (e) { window.open(currentLightboxImgUrl, '_blank'); } 
+            finally { btn.innerHTML = originalText; }
         },
 
         exportDoorprize: async () => {
             const btn = document.getElementById('btn-export-doorprize');
-            btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Memproses...'; 
-            btn.disabled = true;
+            btn.innerHTML = '<i class="ph-spinner ph-spin"></i> Memproses...'; btn.disabled = true;
             
             try {
                 const res = await API.fetchData({action: 'get_undian'});
                 if(res.status === 'success' && res.data && res.data.length > 0) {
                     let txtContent = "=== DATA DOORPRIZE GLOFEST 2.0 ===\r\n\r\n";
-                    res.data.forEach(item => {
-                        txtContent += `${item.undian} - ${item.nama}\r\n`;
-                    });
+                    res.data.forEach(item => { txtContent += `${item.undian} - ${item.nama}\r\n`; });
                     
                     const blob = new Blob([txtContent], { type: 'text/plain' });
                     const a = document.createElement('a');
@@ -1026,15 +1056,9 @@
                     URL.revokeObjectURL(a.href);
 
                     UI.showModal("Ekspor Sukses", "File teks daftar doorprize berhasil diunduh.", true);
-                } else {
-                    UI.showModal("Data Kosong", "Belum ada satupun data peserta yang di-ACC.", false); 
-                }
-            } catch(e) { 
-                UI.showModal("Ekspor Gagal", "Terjadi kesalahan koneksi.", false); 
-            } finally { 
-                btn.innerHTML = '<i class="ph-download-simple-bold"></i> Download Data (.txt)'; 
-                btn.disabled = false; 
-            }
+                } else { UI.showModal("Data Kosong", "Belum ada satupun data peserta yang di-ACC.", false); }
+            } catch(e) { UI.showModal("Ekspor Gagal", "Terjadi kesalahan koneksi.", false); } 
+            finally { btn.innerHTML = '<i class="ph-download-simple-bold"></i> Download Data (.txt)'; btn.disabled = false; }
         }
     };
 
@@ -1063,11 +1087,8 @@
 
                     const inputNama = document.getElementById('reg-nama').value.trim();
                     const payload = {
-                        action: 'register',
-                        nama: inputNama,
-                        ig: document.getElementById('reg-ig').value,
-                        kategori: isAlumni ? 'Alumni' : 'Siswa SMASIF',
-                        fileData: fileData, fileName: fileName
+                        action: 'register', nama: inputNama, ig: document.getElementById('reg-ig').value,
+                        kategori: isAlumni ? 'Alumni' : 'Siswa SMASIF', fileData: fileData, fileName: fileName
                     };
 
                     const result = await API.fetchData(payload);
@@ -1076,8 +1097,7 @@
                         const msg = `Halo ${result.nama},\n\nTerima kasih sudah mendaftar!\n\nAkunmu sedang dalam antrean validasi panitia. Pantau secara berkala di menu 'Cek Tiket' menggunakan namamu.`;
                         UI.showModal("Pendaftaran Sukses!", msg, true, () => {
                             document.getElementById('check-nama').value = inputNama; 
-                            UI.navTo('check-section'); 
-                            e.target.reset();
+                            UI.navTo('check-section'); e.target.reset();
                             document.getElementById('img-preview-container').style.display = "none";
                         });
                     } else { throw new Error(result.message); }
@@ -1085,7 +1105,7 @@
                 finally { btn.innerHTML = 'Kirim Permohonan <i class="ph-paper-plane-right-bold"></i>'; btn.disabled = false; }
             });
 
-            // CHECK STATUS SUBMIT
+            // CHECK STATUS SUBMIT (DENGAN WHATSAPP)
             document.getElementById('check-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const btn = document.getElementById('btn-submit-check');
@@ -1113,9 +1133,7 @@
                     } else { 
                         resDiv.innerHTML = `<span style="color: #D32F2F; display:flex; flex-direction:column; align-items:center;"><i class="ph-warning-circle-bold" style="font-size: 1.5rem;"></i> ${result.message}</span>` + waButton; 
                     }
-                } catch (err) { 
-                    resDiv.innerHTML = `<span style="color: #D32F2F;">${err.message}</span>`; 
-                } 
+                } catch (err) { resDiv.innerHTML = `<span style="color: #D32F2F;">${err.message}</span>`; } 
                 finally { btn.innerHTML = 'Cek Sekarang <i class="ph-magnifying-glass-bold"></i>'; btn.disabled = false; }
             });
 
@@ -1133,12 +1151,8 @@
                     
                     if(result.status === 'success') {
                         currentUser = result.data; 
-                        
-                        if(currentUser.role === 'panitia') {
-                            Scanner.initPanitia();
-                        } else {
-                            Auth.initPeserta();
-                        }
+                        if(currentUser.role === 'panitia') { Scanner.initPanitia(); } 
+                        else { Auth.initPeserta(); }
                     } else { errDiv.innerText = result.message; }
                 } catch (err) { errDiv.innerText = err.message; } 
                 finally { btn.innerHTML = 'Tampilkan Tiket <i class="ph-qr-code-bold"></i>'; btn.disabled = false; }
@@ -1149,7 +1163,6 @@
             document.getElementById('qr-real-wrap').classList.remove('show');
             document.getElementById('qr-placeholder-wrap').classList.remove('hide');
             document.getElementById('qr-timer').classList.add('hidden');
-            
             const btnQr = document.getElementById('btn-show-qr');
             btnQr.innerHTML = `<i class="ph-arrows-clockwise-bold"></i> ${btnText}`;
             btnQr.style.background = btnColor;
@@ -1176,30 +1189,22 @@
             const box = document.getElementById('qrcode');
             const timerText = document.getElementById('qr-timer');
             
-            placeholderWrap.classList.add('hide');
-            box.innerHTML = "";
-            
-            // Generate QR Token (Valid for 10 Mins)
+            placeholderWrap.classList.add('hide'); box.innerHTML = "";
             const expTime = Date.now() + (10 * 60 * 1000); 
             const payload = { kode: currentUser.kode, uid: currentUser.uid, exp: expTime };
 
             new QRCode(box, { 
-                text: JSON.stringify(payload), 
-                width: 170, height: 170, colorDark: "#5A3A1A", colorLight: "#ffffff" 
+                text: JSON.stringify(payload), width: 170, height: 170, colorDark: "#5A3A1A", colorLight: "#ffffff" 
             });
 
-            setTimeout(() => {
-                realWrap.classList.add('show');
-                timerText.classList.remove('hidden');
-            }, 150);
+            setTimeout(() => { realWrap.classList.add('show'); timerText.classList.remove('hidden'); }, 150);
 
             clearInterval(qrTimerInterval);
             qrTimerInterval = setInterval(() => {
                 const diff = expTime - Date.now();
                 if(diff <= 0) { Auth.expireQR(); } 
                 else {
-                    const m = Math.floor(diff / 60000);
-                    const s = Math.floor((diff % 60000) / 1000);
+                    const m = Math.floor(diff / 60000); const s = Math.floor((diff % 60000) / 1000);
                     timerText.innerText = `Kode Valid: ${m}:${s < 10 ? '0'+s : s}`;
                 }
             }, 1000);
@@ -1214,11 +1219,67 @@
     };
 
     // =========================================================================
-    // 4. MODULE: PANITIA SCANNER
+    // 4. MODULE: PANITIA SCANNER (RAPID FIRE EDITION)
     // =========================================================================
     const Scanner = {
         lastScannedCode: "",
         scanDebounceTimer: null,
+        toastTimer: null,
+
+        // Audio Effect Generator murni dari JS, tanpa file .mp3
+        playBeep: (isSuccess) => {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                if (isSuccess) {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.2);
+                } else {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(300, ctx.currentTime);
+                    gain.gain.setValueAtTime(1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.3);
+                }
+            } catch(e) {}
+        },
+
+        showToast: (titleHtml, descText, type) => {
+            const toast = document.getElementById('toast-scan');
+            const title = document.getElementById('toast-title');
+            const desc = document.getElementById('toast-body');
+            const camContainer = document.getElementById('camera-container');
+            
+            // Hapus animasi lama
+            camContainer.classList.remove('cam-flash', 'cam-flash-error');
+            void camContainer.offsetWidth; // Trigger reflow
+            
+            // Set Style
+            toast.className = `toast-container toast-${type} show`;
+            title.innerHTML = titleHtml;
+            desc.innerText = descText;
+
+            if (type === 'success') camContainer.classList.add('cam-flash');
+            if (type === 'error') camContainer.classList.add('cam-flash-error');
+
+            clearTimeout(Scanner.toastTimer);
+            Scanner.toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000); // Otomatis hilang dalam 2 detik
+        },
 
         switchMenu: (tipe) => {
             document.getElementById('tab-scan').classList.remove('active');
@@ -1241,50 +1302,39 @@
             UI.navTo('dashboard-panitia');
             Scanner.switchMenu('scan');
             if(!html5QrcodeScanner) {
+                // Konfigurasi FPS dinaikkan agar lebih responsif
                 html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 15, qrbox: {width: 250, height: 250} });
                 html5QrcodeScanner.render(Scanner.handleScanData, (err) => { /* Ignore background errors */ });
             }
         },
 
         handleScanData: async (decoded) => {
-            // DEBOUNCE LOGIC (Mencegah double scan pada QR yang sama)
+            // DEBOUNCE LOGIC (Biar QR yang SAMA nggak ke-scan spam berulang kali dalam 3 detik)
             if (Scanner.lastScannedCode === decoded) return;
-            Scanner.lastScannedCode = decoded;
             
+            Scanner.lastScannedCode = decoded;
             clearTimeout(Scanner.scanDebounceTimer);
             Scanner.scanDebounceTimer = setTimeout(() => { Scanner.lastScannedCode = ""; }, 3000);
 
-            // Tampilkan Overlay Mengecek
-            const resDiv = document.getElementById('scan-result');
-            const title = document.getElementById('res-title');
-            const body = document.getElementById('res-body');
-            
-            resDiv.style.display = 'block';
-            resDiv.style.borderColor = "transparent";
-            title.innerHTML = "<i class='ph-spinner ph-spin'></i> Mengecek..."; title.style.color = "var(--text-dark)";
-            body.innerText = "Tunggu sebentar...";
+            // Tampilkan Notif Proses tanpa menghentikan kamera
+            Scanner.showToast("<i class='ph-spinner ph-spin'></i> Mengecek...", "Tunggu sebentar...", "loading");
 
             try {
                 const data = JSON.parse(decoded);
                 if(!data.kode || !data.exp) throw new Error("Format QR Tidak Dikenal");
-                if(Date.now() > data.exp) throw new Error("QR Expired! Suruh peserta reload QR");
+                if(Date.now() > data.exp) throw new Error("QR Expired! Peserta harus reload QR");
 
                 const result = await API.fetchData({ action: 'scan', kode: data.kode });
+                
                 if(result.status === 'success') {
-                    resDiv.style.borderColor = "#2E7D32";
-                    title.innerHTML = "<i class='ph-check-circle-fill'></i> TIKET VALID"; title.style.color = "#2E7D32"; 
-                    body.innerHTML = `${result.data.nama}<br><span style="color:#666; font-size:0.85rem; font-weight: 500;">${result.data.kategori}</span>`;
+                    Scanner.playBeep(true);
+                    Scanner.showToast("<i class='ph-check-circle-fill'></i> TIKET VALID", `${result.data.nama} (${result.data.kategori})`, "success");
                 } else { throw new Error(result.message); }
+                
             } catch (err) {
-                resDiv.style.borderColor = "#D32F2F";
-                title.innerHTML = "<i class='ph-warning-circle-fill'></i> DITOLAK"; title.style.color = "#D32F2F"; 
-                body.innerText = err.message || "QR Code Rusak/Palsu!";
+                Scanner.playBeep(false);
+                Scanner.showToast("<i class='ph-warning-circle-fill'></i> DITOLAK", err.message || "QR Code Rusak/Palsu!", "error");
             }
-
-            // AUTO HIDE NOTIFIKASI DALAM 2.5 DETIK TANPA MENGHENTIKAN KAMERA
-            setTimeout(() => {
-                resDiv.style.display = 'none';
-            }, 2500);
         }
     };
 
